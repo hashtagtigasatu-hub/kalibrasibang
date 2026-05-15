@@ -320,8 +320,8 @@
 #pinScreen.hide { opacity: 0; pointer-events: none; }
 
 .pin-logo {
-  width: 180px;   /* ganti dari 56px */
-  height: 180px;  /* ganti dari 56px */
+  width: 137px;
+  height: 137px; 
   background: transparent;
   border-radius: 16px;
   display: flex;
@@ -336,7 +336,11 @@
   object-fit: contain;
   border-radius: 8px;
 }
-.pin-logo svg { width: 30px; height: 30px; }
+
+ .pin-sub {
+ font-size: 12px; color: var(--muted);
+ margin-bottom: 37px; text-align: center; letter-spacing: 0.05em;
+}
 
 .pin-dots { display: flex; gap: 14px; margin-bottom: 32px; }
 .pin-dot {
@@ -431,7 +435,6 @@
     <div class="pin-logo">
       <img src="logokbweb.png" alt="Logo">
     </div>
-  <div class="pin-title">KALIBRASI BANG</div>
   <div class="pin-sub">Masukkan PIN</div>
   <div class="pin-dots" id="pinDots">
     <div class="pin-dot" id="dot0"></div>
@@ -453,7 +456,7 @@
     <div class="pin-key" onclick="pinPress('9')">9</div>
     <div class="pin-key empty"></div>
     <div class="pin-key" onclick="pinPress('0')">0</div>
-    <div class="pin-key del" onclick="pinDelete()">⌫</div>
+    <div class="pin-key del" onclick="pinDelete()">◀</div>
   </div>
   <div class="pin-lock-msg" id="pinLockMsg"></div>
   <div class="pin-attempts"  id="pinAttempts"></div>
