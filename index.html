@@ -428,7 +428,6 @@
     <div class="pin-logo">
       <img src="logokbweb.png" alt="Logo">
     </div>
-  </div>
   <div class="pin-title">KALIBRASI BANG</div>
   <div class="pin-sub">Masukkan PIN</div>
   <div class="pin-dots" id="pinDots">
@@ -455,6 +454,7 @@
   </div>
   <div class="pin-lock-msg" id="pinLockMsg"></div>
   <div class="pin-attempts"  id="pinAttempts"></div>
+</div>
 </div>
 
  <!-- ══════════════════════════════════════════
@@ -707,9 +707,9 @@ async function verifyPin() {
   document.getElementById("pinPad").style.pointerEvents  = "none";
   document.getElementById("pinAttempts").textContent     = "Memverifikasi...";
   for (var i = 0; i < pinLength; i++) {
-  var d = document.getElementById("dot" + i);
-  d.classList.remove("filled");
-  d.classList.add("loading");
+    var d = document.getElementById("dot" + i);
+    d.classList.remove("filled");
+    d.classList.add("loading");
   }
   try {
     var res = await callAPI("verifyPin", { pin: pinValue });
@@ -740,12 +740,15 @@ async function verifyPin() {
     pinValue = "";
     setTimeout(function() { updateDots(); document.getElementById("pinLockMsg").textContent = ""; }, 1500);
   }
+
+  // Restore pad setelah try/catch selesai
   document.getElementById("pinPad").style.opacity       = "1";
   document.getElementById("pinPad").style.pointerEvents = "";
   document.getElementById("pinAttempts").textContent    = "";
   for (var i = 0; i < pinLength; i++) {
-  document.getElementById("dot" + i).classList.remove("loading");
+    document.getElementById("dot" + i).classList.remove("loading");
   }
+}
 function isLocked() {
   return Date.now() < parseInt(localStorage.getItem(STORAGE_KEY_LOCKTIME) || "0");
 }
