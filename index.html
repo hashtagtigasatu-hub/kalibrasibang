@@ -370,7 +370,7 @@
   user-select: none; -webkit-user-select: none;
 }
 .pin-key:active { background: var(--accent); color: #000; border-color: var(--accent); transform: scale(0.93); }
-.pin-key.del { font-size: 24px; color: var(--text); border-color: transparent; background: transparent; }
+.pin-key.del { font-size: 24px; color: var(--text); border-color: var(--border); background: var(--surface); }
 .pin-key.empty { background: transparent; border-color: transparent; pointer-events: none; }
 
 .pin-lock-msg {
@@ -395,6 +395,24 @@
 }
 .btn-logout:hover  { border-color: var(--danger); color: var(--danger); }
 .btn-logout:active { transform: scale(0.96); }
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40%            { transform: translateY(-8px); opacity: 1; }
+}
+
+.pin-dot.loading {
+  background: var(--accent);
+  border-color: var(--accent);
+  animation: dotBounce 1s ease infinite;
+}
+
+.pin-dot.loading:nth-child(2) { animation-delay: 0.1s; }
+.pin-dot.loading:nth-child(3) { animation-delay: 0.2s; }
+.pin-dot.loading:nth-child(4) { animation-delay: 0.3s; }
+.pin-dot.loading:nth-child(5) { animation-delay: 0.4s; }
+.pin-dot.loading:nth-child(6) { animation-delay: 0.5s; }
+    
   </style>
 </head>
 
@@ -518,15 +536,15 @@
       <div class="section-label">Parameter Kalibrasi</div>
       <div class="field">
         <select id="gamma">
-          <option value="2.2">Gamma 2.2 (Standard)</option>
-          <option value="2.4">Gamma 2.4 (Video)</option>
+          <option value="2.2">Gamma 2.2</option>
+          <option value="2.4">Gamma 2.4</option>
         </select>
       </div>
       <div class="field">
         <select id="luminance">
-          <option value="80 cd/m²" selected>80 cd/m² (Dark room)</option>
+          <option value="80 cd/m²" selected>80 cd/m²</option>
           <option value="100 cd/m²">100 cd/m²</option>
-          <option value="120 cd/m²">120 cd/m² (Standard)</option>
+          <option value="120 cd/m²">120 cd/m²</option>
         </select>
       </div>
 
@@ -688,7 +706,14 @@ function updateDots(state) {
 }
 
 async function verifyPin() {
-  document.getElementById("pinPad").style.pointerEvents = "none";
+  document.getElementById("pinPad").style.opacity        = "0";
+  document.getElementById("pinPad").style.pointerEvents  = "none";
+  document.getElementById("pinAttempts").textContent     = "Memverifikasi...";
+  for (var i = 0; i < pinLength; i++) {
+  var d = document.getElementById("dot" + i);
+  d.classList.remove("filled");
+  d.classList.add("loading");
+  }
   try {
     var res = await callAPI("verifyPin", { pin: pinValue });
     if (res.ok && res.valid) {
@@ -718,9 +743,12 @@ async function verifyPin() {
     pinValue = "";
     setTimeout(function() { updateDots(); document.getElementById("pinLockMsg").textContent = ""; }, 1500);
   }
+  document.getElementById("pinPad").style.opacity       = "1";
   document.getElementById("pinPad").style.pointerEvents = "";
-}
-
+  document.getElementById("pinAttempts").textContent    = "";
+  for (var i = 0; i < pinLength; i++) {
+  document.getElementById("dot" + i).classList.remove("loading");
+  }
 function isLocked() {
   return Date.now() < parseInt(localStorage.getItem(STORAGE_KEY_LOCKTIME) || "0");
 }
