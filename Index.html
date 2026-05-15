@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Kalibrasi Bang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0d0d;
+      --surface:  #161616;
+      --surface2: #1e1e1e;
+      --border:   #2a2a2a;
+      --accent:   #d4f000;
+      --text:     #f0f0f0;
+      --muted:    #666;
+      --danger:   #ff4545;
+      --success:  #00e5a0;
+      --wa:       #25d366;
+      --radius:   12px;
+      --mono:     'Space Mono', monospace;
+      --sans:     'DM Sans', sans-serif;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app { min-height: 100vh; display: flex; flex-direction: column; }
+
+    .header {
+      padding: 20px 20px 0;
+      display: flex; align-items: flex-end; gap: 10px;
+    }
+
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--accent); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-mark svg { width: 20px; height: 20px; }
+
+    .logo-text {
+      font-family: var(--mono); font-size: 13px; font-weight: 700;
+      letter-spacing: 0.08em; color: var(--text); line-height: 1;
+    }
+
+    .logo-sub {
+      font-size: 9px; color: var(--muted);
+      letter-spacing: 0.2em; text-transform: uppercase; margin-top: 3px;
+    }
+
+    .tab-nav {
+      display: flex; gap: 4px;
+      padding: 20px 20px 0;
+    }
+
+    .tab-btn {
+      flex: 1; padding: 9px 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--muted);
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+      cursor: pointer; transition: all 0.2s; text-transform: uppercase;
+    }
+
+    .tab-btn.active {
+      background: var(--accent); border-color: var(--accent);
+      color: #000; font-weight: 700;
+    }
+
+    .content { flex: 1; padding: 16px 20px 100px; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .section-label {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); margin: 20px 0 8px;
+    }
+
+    .section-label:first-child { margin-top: 4px; }
+
+    .field { margin-bottom: 10px; }
+
+    input, select, textarea {
+      width: 100%; padding: 13px 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text);
+      font-family: var(--sans); font-size: 14px; outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      -webkit-appearance: none; appearance: none;
+    }
+
+    input::placeholder { color: var(--muted); }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent); background: var(--surface2);
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
+    }
+
+    .qty-row { display: flex; align-items: center; gap: 8px; }
+    .qty-row input { flex: 1; text-align: center; font-family: var(--mono); font-size: 16px; font-weight: 700; }
+
+    .qty-btn {
+      width: 44px; height: 44px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text);
+      font-size: 20px; font-family: var(--mono); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s; flex-shrink: 0;
+    }
+
+    .qty-btn:active { background: var(--accent); color: #000; border-color: var(--accent); transform: scale(0.93); }
+
+    .price-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px; margin-bottom: 10px; display: none;
+    }
+
+    .price-card.visible { display: block; }
+
+    .price-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--muted); margin-bottom: 6px;
+    }
+
+    .price-row.total {
+      border-top: 1px solid var(--border); margin-top: 8px; padding-top: 8px;
+      color: var(--text); font-weight: 600;
+    }
+
+    .price-row .val { font-family: var(--mono); font-size: 12px; color: var(--text); }
+    .price-row.total .val { font-size: 15px; color: var(--accent); }
+
+    .btn-submit {
+      width: 100%; padding: 16px; margin-top: 6px;
+      background: var(--accent); color: #000; border: none;
+      border-radius: var(--radius); font-family: var(--mono);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+    }
+
+    .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-submit:not(:disabled):active { transform: scale(0.98); }
+
+    .btn-kirim-wa {
+      width: 100%; margin-top: 12px; padding: 13px;
+      background: var(--wa); border: none; border-radius: var(--radius);
+      color: #fff; font-family: var(--mono); font-size: 11px;
+      font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    .btn-kirim-wa:active { background: #1db954; transform: scale(0.98); }
+
+    .btn-new {
+      width: 100%; margin-top: 8px; padding: 13px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--muted);
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+    }
+
+    .btn-new:active { background: var(--surface); color: var(--text); }
+
+    .progress-wrap { display: none; margin-top: 16px; }
+    .progress-wrap.visible { display: block; }
+    .step-list { display: flex; flex-direction: column; }
+
+    .step-item {
+      display: flex; align-items: flex-start;
+      gap: 12px; padding: 10px 0; position: relative;
+    }
+
+    .step-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 10px; color: var(--muted);
+      flex-shrink: 0; transition: all 0.3s;
+    }
+
+    .step-item.done .step-dot   { background: var(--success); border-color: var(--success); color: #000; }
+    .step-item.active .step-dot { border-color: var(--accent); color: var(--accent); animation: pulse-ring 1.2s ease infinite; }
+    .step-item.error .step-dot  { border-color: var(--danger); background: var(--danger); color: #fff; }
+
+    @keyframes pulse-ring {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212,240,0,0.3); }
+      50%       { box-shadow: 0 0 0 6px rgba(212,240,0,0); }
+    }
+
+    .step-item:not(:last-child)::after {
+      content: ""; display: block; width: 2px; height: 20px;
+      background: var(--border); position: absolute; top: 38px; left: 13px;
+    }
+
+    .step-info { flex: 1; padding-top: 4px; }
+    .step-title { font-size: 13px; font-weight: 500; color: var(--text); }
+    .step-item.pending .step-title { color: var(--muted); }
+    .step-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .result-card {
+      display: none; background: var(--surface);
+      border: 1px solid var(--accent); border-radius: var(--radius);
+      margin-top: 16px; overflow: hidden;
+    }
+
+    .result-card.visible { display: block; }
+
+    .result-header {
+      background: var(--accent); padding: 10px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .result-header span {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      letter-spacing: 0.15em; color: #000; text-transform: uppercase;
+    }
+
+    .result-body { padding: 14px; }
+
+    .result-text {
+      font-size: 12px; line-height: 1.7; color: #ccc;
+      white-space: pre-wrap; word-break: break-word;
+      max-height: 240px; overflow-y: auto;
+    }
+
+    .result-text::-webkit-scrollbar { width: 4px; }
+    .result-text::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .voucher-code-badge {
+      display: inline-block; margin-bottom: 12px;
+      background: var(--surface2); border: 1px solid var(--accent);
+      border-radius: 8px; padding: 8px 14px;
+      font-family: var(--mono); font-size: 14px; font-weight: 700;
+      color: var(--accent); letter-spacing: 0.12em;
+    }
+
+    .program-info {
+      display: none;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 14px; margin-bottom: 10px;
+      font-size: 12px; color: var(--muted); line-height: 1.6;
+    }
+
+    .program-info.visible { display: block; }
+    .program-info strong  { color: var(--accent); }
+
+    .history-hint {
+      text-align: center; padding: 60px 20px;
+      color: var(--muted); font-size: 13px; line-height: 1.8;
+    }
+
+    .history-hint .icon { font-size: 36px; display: block; margin-bottom: 12px; }
+
+    /* ── API CONFIG BANNER ── */
+    .api-banner {
+      margin: 12px 20px 0;
+      background: #1a1200; border: 1px solid #7a5500;
+      border-radius: var(--radius); padding: 12px 14px;
+      font-size: 12px; color: #f5c518; line-height: 1.6; display: none;
+    }
+
+    .api-banner.visible { display: block; }
+    .api-banner strong { color: #ffd700; }
+
+    .toast {
+      position: fixed; bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 50px; padding: 10px 20px; font-size: 13px;
+      white-space: nowrap; opacity: 0; transition: all 0.3s;
+      pointer-events: none; z-index: 100;
+    }
+
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.success { border-color: var(--success); color: var(--success); }
+    .toast.error   { border-color: var(--danger);  color: var(--danger); }
+
+    .footer {
+      text-align: center; padding: 0 0 24px;
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase;
+    }
+
+    .hidden { display: none !important; }
+
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    input[type=number] { -moz-appearance: textfield; }
+
+    @supports (padding: max(0px)) {
+      .content { padding-bottom: max(100px, calc(80px + env(safe-area-inset-bottom))); }
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- ⚠️ Banner muncul kalau API_URL belum diisi -->
+  <div class="api-banner" id="apiBanner">
+    ⚠️ <strong>API URL belum dikonfigurasi.</strong><br>
+    Buka file <code>Index.html</code>, cari variabel <code>API_URL</code> di bagian atas script,
+    lalu isi dengan URL deployment Apps Script kamu.
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-mark">
+      <svg viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="7" stroke="#000" stroke-width="2"/>
+        <circle cx="10" cy="10" r="3" fill="#000"/>
+        <line x1="10" y1="3" x2="10" y2="1" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="17" y1="10" x2="19" y2="10" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-text">KALIBRASI BANG</div>
+      <div class="logo-sub">Color Calibration System</div>
+    </div>
+  </div>
+
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('input', this)">Input</button>
+    <button class="tab-btn"        onclick="switchTab('result', this)">Invoice</button>
+    <button class="tab-btn"        onclick="switchTab('voucher', this)">Voucher</button>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ PAGE: INPUT ══════════════════════════ -->
+    <div class="page active" id="page-input">
+
+      <div class="section-label">Customer</div>
+      <div class="field"><input type="text" id="nama" placeholder="Nama Customer" autocomplete="off"></div>
+      <div class="field"><input type="tel"  id="hp"   placeholder="No. WhatsApp (08xx / 62xx)" autocomplete="off"></div>
+
+      <div class="section-label">Device</div>
+      <div class="field">
+        <select id="kategori" onchange="updatePrice()">
+          <option value="">Kategori Device</option>
+          <option value="Profesional">Profesional — Rp335.000</option>
+          <option value="Mobile">Mobile — Rp235.000</option>
+        </select>
+      </div>
+      <div class="field">
+        <select id="jenis">
+          <option value="">Jenis Perangkat</option>
+          <option>Monitor</option>
+          <option>Laptop</option>
+          <option>MacBook Pro</option>
+          <option>MacBook Air</option>
+          <option>Tablet</option>
+          <option>Smart Phone</option>
+        </select>
+      </div>
+      <div class="field"><input type="text" id="model" placeholder="Device Model (contoh: AOC 27G4)" autocomplete="off"></div>
+
+      <div class="section-label">Jumlah Device</div>
+      <div class="qty-row field">
+        <button class="qty-btn" type="button" onclick="changeQty(-1)">−</button>
+        <input type="number" id="jumlah" value="1" min="1" oninput="updatePrice()">
+        <button class="qty-btn" type="button" onclick="changeQty(1)">+</button>
+      </div>
+
+      <div class="section-label">Pembayaran</div>
+      <div class="field">
+        <select id="metode">
+          <option value="">Metode Pembayaran</option>
+          <option>Transfer</option>
+          <option>Cash</option>
+        </select>
+      </div>
+      <div class="field"><input type="number" id="transport" placeholder="Biaya Transport (0 jika tidak ada)" oninput="updatePrice()" autocomplete="off"></div>
+
+      <div class="section-label">Parameter Kalibrasi</div>
+      <div class="field">
+        <select id="gamma">
+          <option value="2.2">Gamma 2.2 (Standard)</option>
+          <option value="2.4">Gamma 2.4 (Video)</option>
+        </select>
+      </div>
+      <div class="field">
+        <select id="luminance">
+          <option value="80 cd/m²">80 cd/m² (Dark room)</option>
+          <option value="100 cd/m²">100 cd/m²</option>
+          <option value="120 cd/m²" selected>120 cd/m² (Standard)</option>
+        </select>
+      </div>
+
+      <div class="price-card" id="priceCard">
+        <div class="price-row"><span>Harga Satuan</span><span class="val" id="pvHarga">—</span></div>
+        <div class="price-row"><span>Subtotal Device</span><span class="val" id="pvSubtotal">—</span></div>
+        <div class="price-row"><span>Transport</span><span class="val" id="pvTransport">—</span></div>
+        <div class="price-row total"><span>Total Akhir</span><span class="val" id="pvTotal">—</span></div>
+      </div>
+
+      <button class="btn-submit" id="btnSubmit" onclick="submitForm()">▶ Submit &amp; Generate</button>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="step-list">
+          <div class="step-item pending" id="step1">
+            <div class="step-dot">1</div>
+            <div class="step-info">
+              <div class="step-title">Simpan Data</div>
+              <div class="step-sub">Menulis ke Google Sheets...</div>
+            </div>
+          </div>
+          <div class="step-item pending" id="step2">
+            <div class="step-dot">2</div>
+            <div class="step-info">
+              <div class="step-title">Buat Sertifikat</div>
+              <div class="step-sub">Generate Google Slides → PDF</div>
+            </div>
+          </div>
+          <div class="step-item pending" id="step3">
+            <div class="step-dot">✓</div>
+            <div class="step-info">
+              <div class="step-title">Invoice Siap</div>
+              <div class="step-sub">Siap dikirim ke WhatsApp</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ PAGE: INVOICE ════════════════════════ -->
+    <div class="page" id="page-result">
+      <div class="section-label" id="resultLabel">Belum ada invoice</div>
+      <div class="result-card" id="invoiceCard">
+        <div class="result-header">
+          <span>Invoice &amp; Sertifikat</span>
+          <span id="certNoDisplay">—</span>
+        </div>
+        <div class="result-body">
+          <div class="result-text" id="invoiceText">—</div>
+          <button class="btn-kirim-wa" onclick="kirimInvoiceWA()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.49 3.57 1.4 5.12L2 22l5.12-1.51c1.49.82 3.17 1.26 4.92 1.26 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0012.04 2zm.01 18.14c-1.56 0-3.09-.42-4.42-1.21l-.32-.19-3.28.97.99-3.22-.21-.33a8.24 8.24 0 01-1.26-4.35c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 012.41 5.83c.01 4.54-3.69 8.32-8.17 8.32zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.55-.42-.14 0-.29-.02-.45-.02-.15 0-.41.06-.63.29-.22.23-.84.82-.84 2s.86 2.31.98 2.47c.12.17 1.69 2.58 4.1 3.62.57.25 1.02.4 1.37.51.57.18 1.09.16 1.5.1.46-.07 1.41-.58 1.61-1.13.2-.56.2-1.04.14-1.14-.06-.09-.22-.15-.47-.26z"/></svg>
+            Kirim Invoice ke WhatsApp
+          </button>
+          <button class="btn-new" onclick="resetForm()">+ Input Customer Baru</button>
+        </div>
+      </div>
+      <div class="history-hint" id="noResultHint">
+        <span class="icon">📋</span>
+        Belum ada invoice.<br>Submit customer baru terlebih dahulu.
+      </div>
+    </div>
+
+    <!-- ══ PAGE: VOUCHER ════════════════════════ -->
+    <div class="page" id="page-voucher">
+      <div class="section-label">Data Customer</div>
+      <div class="field"><input type="text" id="v_nama"   placeholder="Nama Customer" autocomplete="off"></div>
+      <div class="field"><input type="tel"  id="v_hp"     placeholder="No. WhatsApp (08xx / 62xx)" autocomplete="off"></div>
+      <div class="field"><input type="text" id="v_alamat" placeholder="Alamat" autocomplete="off"></div>
+
+      <div class="section-label">Program</div>
+      <div class="field">
+        <select id="v_program" onchange="onProgramChange()">
+          <option value="">Pilih Program</option>
+          <option value="Pro I">Pro I — Referral Profesional</option>
+          <option value="Pro II">Pro II — Cashback Profesional</option>
+          <option value="Mobile I">Mobile I — Referral Mobile</option>
+          <option value="Mobile II">Mobile II — Cashback Mobile</option>
+        </select>
+      </div>
+      <div class="program-info" id="programInfo"></div>
+
+      <button class="btn-submit" id="btnVoucher" onclick="submitVoucherForm()">▶ Generate Voucher</button>
+
+      <div class="result-card" id="voucherResultCard">
+        <div class="result-header">
+          <span>Voucher Generated</span>
+          <span id="v_programDisplay">—</span>
+        </div>
+        <div class="result-body">
+          <div class="voucher-code-badge" id="v_kodeDisplay">—</div>
+          <div class="result-text" id="v_messageText">—</div>
+          <button class="btn-kirim-wa" onclick="kirimVoucherWA()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.49 3.57 1.4 5.12L2 22l5.12-1.51c1.49.82 3.17 1.26 4.92 1.26 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0012.04 2zm.01 18.14c-1.56 0-3.09-.42-4.42-1.21l-.32-.19-3.28.97.99-3.22-.21-.33a8.24 8.24 0 01-1.26-4.35c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 012.41 5.83c.01 4.54-3.69 8.32-8.17 8.32zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.55-.42-.14 0-.29-.02-.45-.02-.15 0-.41.06-.63.29-.22.23-.84.82-.84 2s.86 2.31.98 2.47c.12.17 1.69 2.58 4.1 3.62.57.25 1.02.4 1.37.51.57.18 1.09.16 1.5.1.46-.07 1.41-.58 1.61-1.13.2-.56.2-1.04.14-1.14-.06-.09-.22-.15-.47-.26z"/></svg>
+            Kirim Voucher ke WhatsApp
+          </button>
+          <button class="btn-new" onclick="resetVoucher()">+ Generate Voucher Baru</button>
+        </div>
+      </div>
+
+      <div class="history-hint" id="noVoucherHint">
+        <span class="icon">🎟</span>
+        Belum ada voucher.<br>Isi form di atas lalu Generate.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">Borneo Color Lab • Kalibrasi Bang</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════
+//  ⚠️  KONFIGURASI — WAJIB DIISI
+//  Ambil URL dari Apps Script:
+//  Deploy → Manage Deployments → salin URL Web App
+// ════════════════════════════════════════════════
+var API_URL = "PASTE_APPS_SCRIPT_WEB_APP_URL_DI_SINI";
+
+
+// ════════════════════════════════════════════════
+//  CORE API CALLER
+//  Menggantikan google.script.run
+//  Semua komunikasi ke Apps Script lewat sini
+// ════════════════════════════════════════════════
+async function callAPI(action, data) {
+  const res = await fetch(API_URL, {
+    method:  "POST",
+    // Content-Type: text/plain menghindari CORS preflight
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body:    JSON.stringify({ action: action, data: data || {} })
+  });
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  return res.json();
+}
+
+
+// ════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════
+var currentRow    = null;
+var currentCertNo = null;
+var currentHP     = "";
+var pollTimer     = null;
+var pollCount     = 0;
+var MAX_POLLS     = 30;
+
+var voucherHP      = "";
+var voucherMessage = "";
+var voucherKode    = "";
+
+
+// ════════════════════════════════════════════════
+//  INIT — cek API_URL saat halaman dibuka
+// ════════════════════════════════════════════════
+window.addEventListener("DOMContentLoaded", function() {
+  if (!API_URL || API_URL.indexOf("PASTE") !== -1) {
+    document.getElementById("apiBanner").classList.add("visible");
+  }
+});
+
+
+// ════════════════════════════════════════════════
+//  TAB
+// ════════════════════════════════════════════════
+function switchTab(tab, btn) {
+  document.querySelectorAll(".page").forEach(function(p) { p.classList.remove("active"); });
+  document.querySelectorAll(".tab-btn").forEach(function(b) { b.classList.remove("active"); });
+  document.getElementById("page-" + tab).classList.add("active");
+  if (btn) btn.classList.add("active");
+}
+
+
+// ════════════════════════════════════════════════
+//  QTY & PRICE
+// ════════════════════════════════════════════════
+function changeQty(delta) {
+  var el  = document.getElementById("jumlah");
+  var val = Math.max(1, (parseInt(el.value) || 1) + delta);
+  el.value = val;
+  updatePrice();
+}
+
+function updatePrice() {
+  var kat       = document.getElementById("kategori").value;
+  var jumlah    = parseInt(document.getElementById("jumlah").value) || 1;
+  var transport = parseInt(document.getElementById("transport").value) || 0;
+  if (!kat) { document.getElementById("priceCard").classList.remove("visible"); return; }
+  var harga    = kat === "Profesional" ? 335000 : 235000;
+  var subtotal = harga * jumlah;
+  var total    = subtotal + transport;
+  document.getElementById("pvHarga").textContent     = rupiah(harga);
+  document.getElementById("pvSubtotal").textContent  = rupiah(subtotal);
+  document.getElementById("pvTransport").textContent = rupiah(transport);
+  document.getElementById("pvTotal").textContent     = rupiah(total);
+  document.getElementById("priceCard").classList.add("visible");
+}
+
+function rupiah(n) { return "Rp" + Number(n).toLocaleString("id-ID"); }
+
+
+// ════════════════════════════════════════════════
+//  STEP HELPERS
+// ════════════════════════════════════════════════
+function setStep(id, state, sub) {
+  var el = document.getElementById(id);
+  el.classList.remove("pending", "active", "done", "error");
+  el.classList.add(state);
+  if (sub !== undefined) el.querySelector(".step-sub").textContent = sub;
+}
+
+
+// ════════════════════════════════════════════════
+//  SUBMIT KALIBRASI
+// ════════════════════════════════════════════════
+async function submitForm() {
+  var fields = {
+    nama:      document.getElementById("nama").value.trim(),
+    hp:        document.getElementById("hp").value.trim(),
+    kategori:  document.getElementById("kategori").value,
+    jenis:     document.getElementById("jenis").value,
+    model:     document.getElementById("model").value.trim(),
+    metode:    document.getElementById("metode").value,
+    jumlah:    document.getElementById("jumlah").value,
+    transport: document.getElementById("transport").value || "0",
+    gamma:     document.getElementById("gamma").value,
+    luminance: document.getElementById("luminance").value
+  };
+
+  var required = ["nama","hp","kategori","jenis","model","metode"];
+  for (var i = 0; i < required.length; i++) {
+    if (!fields[required[i]]) {
+      showToast("⚠️ " + labelOf(required[i]) + " wajib diisi", "error");
+      return;
+    }
+  }
+
+  if (API_URL.indexOf("PASTE") !== -1) {
+    showToast("⚠️ API_URL belum diisi di Index.html", "error");
+    return;
+  }
+
+  currentHP = formatWANumber(fields.hp);
+  document.getElementById("btnSubmit").disabled = true;
+  document.getElementById("progressWrap").classList.add("visible");
+  setStep("step1", "active", "Menyimpan ke Google Sheets...");
+  setStep("step2", "pending", "Menunggu...");
+  setStep("step3", "pending", "Menunggu...");
+
+  try {
+    // Tahap 1 — simpan data
+    var res = await callAPI("submitCustomer", fields);
+
+    if (!res.ok) {
+      setStep("step1", "error", "Gagal: " + res.error);
+      document.getElementById("btnSubmit").disabled = false;
+      showToast("❌ " + res.error, "error");
+      return;
+    }
+
+    currentRow    = res.row;
+    currentCertNo = res.certNo;
+    setStep("step1", "done", "Data tersimpan ✓");
+    setStep("step2", "active", "Membuat sertifikat PDF...");
+
+    // Tahap 2 — generate certificate (bisa lama, pakai polling)
+    try {
+      var res2 = await callAPI("generateCertificate", { row: currentRow });
+      if (!res2.ok) {
+        setStep("step2", "error", "Gagal: " + res2.error);
+        document.getElementById("btnSubmit").disabled = false;
+        showToast("❌ " + res2.error, "error");
+        return;
+      }
+      if (res2.done) {
+        onGenerateDone(res2.invoice);
+      } else {
+        startPolling();
+      }
+    } catch (e) {
+      // Apps Script timeout (>30 detik) → fallback ke polling
+      setStep("step2", "active", "Sedang diproses, mohon tunggu...");
+      startPolling();
+    }
+
+  } catch (err) {
+    setStep("step1", "error", "Error: " + err.message);
+    document.getElementById("btnSubmit").disabled = false;
+    showToast("❌ " + err.message, "error");
+  }
+}
+
+
+// ════════════════════════════════════════════════
+//  POLLING
+// ════════════════════════════════════════════════
+function startPolling() {
+  pollCount = 0;
+  pollTimer = setInterval(doPoll, 3000);
+}
+
+async function doPoll() {
+  pollCount++;
+  if (pollCount > MAX_POLLS) {
+    clearInterval(pollTimer);
+    setStep("step2", "error", "Timeout. Coba refresh & cek sheet.");
+    document.getElementById("btnSubmit").disabled = false;
+    return;
+  }
+  try {
+    var res = await callAPI("checkStatus", { row: currentRow });
+    if (res.ok && res.status === "Generated") {
+      clearInterval(pollTimer);
+      onGenerateDone(res.invoice);
+    }
+  } catch (e) { /* retry next interval */ }
+}
+
+
+// ════════════════════════════════════════════════
+//  SELESAI
+// ════════════════════════════════════════════════
+function onGenerateDone(invoice) {
+  setStep("step2", "done", "Sertifikat berhasil dibuat ✓");
+  setStep("step3", "done", "Invoice siap dikirim!");
+  document.getElementById("btnSubmit").disabled = false;
+  showToast("✅ Selesai! Invoice siap.", "success");
+
+  document.getElementById("invoiceText").textContent   = invoice;
+  document.getElementById("certNoDisplay").textContent = currentCertNo || "";
+  document.getElementById("invoiceCard").classList.add("visible");
+  document.getElementById("noResultHint").classList.add("hidden");
+  document.getElementById("resultLabel").textContent   = "Invoice Terakhir";
+
+  setTimeout(function() {
+    document.querySelectorAll(".page").forEach(function(p) { p.classList.remove("active"); });
+    document.querySelectorAll(".tab-btn").forEach(function(b) { b.classList.remove("active"); });
+    document.getElementById("page-result").classList.add("active");
+    document.querySelectorAll(".tab-btn")[1].classList.add("active");
+  }, 800);
+}
+
+
+// ════════════════════════════════════════════════
+//  KIRIM WA — INVOICE
+// ════════════════════════════════════════════════
+function kirimInvoiceWA() {
+  var text = document.getElementById("invoiceText").textContent;
+  if (!text || text === "—") { showToast("⚠️ Belum ada invoice", "error"); return; }
+  if (!currentHP)             { showToast("⚠️ Nomor WA tidak tersedia", "error"); return; }
+  window.open("https://wa.me/" + currentHP + "?text=" + encodeURIComponent(text), "_blank");
+  showToast("✓ Membuka WhatsApp...", "success");
+}
+
+
+// ════════════════════════════════════════════════
+//  RESET KALIBRASI
+// ════════════════════════════════════════════════
+function resetForm() {
+  currentRow = null; currentCertNo = null; currentHP = "";
+  pollCount  = 0;
+  if (pollTimer) clearInterval(pollTimer);
+  ["nama","hp","model","transport"].forEach(function(id) { document.getElementById(id).value = ""; });
+  ["kategori","jenis","metode"].forEach(function(id) { document.getElementById(id).selectedIndex = 0; });
+  document.getElementById("jumlah").value    = "1";
+  document.getElementById("gamma").value     = "2.2";
+  document.getElementById("luminance").value = "120 cd/m²";
+  document.getElementById("btnSubmit").disabled = false;
+  document.getElementById("progressWrap").classList.remove("visible");
+  document.getElementById("priceCard").classList.remove("visible");
+  setStep("step1", "pending", "Menulis ke Google Sheets...");
+  setStep("step2", "pending", "Generate Google Slides → PDF");
+  setStep("step3", "pending", "Siap dikirim ke WhatsApp");
+  document.querySelectorAll(".page").forEach(function(p) { p.classList.remove("active"); });
+  document.querySelectorAll(".tab-btn").forEach(function(b) { b.classList.remove("active"); });
+  document.getElementById("page-input").classList.add("active");
+  document.querySelectorAll(".tab-btn")[0].classList.add("active");
+}
+
+
+// ════════════════════════════════════════════════
+//  VOUCHER — PROGRAM INFO
+// ════════════════════════════════════════════════
+function onProgramChange() {
+  var program = document.getElementById("v_program").value;
+  var info    = document.getElementById("programInfo");
+  var map = {
+    "Pro I":     "🎯 <strong>Referral Profesional</strong><br>Voucher diskon kalibrasi senilai <strong>Rp335.000</strong>. Berlaku 3 bulan.",
+    "Pro II":    "💸 <strong>Cashback Profesional</strong><br>Cashback tunai <strong>Rp335.000</strong> dikirim ke rekening 1×24 jam.",
+    "Mobile I":  "🎯 <strong>Referral Mobile</strong><br>Voucher diskon kalibrasi senilai <strong>Rp235.000</strong>. Berlaku 3 bulan.",
+    "Mobile II": "💸 <strong>Cashback Mobile</strong><br>Cashback tunai <strong>Rp235.000</strong> dikirim ke rekening 1×24 jam."
+  };
+  if (program && map[program]) {
+    info.innerHTML = map[program];
+    info.classList.add("visible");
+  } else {
+    info.classList.remove("visible");
+  }
+}
+
+
+// ════════════════════════════════════════════════
+//  SUBMIT VOUCHER
+// ════════════════════════════════════════════════
+async function submitVoucherForm() {
+  var nama    = document.getElementById("v_nama").value.trim();
+  var hp      = document.getElementById("v_hp").value.trim();
+  var alamat  = document.getElementById("v_alamat").value.trim();
+  var program = document.getElementById("v_program").value;
+
+  if (!nama || !hp || !alamat || !program) {
+    showToast("⚠️ Semua field wajib diisi", "error"); return;
+  }
+  if (!/^[0-9+\s]+$/.test(hp)) {
+    showToast("⚠️ Format No. WA tidak valid", "error"); return;
+  }
+  if (API_URL.indexOf("PASTE") !== -1) {
+    showToast("⚠️ API_URL belum diisi di Index.html", "error"); return;
+  }
+
+  voucherHP = formatWANumber(hp);
+
+  var btn = document.getElementById("btnVoucher");
+  btn.disabled    = true;
+  btn.textContent = "Processing...";
+
+  try {
+    var res = await callAPI("submitVoucher", { nama: nama, hp: hp, alamat: alamat, program: program });
+
+    btn.disabled    = false;
+    btn.textContent = "▶ Generate Voucher";
+
+    if (!res || !res.ok) {
+      showToast("❌ " + (res && res.error ? res.error : "Gagal generate"), "error");
+      return;
+    }
+
+    if (res.hp) voucherHP = res.hp;
+    voucherKode    = res.kode    || "";
+    voucherMessage = res.message || "";
+
+    document.getElementById("v_kodeDisplay").textContent    = voucherKode;
+    document.getElementById("v_programDisplay").textContent = program;
+    document.getElementById("v_messageText").textContent    = voucherMessage;
+    document.getElementById("voucherResultCard").classList.add("visible");
+    document.getElementById("noVoucherHint").classList.add("hidden");
+
+    showToast("✅ Voucher berhasil dibuat!", "success");
+
+  } catch (err) {
+    btn.disabled    = false;
+    btn.textContent = "▶ Generate Voucher";
+    showToast("❌ " + err.message, "error");
+  }
+}
+
+
+// ════════════════════════════════════════════════
+//  KIRIM WA — VOUCHER
+// ════════════════════════════════════════════════
+function kirimVoucherWA() {
+  if (!voucherMessage) { showToast("⚠️ Belum ada pesan voucher", "error"); return; }
+  if (!voucherHP)      { showToast("⚠️ Nomor WA tidak tersedia", "error"); return; }
+  window.open("https://wa.me/" + voucherHP + "?text=" + encodeURIComponent(voucherMessage), "_blank");
+  showToast("✓ Membuka WhatsApp...", "success");
+}
+
+
+// ════════════════════════════════════════════════
+//  RESET VOUCHER
+// ════════════════════════════════════════════════
+function resetVoucher() {
+  voucherHP = ""; voucherMessage = ""; voucherKode = "";
+  ["v_nama","v_hp","v_alamat"].forEach(function(id) { document.getElementById(id).value = ""; });
+  document.getElementById("v_program").selectedIndex = 0;
+  document.getElementById("programInfo").classList.remove("visible");
+  document.getElementById("voucherResultCard").classList.remove("visible");
+  document.getElementById("noVoucherHint").classList.remove("hidden");
+  document.getElementById("btnVoucher").disabled    = false;
+  document.getElementById("btnVoucher").textContent = "▶ Generate Voucher";
+}
+
+
+// ════════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════════
+function formatWANumber(phone) {
+  var wa = phone.toString().replace(/\D/g, "");
+  if (wa.startsWith("0")) wa = "62" + wa.substring(1);
+  return wa;
+}
+
+function showToast(msg, type) {
+  var t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className   = "toast " + (type || "");
+  t.classList.add("show");
+  setTimeout(function() { t.classList.remove("show"); }, 2800);
+}
+
+function labelOf(k) {
+  return { nama:"Nama", hp:"No. WA", kategori:"Kategori", jenis:"Jenis Perangkat", model:"Model", metode:"Metode" }[k] || k;
+}
+
+document.getElementById("jumlah").addEventListener("input", function() {
+  if (parseInt(this.value) < 1 || !this.value) this.value = 1;
+});
+</script>
+
+</body>
+</html>
