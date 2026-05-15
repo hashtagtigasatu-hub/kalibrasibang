@@ -315,7 +315,7 @@
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   padding: 32px 24px;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.2s ease;
 }
 #pinScreen.hide { opacity: 0; pointer-events: none; }
 
@@ -370,7 +370,7 @@
   user-select: none; -webkit-user-select: none;
 }
 .pin-key:active { background: var(--accent); color: #000; border-color: var(--accent); transform: scale(0.93); }
-.pin-key.del   { font-size: 18px; color: var(--muted); border-color: transparent; background: transparent; }
+.pin-key.del { font-size: 24px; color: var(--text); border-color: transparent; background: transparent; }
 .pin-key.empty { background: transparent; border-color: transparent; pointer-events: none; }
 
 .pin-lock-msg {
@@ -753,12 +753,12 @@ function startLockCountdown(lockUntil) {
 function showApp() {
   var pinScr = document.getElementById("pinScreen");
   var app    = document.getElementById("mainApp");
+  app.style.opacity       = "1";
+  app.style.pointerEvents = "";
   pinScr.classList.add("hide");
   setTimeout(function() {
     pinScr.style.display = "none";
-    app.style.opacity        = "1";
-    app.style.pointerEvents  = "";
-  }, 400);
+  }, 200);
 }
 
 function logout() {
