@@ -356,8 +356,8 @@
       <div class="field">
         <select id="kategori" onchange="updatePrice()">
           <option value="">Kategori Device</option>
-          <option value="Profesional">Profesional — Rp335.000</option>
-          <option value="Mobile">Mobile — Rp235.000</option>
+          <option value="Profesional">Profesional ● Rp335.000</option>
+          <option value="Mobile">Mobile ● Rp235.000</option>
         </select>
       </div>
       <div class="field">
@@ -365,6 +365,8 @@
           <option value="">Jenis Perangkat</option>
           <option>Monitor</option>
           <option>Laptop</option>
+          <option>Smart TV</option>
+          <option>Projector</option>
           <option>MacBook Pro</option>
           <option>MacBook Air</option>
           <option>Tablet</option>
@@ -384,8 +386,8 @@
       <div class="field">
         <select id="metode">
           <option value="">Metode Pembayaran</option>
-          <option>Transfer</option>
           <option>Cash</option>
+          <option>Transfer</option>
         </select>
       </div>
       <div class="field"><input type="number" id="transport" placeholder="Biaya Transport (0 jika tidak ada)" oninput="updatePrice()" autocomplete="off"></div>
@@ -444,7 +446,7 @@
 
     <!-- ══ PAGE: INVOICE ════════════════════════ -->
     <div class="page" id="page-result">
-      <div class="section-label" id="resultLabel">Belum ada invoice</div>
+      <div class="section-label" id="resultLabel"></div>
       <div class="result-card" id="invoiceCard">
         <div class="result-header">
           <span>Invoice &amp; Sertifikat</span>
@@ -476,10 +478,10 @@
       <div class="field">
         <select id="v_program" onchange="onProgramChange()">
           <option value="">Pilih Program</option>
-          <option value="Pro I">Pro I — Referral Profesional</option>
-          <option value="Pro II">Pro II — Cashback Profesional</option>
-          <option value="Mobile I">Mobile I — Referral Mobile</option>
-          <option value="Mobile II">Mobile II — Cashback Mobile</option>
+          <option value="Pro I">Pro I ● Referral Profesional</option>
+          <option value="Pro II">Pro II ● Cashback Profesional</option>
+          <option value="Mobile I">Mobile I ● Referral Mobile</option>
+          <option value="Mobile II">Mobile II ● Cashback Mobile</option>
         </select>
       </div>
       <div class="program-info" id="programInfo"></div>
