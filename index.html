@@ -1325,9 +1325,11 @@ async function verifyCert() {
       return;
     }
 
-    var statusClass = res.status === "Generated" ? "valid" : "warning";
-    var statusLabel = res.status === "Generated" ? "Sertifikat Valid" : "Pending — Sertifikat belum selesai";
-    var statusIcon  = res.status === "Generated" ? "✓" : "⚠";
+    var statusClass = res.status === "Generated" ? "valid" : "invalid";
+    var statusLabel = res.status === "Generated"
+      ? (res.isExpired ? "Sertifikat Expired" : "Sertifikat Valid")
+      : "Sertifikat Tidak Valid";
+    var statusIcon  = res.status === "Generated" ? (res.isExpired ? "⚠" : "✓") : "✗";
 
     el.innerHTML =
       renderVerifyHeader(statusClass, statusIcon, statusLabel) +
@@ -1454,12 +1456,13 @@ async function deleteCert(certNo) {
   try {
     var res = await callAPI("deleteCert", { certNo: certNo });
 
-    if (res.ok && res.success) {
+   if (res.ok && res.success) {
       showToast("✅ Sertifikat berhasil dihapus", "success");
-      // Refresh hasil verifikasi
-      document.getElementById("certInput").value = certNo;
-      verifyCert();
-    } else {
+      document.getElementById("certInput").value = "";
+      document.getElementById("certResult").classList.remove("visible");
+      document.getElementById("certResult").innerHTML = "";
+    } 
+    else {
       showToast("❌ " + (res.error || "Gagal"), "error");
     }
   } catch (err) {
