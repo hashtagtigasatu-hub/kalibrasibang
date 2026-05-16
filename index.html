@@ -845,7 +845,6 @@ async function verifyPin() {
   // Restore pad setelah try/catch selesai
   document.getElementById("pinPad").style.opacity       = "1";
   document.getElementById("pinPad").style.pointerEvents = "";
-  document.getElementById("pinAttempts").textContent    = "";
   for (var i = 0; i < pinLength; i++) {
     document.getElementById("dot" + i).classList.remove("loading");
   }
@@ -1347,7 +1346,7 @@ async function verifyCert() {
         : '');
   } catch (err) {
     document.getElementById("btnCert").disabled = false;
-    document.getElementById("btnCert").textContent = "Cek";
+    document.getElementById("btnCert").textContent = "Check";
     showToast("❌ " + err.message, "error");
   }
 }
@@ -1404,7 +1403,7 @@ async function verifyVoucher() {
 
   } catch (err) {
     document.getElementById("btnVoucherCheck").disabled = false;
-    document.getElementById("btnVoucherCheck").textContent = "Cek";
+    document.getElementById("btnVoucherCheck").textContent = "Check";
     showToast("❌ " + err.message, "error");
   }
 }
