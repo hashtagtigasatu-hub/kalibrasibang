@@ -731,7 +731,7 @@
   <div class="section-label">Verifikasi Sertifikat</div>
   <div class="verify-input-row">
     <input type="text" id="certInput" placeholder="Nomor Sertifikat (BCL-...)"
-           autocomplete="off" oninput="this.value = this.value.toUpperCase()">
+       autocomplete="off" oninput="formatCertInput(this)">
     <button class="btn-verify" id="btnCert" onclick="verifyCert()">Cek</button>
   </div>
   <div class="verify-result" id="certResult"></div>
@@ -740,7 +740,7 @@
   <div class="section-label">Verifikasi Voucher</div>
   <div class="verify-input-row">
     <input type="text" id="voucherInput" placeholder="Kode Voucher (KB-...)"
-           autocomplete="off" oninput="this.value = this.value.toUpperCase()">
+       autocomplete="off" oninput="formatVoucherInput(this)">
     <button class="btn-verify" id="btnVoucherCheck" onclick="verifyVoucher()">Cek</button>
   </div>
   <div class="verify-result" id="voucherResult"></div>
@@ -1465,6 +1465,39 @@ async function deleteCert(certNo) {
   } catch (err) {
     showToast("❌ " + err.message, "error");
   }
+}
+
+  function formatCertInput(el) {
+  // Format: BCL-0526-010
+  var raw    = el.value.replace(/[^A-Z0-9]/gi, "").toUpperCase();
+  var result = "";
+
+  if (raw.length <= 3) {
+    result = raw;
+  } else if (raw.length <= 7) {
+    result = raw.slice(0, 3) + "-" + raw.slice(3);
+  } else {
+    result = raw.slice(0, 3) + "-" + raw.slice(3, 7) + "-" + raw.slice(7, 10);
+  }
+
+  el.value = result;
+}
+
+
+function formatVoucherInput(el) {
+  // Format: KB-335-LVE6
+  var raw    = el.value.replace(/[^A-Z0-9]/gi, "").toUpperCase();
+  var result = "";
+
+  if (raw.length <= 2) {
+    result = raw;
+  } else if (raw.length <= 5) {
+    result = raw.slice(0, 2) + "-" + raw.slice(2);
+  } else {
+    result = raw.slice(0, 2) + "-" + raw.slice(2, 5) + "-" + raw.slice(5, 9);
+  }
+
+  el.value = result;
 }
   
 </script>
