@@ -1310,7 +1310,7 @@ async function verifyCert() {
 
   try {
     var res = await callAPI("verifyCert", { certNo: certNo });
-    btn.disabled = false; btn.textContent = "Cek";
+    btn.disabled = false; btn.textContent = "Check";
 
     var el = document.getElementById("certResult");
     el.classList.add("visible");
@@ -1364,7 +1364,7 @@ async function verifyVoucher() {
 
   try {
     var res = await callAPI("verifyVoucher", { kode: kode });
-    btn.disabled = false; btn.textContent = "Cek";
+    btn.disabled = false; btn.textContent = "Check";
 
     var el = document.getElementById("voucherResult");
     el.classList.add("visible");
