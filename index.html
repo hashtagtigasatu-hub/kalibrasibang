@@ -1382,7 +1382,7 @@ async function verifyVoucher() {
     var statusMap = {
       "AKTIF":    { cls: "valid",   icon: "✓", label: "Voucher Aktif" },
       "TERPAKAI": { cls: "warning", icon: "⚠", label: "Voucher Sudah Digunakan" },
-      "HANGUS":   { cls: "invalid", icon: "✗", label: "Voucher Hangus / Expired" }
+      "HANGUS":   { cls: "invalid", icon: "✗", label: "Voucher Expired" }
     };
     var s = statusMap[res.status] || { cls: "warning", icon: "⚠", label: res.status };
 
