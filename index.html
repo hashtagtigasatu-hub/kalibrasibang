@@ -1221,7 +1221,7 @@ async function submitVoucherForm() {
     var res = await callAPI("submitVoucher", { nama: nama, hp: hp, alamat: alamat, program: program });
 
     btn.disabled    = false;
-    btn.textContent = "▶ Generate Voucher";
+    btn.textContent = "Generate Voucher";
 
     if (!res || !res.ok) {
       showToast("❌ " + (res && res.error ? res.error : "Gagal generate"), "error");
@@ -1242,7 +1242,7 @@ async function submitVoucherForm() {
 
   } catch (err) {
     btn.disabled    = false;
-    btn.textContent = "▶ Generate Voucher";
+    btn.textContent = "Generate Voucher";
     showToast("❌ " + err.message, "error");
   }
 }
@@ -1270,7 +1270,7 @@ function resetVoucher() {
   document.getElementById("voucherResultCard").classList.remove("visible");
   document.getElementById("noVoucherHint").classList.remove("hidden");
   document.getElementById("btnVoucher").disabled    = false;
-  document.getElementById("btnVoucher").textContent = "▶ Generate Voucher";
+  document.getElementById("btnVoucher").textContent = "Generate Voucher";
 }
 
 
