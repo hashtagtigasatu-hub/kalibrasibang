@@ -497,6 +497,79 @@
 }
 .btn-action-green:hover  { background: rgba(73,173,244,0.1); }
 .btn-action-green:active { transform: scale(0.97); }
+
+    /* ── STATS ── */
+.stat-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-bottom: 20px;
+}
+
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 12px;
+}
+
+.stat-label {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+}
+
+.stat-value {
+  font-family: var(--mono); font-size: 20px; font-weight: 700;
+  color: var(--accent); line-height: 1;
+}
+
+.stat-value.small { font-size: 15px; }
+.stat-sub { font-size: 10px; color: var(--muted); margin-top: 4px; }
+
+/* Upcoming */
+.upcoming-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+
+.upcoming-item:last-child { border-bottom: none; }
+
+.upcoming-nama { font-size: 13px; color: var(--text); }
+.upcoming-rekal { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+.upcoming-badge {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  padding: 4px 8px; border-radius: 20px; white-space: nowrap;
+}
+
+.upcoming-badge.urgent  { background: rgba(255,69,69,0.15);  color: var(--danger); }
+.upcoming-badge.soon    { background: rgba(212,240,0,0.12);  color: var(--accent); }
+.upcoming-badge.normal  { background: rgba(73,173,244,0.12); color: var(--success); }
+
+/* History */
+.history-item {
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+
+.history-item:last-child { border-bottom: none; }
+
+.history-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 3px;
+}
+
+.history-nama  { font-size: 13px; color: var(--text); font-weight: 500; }
+.history-total { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+
+.history-bottom {
+  display: flex; justify-content: space-between;
+}
+
+.history-meta  { font-size: 10px; color: var(--muted); }
+.history-cert  { font-family: var(--mono); font-size: 9px; color: var(--muted); }
+
+/* Loading stats */
+.stats-loading {
+  text-align: center; padding: 40px 0;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  letter-spacing: 0.1em;
+}
     
   </style>
 </head>
@@ -557,6 +630,7 @@
       <button class="tab-btn"        onclick="switchTab('result', this)">Invoice</button>
       <button class="tab-btn"        onclick="switchTab('voucher', this)">Voucher</button>
       <button class="tab-btn" onclick="switchTab('verify', this)">Validation</button>
+      <button class="tab-btn" onclick="switchTab('stats', this); loadDashboard()">Stats</button>
     </div>
  
     <div class="content">
@@ -747,6 +821,66 @@
   <div class="verify-result" id="voucherResult"></div>
 
 </div><!-- /page-verify -->
+
+    <!-- PAGE: STATS -->
+<div class="page" id="page-stats">
+
+  <div class="stats-loading" id="statsLoading">Memuat data...</div>
+  <div id="statsContent" style="display:none">
+
+    <!-- Tombol Refresh -->
+    <div style="display:flex; justify-content:flex-end; margin-bottom:12px;">
+  <button onclick="refreshDashboard()" style="
+    background: transparent; border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 14px;
+    font-family: var(--mono); font-size: 9px; font-weight: 700;
+    letter-spacing: 0.1em; color: var(--muted);
+    cursor: pointer; text-transform: uppercase;
+  ">↻ Refresh</button>
+</div>
+
+    <!-- Bulan ini -->
+    <div class="section-label">Bulan Ini</div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Revenue</div>
+        <div class="stat-value small" id="statRevenue">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Kalibrasi</div>
+        <div class="stat-value" id="statCalib">—</div>
+        <div class="stat-sub">sesi</div>
+      </div>
+    </div>
+
+    <!-- Voucher -->
+    <div class="section-label">Voucher</div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Aktif</div>
+        <div class="stat-value" id="statVAktif">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Terpakai</div>
+        <div class="stat-value" id="statVTerpakai">—</div>
+        <div class="stat-sub" id="statVHangus">— hangus</div>
+      </div>
+    </div>
+
+    <!-- Re-kalibrasi -->
+    <div class="section-label">Re-Kalibrasi Dekat</div>
+    <div id="upcomingList">
+      <div class="history-hint" style="padding: 20px 0">
+        <span style="color: var(--muted); font-size: 12px;">Tidak ada jadwal dalam 14 hari ke depan</span>
+      </div>
+    </div>
+
+    <!-- Riwayat -->
+    <div class="section-label">Transaksi Terakhir</div>
+    <div id="historyList"></div>
+
+  </div>
+</div><!-- /page-stats -->  
 
       
   </div>
@@ -1502,6 +1636,82 @@ function formatVoucherInput(el) {
 
   el.value = result;
 }
+
+  // ════════════════════════════════════════════════
+//  DASHBOARD & HISTORY
+// ════════════════════════════════════════════════
+var dashboardLoaded = false;
+
+async function loadDashboard() {
+  if (dashboardLoaded) return;
+
+  document.getElementById("statsLoading").style.display  = "block";
+  document.getElementById("statsContent").style.display  = "none";
+
+  try {
+    var res = await callAPI("getDashboard", {});
+
+    document.getElementById("statsLoading").style.display = "none";
+    document.getElementById("statsContent").style.display = "block";
+
+    if (!res.ok) { showToast("❌ " + res.error, "error"); return; }
+
+    // ── Metrics
+    document.getElementById("statRevenue").textContent   = rupiah(res.revenueMonth);
+    document.getElementById("statCalib").textContent     = res.calibMonth;
+    document.getElementById("statVAktif").textContent    = res.vAktif;
+    document.getElementById("statVTerpakai").textContent = res.vTerpakai;
+    document.getElementById("statVHangus").textContent   = res.vHangus + " hangus";
+
+    // ── Upcoming re-kalibrasi
+    var upEl = document.getElementById("upcomingList");
+    if (res.upcoming.length === 0) {
+      upEl.innerHTML = '<div style="padding: 12px 0; font-size: 12px; color: var(--muted);">Tidak ada jadwal dalam 14 hari ke depan</div>';
+    } else {
+      upEl.innerHTML = res.upcoming.map(function(u) {
+        var badgeClass = u.diff <= 3 ? "urgent" : u.diff <= 7 ? "soon" : "normal";
+        var badgeLabel = u.diff === 0 ? "Hari ini" : u.diff + " hari lagi";
+        return '<div class="upcoming-item">' +
+          '<div>' +
+            '<div class="upcoming-nama">' + u.nama + '</div>' +
+            '<div class="upcoming-rekal">' + u.rekal + '</div>' +
+          '</div>' +
+          '<span class="upcoming-badge ' + badgeClass + '">' + badgeLabel + '</span>' +
+        '</div>';
+      }).join("");
+    }
+
+    // ── History
+    var histEl = document.getElementById("historyList");
+    if (res.history.length === 0) {
+      histEl.innerHTML = '<div style="padding: 12px 0; font-size: 12px; color: var(--muted);">Belum ada transaksi</div>';
+    } else {
+      histEl.innerHTML = res.history.map(function(h) {
+        return '<div class="history-item">' +
+          '<div class="history-top">' +
+            '<span class="history-nama">' + h.nama + '</span>' +
+            '<span class="history-total">' + rupiah(h.total) + '</span>' +
+          '</div>' +
+          '<div class="history-bottom">' +
+            '<span class="history-meta">' + h.tanggal + ' • ' + h.device + ' • ' + h.metode + '</span>' +
+            '<span class="history-cert">' + h.certNo + '</span>' +
+          '</div>' +
+        '</div>';
+      }).join("");
+    }
+
+    dashboardLoaded = true;
+
+  } catch (err) {
+    document.getElementById("statsLoading").style.display = "none";
+    showToast("❌ " + err.message, "error");
+  }
+}
+
+ function refreshDashboard() {
+  dashboardLoaded = false;
+  loadDashboard();
+} 
   
 </script>
 
