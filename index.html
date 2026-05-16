@@ -474,6 +474,28 @@
 .verify-row:last-child { border-bottom: none; }
 .verify-row .vr-label { color: var(--muted); }
 .verify-row .vr-value { color: var(--text); font-family: var(--mono); font-size: 11px; text-align: right; max-width: 60%; }   
+
+.btn-action-red {
+  width: 100%; margin-top: 10px; padding: 12px;
+  background: transparent; border: 1px solid var(--danger);
+  border-radius: var(--radius); color: var(--danger);
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-action-red:hover  { background: rgba(255,69,69,0.1); }
+.btn-action-red:active { transform: scale(0.97); }
+
+.btn-action-green {
+  width: 100%; margin-top: 10px; padding: 12px;
+  background: transparent; border: 1px solid var(--success);
+  border-radius: var(--radius); color: var(--success);
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-action-green:hover  { background: rgba(0,229,160,0.1); }
+.btn-action-green:active { transform: scale(0.97); }
     
   </style>
 </head>
@@ -1315,9 +1337,11 @@ async function verifyCert() {
         renderVerifyRow("Device",    res.device)  +
         renderVerifyRow("Kategori",  res.jenis)   +
         renderVerifyRow("Tgl Kalibrasi", res.tanggal) +
-        renderVerifyRow("Berlaku s/d",   res.expired) +
-      '</div>';
-
+        renderVerifyRow("Berlaku s/d", res.expired) +
+    '</div>' +
+        (res.isExpired
+        ? '<button class="btn-action-red" onclick="deleteCert(\'' + res.certNo + '\')">🗑 Hapus Sertifikat dari Drive</button>'
+        : '');
   } catch (err) {
     document.getElementById("btnCert").disabled = false;
     document.getElementById("btnCert").textContent = "Cek";
@@ -1369,8 +1393,11 @@ async function verifyVoucher() {
         renderVerifyRow("Nilai",   "Rp" + Number(res.nilai).toLocaleString("id-ID")) +
         renderVerifyRow("Pemegang", res.nama)   +
         renderVerifyRow("Terbit",  res.terbit)  +
-        renderVerifyRow("Berlaku s/d", res.expired) +
-      '</div>';
+       renderVerifyRow("Berlaku s/d", res.expired) +
+    '</div>' +
+      (res.status === "AKTIF"
+      ? '<button class="btn-action-green" onclick="markVoucherUsed(\'' + res.kode + '\')">✓ Tandai Terpakai</button>'
+      : '');
 
   } catch (err) {
     document.getElementById("btnVoucherCheck").disabled = false;
@@ -1395,6 +1422,49 @@ function renderVerifyRow(label, value) {
     '<span class="vr-label">' + label + '</span>' +
     '<span class="vr-value">' + (value || "-") + '</span>' +
   '</div>';
+}
+
+  async function markVoucherUsed(kode) {
+  if (!confirm("Tandai voucher " + kode + " sebagai TERPAKAI?")) return;
+
+  showToast("Memproses...", "");
+
+  try {
+    var res = await callAPI("markVoucherUsed", { kode: kode });
+
+    if (res.ok && res.success) {
+      showToast("✅ Voucher ditandai TERPAKAI", "success");
+      // Refresh hasil verifikasi
+      document.getElementById("voucherInput").value = kode;
+      verifyVoucher();
+    } else {
+      showToast("❌ " + (res.error || "Gagal"), "error");
+    }
+  } catch (err) {
+    showToast("❌ " + err.message, "error");
+  }
+}
+
+
+async function deleteCert(certNo) {
+  if (!confirm("Hapus sertifikat " + certNo + " dari Google Drive?\nData di sheet tetap tersimpan dengan status Dihapus.")) return;
+
+  showToast("Menghapus...", "");
+
+  try {
+    var res = await callAPI("deleteCert", { certNo: certNo });
+
+    if (res.ok && res.success) {
+      showToast("✅ Sertifikat berhasil dihapus", "success");
+      // Refresh hasil verifikasi
+      document.getElementById("certInput").value = certNo;
+      verifyCert();
+    } else {
+      showToast("❌ " + (res.error || "Gagal"), "error");
+    }
+  } catch (err) {
+    showToast("❌ " + err.message, "error");
+  }
 }
   
 </script>
