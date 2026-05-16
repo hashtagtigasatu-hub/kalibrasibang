@@ -422,7 +422,58 @@
 .pin-logo  { background: transparent; }
 .logo-mark { background: transparent; }
 
-    
+ .verify-input-row {
+  display: flex; gap: 8px; margin-bottom: 10px;
+}
+.verify-input-row input { flex: 1; }
+.btn-verify {
+  padding: 13px 16px; flex-shrink: 0;
+  background: var(--accent); color: #000; border: none;
+  border-radius: var(--radius); font-family: var(--mono);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  cursor: pointer; transition: all 0.2s; text-transform: uppercase;
+  white-space: nowrap;
+}
+.btn-verify:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-verify:active   { transform: scale(0.97); }
+
+.verify-result {
+  display: none;
+  background: var(--surface); border-radius: var(--radius);
+  overflow: hidden; margin-top: 4px;
+}
+.verify-result.visible { display: block; }
+
+.verify-result-header {
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.verify-result-header.valid   { background: rgba(0,229,160,0.12); border: 1px solid var(--success); border-radius: var(--radius) var(--radius) 0 0; }
+.verify-result-header.invalid { background: rgba(255,69,69,0.10); border: 1px solid var(--danger);  border-radius: var(--radius) var(--radius) 0 0; }
+.verify-result-header.warning { background: rgba(212,240,0,0.10); border: 1px solid var(--accent);  border-radius: var(--radius) var(--radius) 0 0; }
+
+.verify-status-icon { font-size: 20px; flex-shrink: 0; }
+.verify-status-text {
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.verify-status-text.valid   { color: var(--success); }
+.verify-status-text.invalid { color: var(--danger); }
+.verify-status-text.warning { color: var(--accent); }
+
+.verify-detail {
+  border: 1px solid var(--border); border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 12px 14px;
+}
+.verify-row {
+  display: flex; justify-content: space-between;
+  font-size: 12px; padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+.verify-row:last-child { border-bottom: none; }
+.verify-row .vr-label { color: var(--muted); }
+.verify-row .vr-value { color: var(--text); font-family: var(--mono); font-size: 11px; text-align: right; max-width: 60%; }   
     
   </style>
 </head>
@@ -482,6 +533,7 @@
       <button class="tab-btn active" onclick="switchTab('input', this)">Input</button>
       <button class="tab-btn"        onclick="switchTab('result', this)">Invoice</button>
       <button class="tab-btn"        onclick="switchTab('voucher', this)">Voucher</button>
+      <button class="tab-btn" onclick="switchTab('verify', this)">Check</button>
     </div>
  
     <div class="content">
@@ -650,6 +702,30 @@
       </div>
     </div>
 
+      <!-- PAGE: VERIFY -->
+<div class="page" id="page-verify">
+
+  <!-- Cek Sertifikat -->
+  <div class="section-label">Verifikasi Sertifikat</div>
+  <div class="verify-input-row">
+    <input type="text" id="certInput" placeholder="Nomor Sertifikat (BCL-...)"
+           autocomplete="off" oninput="this.value = this.value.toUpperCase()">
+    <button class="btn-verify" id="btnCert" onclick="verifyCert()">Cek</button>
+  </div>
+  <div class="verify-result" id="certResult"></div>
+
+  <!-- Cek Voucher -->
+  <div class="section-label">Verifikasi Voucher</div>
+  <div class="verify-input-row">
+    <input type="text" id="voucherInput" placeholder="Kode Voucher (KB-...)"
+           autocomplete="off" oninput="this.value = this.value.toUpperCase()">
+    <button class="btn-verify" id="btnVoucherCheck" onclick="verifyVoucher()">Cek</button>
+  </div>
+  <div class="verify-result" id="voucherResult"></div>
+
+</div><!-- /page-verify -->
+
+      
   </div>
 
   <div class="footer">Borneo Color Lab • Kalibrasi Bang</div>
@@ -1199,6 +1275,128 @@ function labelOf(k) {
 document.getElementById("jumlah").addEventListener("input", function() {
   if (parseInt(this.value) < 1 || !this.value) this.value = 1;
 });
+
+  // ════════════════════════════════════════════════
+//  VERIFIKASI SERTIFIKAT
+// ════════════════════════════════════════════════
+async function verifyCert() {
+  var certNo = document.getElementById("certInput").value.trim();
+  if (!certNo) { showToast("⚠️ Masukkan nomor sertifikat", "error"); return; }
+
+  var btn = document.getElementById("btnCert");
+  btn.disabled = true; btn.textContent = "...";
+
+  try {
+    var res = await callAPI("verifyCert", { certNo: certNo });
+    btn.disabled = false; btn.textContent = "Cek";
+
+    var el = document.getElementById("certResult");
+    el.classList.add("visible");
+
+    if (!res.ok) {
+      el.innerHTML = renderVerifyHeader("invalid", "❌", "Gagal: " + res.error);
+      return;
+    }
+
+    if (!res.found) {
+      el.innerHTML = renderVerifyHeader("invalid", "✗", "Sertifikat tidak ditemukan");
+      return;
+    }
+
+    var statusClass = res.status === "Generated" ? "valid" : "warning";
+    var statusLabel = res.status === "Generated" ? "Sertifikat Valid" : "Pending — Sertifikat belum selesai";
+    var statusIcon  = res.status === "Generated" ? "✓" : "⚠";
+
+    el.innerHTML =
+      renderVerifyHeader(statusClass, statusIcon, statusLabel) +
+      '<div class="verify-detail">' +
+        renderVerifyRow("Cert No",   res.certNo)  +
+        renderVerifyRow("Nama",      res.nama)    +
+        renderVerifyRow("Device",    res.device)  +
+        renderVerifyRow("Kategori",  res.jenis)   +
+        renderVerifyRow("Tgl Kalibrasi", res.tanggal) +
+        renderVerifyRow("Berlaku s/d",   res.expired) +
+      '</div>';
+
+  } catch (err) {
+    document.getElementById("btnCert").disabled = false;
+    document.getElementById("btnCert").textContent = "Cek";
+    showToast("❌ " + err.message, "error");
+  }
+}
+
+
+// ════════════════════════════════════════════════
+//  VERIFIKASI VOUCHER
+// ════════════════════════════════════════════════
+async function verifyVoucher() {
+  var kode = document.getElementById("voucherInput").value.trim();
+  if (!kode) { showToast("⚠️ Masukkan kode voucher", "error"); return; }
+
+  var btn = document.getElementById("btnVoucherCheck");
+  btn.disabled = true; btn.textContent = "...";
+
+  try {
+    var res = await callAPI("verifyVoucher", { kode: kode });
+    btn.disabled = false; btn.textContent = "Cek";
+
+    var el = document.getElementById("voucherResult");
+    el.classList.add("visible");
+
+    if (!res.ok) {
+      el.innerHTML = renderVerifyHeader("invalid", "❌", "Gagal: " + res.error);
+      return;
+    }
+
+    if (!res.found) {
+      el.innerHTML = renderVerifyHeader("invalid", "✗", "Voucher tidak ditemukan");
+      return;
+    }
+
+    var statusMap = {
+      "AKTIF":    { cls: "valid",   icon: "✓", label: "Voucher Aktif" },
+      "TERPAKAI": { cls: "warning", icon: "⚠", label: "Voucher Sudah Digunakan" },
+      "HANGUS":   { cls: "invalid", icon: "✗", label: "Voucher Hangus / Expired" }
+    };
+    var s = statusMap[res.status] || { cls: "warning", icon: "⚠", label: res.status };
+
+    el.innerHTML =
+      renderVerifyHeader(s.cls, s.icon, s.label) +
+      '<div class="verify-detail">' +
+        renderVerifyRow("Kode",    res.kode)    +
+        renderVerifyRow("Program", res.program) +
+        renderVerifyRow("Device",  res.device)  +
+        renderVerifyRow("Nilai",   "Rp" + Number(res.nilai).toLocaleString("id-ID")) +
+        renderVerifyRow("Pemegang", res.nama)   +
+        renderVerifyRow("Terbit",  res.terbit)  +
+        renderVerifyRow("Berlaku s/d", res.expired) +
+      '</div>';
+
+  } catch (err) {
+    document.getElementById("btnVoucherCheck").disabled = false;
+    document.getElementById("btnVoucherCheck").textContent = "Cek";
+    showToast("❌ " + err.message, "error");
+  }
+}
+
+
+// ════════════════════════════════════════════════
+//  HELPERS VERIFIKASI
+// ════════════════════════════════════════════════
+function renderVerifyHeader(cls, icon, label) {
+  return '<div class="verify-result-header ' + cls + '">' +
+    '<span class="verify-status-icon">' + icon + '</span>' +
+    '<span class="verify-status-text ' + cls + '">' + label + '</span>' +
+  '</div>';
+}
+
+function renderVerifyRow(label, value) {
+  return '<div class="verify-row">' +
+    '<span class="vr-label">' + label + '</span>' +
+    '<span class="vr-value">' + (value || "-") + '</span>' +
+  '</div>';
+}
+  
 </script>
 
 </body>
