@@ -1481,7 +1481,7 @@ async function deleteCert(certNo) {
   } else if (raw.length <= 7) {
     result = raw.slice(0, 3) + "-" + raw.slice(3);
   } else {
-    result = raw.slice(0, 3) + "-" + raw.slice(3, 7) + "-" + raw.slice(7, 10);
+    result = raw.slice(0, 3) + "-" + raw.slice(3, 7) + "-" + raw.slice(7, 11);
   }
 
   el.value = result;
