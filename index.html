@@ -77,7 +77,7 @@
       color: #000; font-weight: 700;
     }
 
-    .content { flex: 1; padding: 16px 20px 90px; }
+    .content { flex: 1; padding: 16px 20px 110px; }
     .page { display: none; }
     .page.active { display: block; }
     @supports (padding: max(0px)) {
@@ -579,12 +579,13 @@
   position: fixed; bottom: 0; left: 0; right: 0;
   background: var(--bg); border-top: 1px solid var(--border);
   display: flex; z-index: 50;
-  padding-bottom: max(env(safe-area-inset-bottom), 19px);
+  padding-bottom: max(env(safe-area-inset-bottom), 20px);
 }
 
 .nav-btn {
   flex: 1; display: flex; align-items: center; justify-content: center;
-  padding: 19px 0; background: transparent; border: none;
+  padding: 20px 0 20px;
+  background: transparent; border: none;
   cursor: pointer; color: var(--muted); transition: color 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
