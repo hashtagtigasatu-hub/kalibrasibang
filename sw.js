@@ -2,7 +2,7 @@ const CACHE_NAME = "kalibrasibang-v1";
 const ASSETS = [
   "/kalibrasibang/",
   "/kalibrasibang/Index.html",
-  "/kalibrasibang/logokbweb.png",
+  "/kalibrasibang/logokbwebapp.png",
   "/kalibrasibang/manifest.json"
 ];
 
