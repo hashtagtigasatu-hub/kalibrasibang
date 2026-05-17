@@ -10,13 +10,13 @@
   "theme_color": "#1c1c1c",
   "icons": [
   {
-    "src": "/kalibrasibang/logokbweb.png",
+    "src": "/kalibrasibang/logokbwebapp.png",
     "sizes": "192x192",
     "type": "image/png",
     "purpose": "any maskable"
   },
   {
-    "src": "/kalibrasibang/logokbweb.png",
+    "src": "/kalibrasibang/logokbwebapp.png",
     "sizes": "512x512",
     "type": "image/png",
     "purpose": "any maskable"
