@@ -1,0 +1,25 @@
+{
+  "name": "Kalibrasi Bang",
+  "short_name": "KaliBang",
+  "description": "Color Calibration System — Borneo Color Lab",
+  "start_url": "/kalibrasibang/",
+  "scope": "/kalibrasibang/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1c1c1c",
+  "theme_color": "#1c1c1c",
+  "icons": [
+    {
+      "src": "logokbweb.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logokbweb.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
