@@ -717,15 +717,15 @@
       <div class="field">
         <select id="jenis">
           <option value="">Jenis Perangkat</option>
-          <option>Monitor</option>
-          <option>Laptop</option>
-          <option>Smart TV</option>
-          <option>Projector</option>
-          <option>MacBook Pro</option>
-          <option>MacBook Air</option>
-          <option>Tablet</option>
-          <option>Smart Phone</option>
-        </select>
+          <option value="Laptop"     data-cat="Profesional">Laptop</option>
+          <option value="Monitor"    data-cat="Profesional">Monitor</option> 
+          <option value="Projector"  data-cat="Profesional">Projector</option>
+          <option value="MacBook Air" data-cat="Profesional">MacBook Air</option>
+          <option value="MacBook Pro" data-cat="Profesional">MacBook Pro</option>
+          <option value="Tablet"     data-cat="Mobile">Tablet</option>
+          <option value="Smart TV"   data-cat="Mobile">Smart TV</option>  
+          <option value="Smart Phone" data-cat="Mobile">Smart Phone</option>
+      </select>
       </div>
       <div class="field"><input type="text" id="model" placeholder="Device Model (contoh: AOC 27G4)" autocomplete="off"></div>
 
@@ -749,13 +749,15 @@
       <div class="section-label">Parameter Kalibrasi</div>
       <div class="field">
         <select id="gamma">
+          <option value="">Gamma</option>
           <option value="2.2">Gamma 2.2</option>
           <option value="2.4">Gamma 2.4</option>
-        </select>
+        </select>>
       </div>
       <div class="field">
         <select id="luminance">
-          <option value="80 cd/m²" selected>80 cd/m²</option>
+          <option value="">Luminance</option>
+          <option value="80 cd/m²">80 cd/m²</option>
           <option value="100 cd/m²">100 cd/m²</option>
           <option value="120 cd/m²">120 cd/m²</option>
         </select>
@@ -1276,6 +1278,7 @@ function changeQty(delta) {
 }
 
 function updatePrice() {
+  filterJenis();
   var kat       = document.getElementById("kategori").value;
   var jumlah    = parseInt(document.getElementById("jumlah").value) || 1;
   var transport = parseInt(document.getElementById("transport").value) || 0;
@@ -1321,7 +1324,7 @@ async function submitForm() {
     luminance: document.getElementById("luminance").value
   };
 
-  var required = ["nama","hp","kategori","jenis","model","metode"];
+  var required = ["nama","hp","kategori","jenis","model","metode","gamma","luminance"];
   for (var i = 0; i < required.length; i++) {
     if (!fields[required[i]]) {
       showToast("⚠️ " + labelOf(required[i]) + " wajib diisi", "error");
@@ -1456,9 +1459,10 @@ function resetForm() {
   if (pollTimer) clearInterval(pollTimer);
   ["nama","hp","model","transport"].forEach(function(id) { document.getElementById(id).value = ""; });
   ["kategori","jenis","metode"].forEach(function(id) { document.getElementById(id).selectedIndex = 0; });
+  filterJenis();
   document.getElementById("jumlah").value    = "1";
-  document.getElementById("gamma").value     = "2.2";
-  document.getElementById("luminance").value = "120 cd/m²";
+  document.getElementById("gamma").value     = "";
+  document.getElementById("luminance").value = "";
   document.getElementById("btnSubmit").disabled = false;
   document.getElementById("progressWrap").classList.remove("visible");
   document.getElementById("priceCard").classList.remove("visible");
@@ -1593,7 +1597,11 @@ function showToast(msg, type) {
 }
 
 function labelOf(k) {
-  return { nama:"Nama", hp:"No. WA", kategori:"Kategori", jenis:"Jenis Perangkat", model:"Model", metode:"Metode" }[k] || k;
+  return {
+    nama:"Nama", hp:"No. WA", kategori:"Kategori",
+    jenis:"Jenis Perangkat", model:"Model", metode:"Metode",
+    gamma:"Gamma", luminance:"Luminance"
+  }[k] || k;
 }
 
 document.getElementById("jumlah").addEventListener("input", function() {
@@ -1975,6 +1983,17 @@ async function deleteCertFromList(certNo, btn) {
     showToast("❌ " + err.message, "error");
   }
 }
+
+ function filterJenis() {
+  var kat     = document.getElementById("kategori").value;
+  var jenisEl = document.getElementById("jenis");
+
+  jenisEl.value = "";
+
+  jenisEl.querySelectorAll("option[data-cat]").forEach(function(opt) {
+    opt.style.display = (!kat || opt.getAttribute("data-cat") === kat) ? "" : "none";
+  });
+} 
   
 </script>
 
