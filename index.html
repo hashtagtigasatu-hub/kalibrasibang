@@ -733,14 +733,6 @@
       <div class="field">
         <select id="jenis" disabled>
           <option value="">Jenis</option>
-          <option value="Laptop"     data-cat="Profesional">Laptop</option>
-          <option value="Monitor"    data-cat="Profesional">Monitor</option> 
-          <option value="Projector"  data-cat="Profesional">Projector</option>
-          <option value="MacBook Air" data-cat="Profesional">MacBook Air</option>
-          <option value="MacBook Pro" data-cat="Profesional">MacBook Pro</option>
-          <option value="Tablet"     data-cat="Mobile">Tablet</option>
-          <option value="Smart TV"   data-cat="Mobile">Smart TV</option>  
-          <option value="Smart Phone" data-cat="Mobile">Smart Phone</option>
       </select>
       </div>
       <div class="field"><input type="text" id="model" placeholder="Model (contoh: AOC 27G4)" autocomplete="off"></div>
@@ -2000,16 +1992,26 @@ async function deleteCertFromList(certNo, btn) {
   }
 }
 
- function filterJenis() {
+ var jenisOptions = {
+  "Profesional": ["Laptop", "Monitor", "Projector", "MacBook Air", "MacBook Pro"],
+  "Mobile":      ["Tablet", "Smart TV", "Smart Phone"]
+};
+
+function filterJenis() {
   var kat     = document.getElementById("kategori").value;
   var jenisEl = document.getElementById("jenis");
 
-  jenisEl.value    = "";
-  jenisEl.disabled = !kat;
+  jenisEl.innerHTML = '<option value="">Jenis</option>';
+  jenisEl.disabled  = !kat;
 
-  jenisEl.querySelectorAll("option[data-cat]").forEach(function(opt) {
-    opt.style.display = (!kat || opt.getAttribute("data-cat") === kat) ? "" : "none";
-  });
+  if (kat && jenisOptions[kat]) {
+    jenisOptions[kat].forEach(function(item) {
+      var opt       = document.createElement("option");
+      opt.value     = item;
+      opt.textContent = item;
+      jenisEl.appendChild(opt);
+    });
+  }
 }
 
   // ── PWA SERVICE WORKER
