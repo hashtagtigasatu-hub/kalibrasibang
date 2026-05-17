@@ -596,6 +596,21 @@
 .nav-btn .icon-active   { display: none; }
 .nav-btn.active .icon-inactive { display: none; }
 .nav-btn.active .icon-active   { display: inline; }
+
+.nav-btn { position: relative; }
+
+.nav-badge {
+  position: absolute;
+  top: 10px;
+  right: calc(50% - 18px);
+  width: 8px; height: 8px;
+  background: var(--danger);
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  display: none;
+}
+
+.nav-badge.visible { display: block; }
     
   </style>
 </head>
@@ -955,6 +970,7 @@
 
   <!-- Validation -->
   <button class="nav-btn" onclick="switchTab('verify', this)">
+    <div class="nav-badge" id="certExpiredBadge"></div>
     <svg viewBox="0 0 24 24" fill="none">
       <g class="icon-inactive">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
@@ -1117,6 +1133,7 @@ function showApp() {
   var pinScr = document.getElementById("pinScreen");
   var app    = document.getElementById("mainApp");
   app.style.opacity       = "1";
+  checkExpiredCerts();
   app.style.pointerEvents = "";
   pinScr.classList.add("hide");
   setTimeout(function() {
@@ -1813,6 +1830,15 @@ async function loadDashboard() {
   dashboardLoaded = false;
   loadDashboard();
 } 
+
+  async function checkExpiredCerts() {
+  try {
+    var res = await callAPI("getExpiredCerts", {});
+    if (res.ok && res.count > 0) {
+      document.getElementById("certExpiredBadge").classList.add("visible");
+    }
+  } catch (e) { /* silent fail */ }
+}
   
 </script>
 
