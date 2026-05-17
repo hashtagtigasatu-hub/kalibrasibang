@@ -650,6 +650,17 @@
 }
     
   </style>
+
+  <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1c1c1c">
+
+<!-- iOS specific -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KaliBang">
+<link rel="apple-touch-icon" href="logokbweb.png">
+  
 </head>
 
 <body>
@@ -1999,7 +2010,16 @@ async function deleteCertFromList(certNo, btn) {
   jenisEl.querySelectorAll("option[data-cat]").forEach(function(opt) {
     opt.style.display = (!kat || opt.getAttribute("data-cat") === kat) ? "" : "none";
   });
-} 
+}
+
+  // ── PWA SERVICE WORKER
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("/kalibrasibang/sw.js")
+      .then(function() { console.log("SW registered"); })
+      .catch(function(err) { console.log("SW failed:", err); });
+  });
+}
   
 </script>
 
