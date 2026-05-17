@@ -601,9 +601,9 @@
 
 .nav-badge {
   position: absolute;
-  top: 10px;
-  right: calc(50% - 18px);
-  width: 8px; height: 8px;
+  top: 7px;
+  right: calc(50% - 20px);
+  width: 13px; height: 13px;
   background: var(--danger);
   border-radius: 50%;
   border: 2px solid var(--bg);
@@ -703,20 +703,20 @@
     <div class="page active" id="page-input">
 
       <div class="section-label">Customer</div>
-      <div class="field"><input type="text" id="nama" placeholder="Nama Customer" autocomplete="off"></div>
-      <div class="field"><input type="tel"  id="hp"   placeholder="No. WhatsApp (08xx / 62xx)" autocomplete="off"></div>
+      <div class="field"><input type="text" id="nama" placeholder="Nama" autocomplete="off"></div>
+      <div class="field"><input type="tel"  id="hp"   placeholder="Kontak (08xx/62xx)" autocomplete="off"></div>
 
       <div class="section-label">Device</div>
       <div class="field">
         <select id="kategori" onchange="updatePrice()">
-          <option value="">Kategori Device</option>
+          <option value="">Kategori</option>
           <option value="Profesional">Profesional • Rp335.000</option>
           <option value="Mobile">Mobile • Rp235.000</option>
         </select>
       </div>
       <div class="field">
         <select id="jenis">
-          <option value="">Jenis Perangkat</option>
+          <option value="">Jenis</option>
           <option value="Laptop"     data-cat="Profesional">Laptop</option>
           <option value="Monitor"    data-cat="Profesional">Monitor</option> 
           <option value="Projector"  data-cat="Profesional">Projector</option>
@@ -727,9 +727,9 @@
           <option value="Smart Phone" data-cat="Mobile">Smart Phone</option>
       </select>
       </div>
-      <div class="field"><input type="text" id="model" placeholder="Device Model (contoh: AOC 27G4)" autocomplete="off"></div>
+      <div class="field"><input type="text" id="model" placeholder="Model (contoh: AOC 27G4)" autocomplete="off"></div>
 
-      <div class="section-label">Jumlah Device</div>
+      <div class="section-label">Jumlah</div>
       <div class="qty-row field">
         <button class="qty-btn" type="button" onclick="changeQty(-1)">−</button>
         <input type="number" id="jumlah" value="1" min="1" oninput="updatePrice()">
@@ -740,13 +740,13 @@
       <div class="field">
         <select id="metode">
           <option value="">Metode Pembayaran</option>
-          <option>Cash</option>
           <option>Transfer</option>
+          <option>Cash</option>
         </select>
       </div>
-      <div class="field"><input type="number" id="transport" placeholder="Biaya Transport (0 jika tidak ada)" oninput="updatePrice()" autocomplete="off"></div>
+      <div class="field"><input type="number" id="transport" placeholder="Biaya Transport" oninput="updatePrice()" autocomplete="off"></div>
 
-      <div class="section-label">Parameter Kalibrasi</div>
+      <div class="section-label">Parameter</div>
       <div class="field">
         <select id="gamma">
           <option value="">Gamma</option>
@@ -818,16 +818,16 @@
         </div>
       </div>
       <div class="history-hint" id="noResultHint">
-        <span class="icon">📋</span>
-        Belum ada invoice.<br>Submit customer baru terlebih dahulu.
+        <span class="icon">🧾</span>
+        Belum ada invoice.
       </div>
     </div>
 
     <!-- ══ PAGE: VOUCHER ════════════════════════ -->
     <div class="page" id="page-voucher">
       <div class="section-label">Data Customer</div>
-      <div class="field"><input type="text" id="v_nama"   placeholder="Nama Customer" autocomplete="off"></div>
-      <div class="field"><input type="tel"  id="v_hp"     placeholder="No. WhatsApp (08xx / 62xx)" autocomplete="off"></div>
+      <div class="field"><input type="text" id="v_nama"   placeholder="Nama" autocomplete="off"></div>
+      <div class="field"><input type="tel"  id="v_hp"     placeholder="Kontak (08xx/62xx)" autocomplete="off"></div>
       <div class="field"><input type="text" id="v_alamat" placeholder="Alamat" autocomplete="off"></div>
 
       <div class="section-label">Program</div>
@@ -862,7 +862,7 @@
 
       <div class="history-hint" id="noVoucherHint">
         <span class="icon">🎟</span>
-        Belum ada voucher.<br>Isi form di atas lalu Generate.
+        Belum ada voucher.
       </div>
     </div>
 
@@ -890,7 +890,7 @@
   <!-- Cek Sertifikat -->
   <div class="section-label">Verifikasi Sertifikat</div>
   <div class="verify-input-row">
-    <input type="text" id="certInput" placeholder="Nomor Sertifikat (BCL-...)"
+    <input type="text" id="certInput" placeholder="Nomor Sertifikat (BCL-)"
        autocomplete="off" oninput="formatCertInput(this)">
     <button class="btn-verify" id="btnCert" onclick="verifyCert()">Check</button>
   </div>
@@ -899,7 +899,7 @@
   <!-- Cek Voucher -->
   <div class="section-label">Verifikasi Voucher</div>
   <div class="verify-input-row">
-    <input type="text" id="voucherInput" placeholder="Kode Voucher (KB-...)"
+    <input type="text" id="voucherInput" placeholder="Kode Voucher (KB-)"
        autocomplete="off" oninput="formatVoucherInput(this)">
     <button class="btn-verify" id="btnVoucherCheck" onclick="verifyVoucher()">Check</button>
   </div>
@@ -953,7 +953,7 @@
     </div>
 
     <!-- Re-kalibrasi -->
-    <div class="section-label">Re-Kalibrasi Dekat</div>
+    <div class="section-label">Re-Kalibrasi</div>
     <div id="upcomingList">
       <div class="history-hint" style="padding: 20px 0">
         <span style="color: var(--muted); font-size: 12px;">Tidak ada jadwal dalam 14 hari ke depan</span>
