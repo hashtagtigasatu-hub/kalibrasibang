@@ -75,7 +75,7 @@
       display: flex;
       gap: 4px;
       padding: 20px 20px 0;
-      margin-top: 120px; /* sesuaikan dengan tinggi header */
+      margin-top: var(--header-h, 120px);
     }
 
     .tab-btn {
@@ -1088,6 +1088,11 @@
 <div class="toast" id="toast"></div>
 
 <script>
+
+// Tambahkan di awal script
+const headerEl = document.querySelector('.header');
+document.documentElement.style.setProperty('--header-h', headerEl.offsetHeight + 'px');
+  
   // ── PIN CONFIG ──
 var pinValue    = "";
 var pinLength   = 6;
