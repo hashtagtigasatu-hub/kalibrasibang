@@ -32,7 +32,7 @@
       font-family: var(--sans);
       font-size: 15px;
       -webkit-font-smoothing: antialiased;
-      overscroll-behavior-y: none;
+     
     }
 
     .app { min-height: 100vh; display: flex; flex-direction: column; }
@@ -42,7 +42,7 @@
       top: 0;
       z-index: 100;
       background: var(--bg);
-      padding: 20px 20px 0;
+      padding: 20px 20px 12;
       display: flex;
       align-items: flex-end;
       gap: 10px;
@@ -84,7 +84,13 @@
       color: #000; font-weight: 700;
     }
 
-    .content { flex: 1; padding: 16px 20px 110px; }
+    .content {
+      flex: 1;
+      padding: 16px 20px 110px;
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+    
     .page { display: none; }
     .page.active { display: block; }
     @supports (padding: max(0px)) {
