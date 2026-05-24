@@ -38,15 +38,18 @@
     .app { min-height: 100vh; display: flex; flex-direction: column; }
 
     .header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--bg);
-      padding: 20px 20px 12;
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-    }
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  padding-top: max(20px, env(safe-area-inset-top));
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
 
     .logo-mark {
       width: 37px; height: 37px;
