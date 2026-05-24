@@ -42,6 +42,7 @@
       top: 0;
       left: 0;
       right: 0;
+      width: 100%;
       z-index: 100;
       background: var(--bg);
       padding-top: max(20px, env(safe-area-inset-top));
@@ -75,7 +76,6 @@
       display: flex;
       gap: 4px;
       padding: 20px 20px 0;
-      margin-top: var(--header-h, 120px);
     }
 
     .tab-btn {
@@ -1090,8 +1090,15 @@
 <script>
 
 // Tambahkan di awal script
-const headerEl = document.querySelector('.header');
-document.documentElement.style.setProperty('--header-h', headerEl.offsetHeight + 'px');
+function updateHeaderHeight() {
+  const headerEl = document.querySelector('.header');
+  const h = headerEl.offsetHeight;
+  document.documentElement.style.setProperty('--header-h', h + 'px');
+  document.querySelector('.app').style.paddingTop = h + 'px';
+}
+
+window.addEventListener('load', updateHeaderHeight);
+window.addEventListener('resize', updateHeaderHeight);
   
   // ── PIN CONFIG ──
 var pinValue    = "";
