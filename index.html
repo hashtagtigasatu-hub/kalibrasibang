@@ -668,6 +668,26 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+    /* ── CALIBRATION RESULT CARD ── */
+.calib-result {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px; margin-bottom: 10px;
+}
+.calib-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border);
+}
+.calib-row:last-child { border-bottom: none; }
+.calib-row .cr-label { color: var(--muted); }
+.calib-row .cr-value { font-weight: 700; font-family: var(--mono); font-size: 11px; }
+.grade-excellent { color: var(--success); }
+.grade-good      { color: var(--accent); }
+.grade-acceptable{ color: var(--pending); }
+.grade-limited   { color: var(--danger); }
+.status-pass     { color: var(--success); }
+.status-limitation { color: var(--pending); }
+.status-fail     { color: var(--danger); }
     
   </style>
 
@@ -790,6 +810,43 @@
           <option value="120 cd/m²">120 cd/m²</option>
         </select>
       </div>
+
+      <div class="section-label">Hasil Kalibrasi</div>
+      <div class="field"><input type="number" id="wpAchieved"  placeholder="White Point Achieved (K) — contoh: 6685"  oninput="autoClassify()" autocomplete="off" step="1"></div>
+      <div class="field"><input type="number" id="gammaAch"    placeholder="Gamma Achieved — contoh: 2.19"             oninput="autoClassify()" autocomplete="off" step="0.01"></div>
+      <div class="field"><input type="number" id="lumAch"      placeholder="Luminance Achieved (cd/m²) — contoh: 119" oninput="autoClassify()" autocomplete="off" step="1"></div>
+      <div class="field"><input type="number" id="avgDE"       placeholder="Average Delta-E — contoh: 1.4"            oninput="autoClassify()" autocomplete="off" step="0.1"></div>
+      <div class="field"><input type="number" id="maxDE"       placeholder="Maximum Delta-E — contoh: 2.8"            oninput="autoClassify()" autocomplete="off" step="0.1"></div>
+
+      <!-- Auto-classified result -->
+      <div class="calib-result" id="calibResult" style="display:none">
+        <div class="calib-row">
+          <span class="cr-label">Calibration Grade</span>
+          <span class="cr-value" id="calibGradeDisplay">—</span>
+        </div>
+        <div class="calib-row">
+          <span class="cr-label">Calibration Status</span>
+          <span class="cr-value" id="calibStatusDisplay">—</span>
+        </div>
+        <div class="calib-row">
+          <span class="cr-label">WP Deviation</span>
+          <span class="cr-value" id="wpDevDisplay">—</span>
+        </div>
+      </div>
+
+      <!-- Override manual untuk FAIL -->
+      <div class="field" id="calibStatusOverride" style="display:none">
+        <select id="calibStatusSelect" class="placeholder"
+                onchange="onCalibStatusChange(); this.value ? this.classList.remove('placeholder') : this.classList.add('placeholder')">
+          <option value="">Override Status (opsional)</option>
+          <option value="PASS">PASS</option>
+          <option value="PASS WITH LIMITATION">PASS WITH LIMITATION</option>
+          <option value="FAIL">FAIL — Manual</option>
+        </select>
+      </div>
+
+      <div class="field"><textarea id="techNotes" rows="3"
+        placeholder="Technical Notes (otomatis terisi setelah data kalibrasi diisi)"></textarea></div>
 
       <div class="price-card" id="priceCard">
         <div class="price-row"><span>Harga Satuan</span><span class="val" id="pvHarga">—</span></div>
@@ -1335,6 +1392,69 @@ function updatePrice() {
 
 function rupiah(n) { return "Rp" + Number(n).toLocaleString("id-ID"); }
 
+// ════════════════════════════════════════
+//  AUTO CLASSIFICATION
+// ════════════════════════════════════════
+var DEFAULT_TECH_NOTES = "Layar telah dikalibrasi hingga performa warna terbaik yang dapat dicapai. Penyimpangan warna yang masih tersisa disebabkan oleh keterbatasan perangkat keras panel, termasuk kemungkinan penurunan performa lampu latar (backlight degradation) akibat usia pemakaian, yang dapat memengaruhi kecerahan, deviasi white point, dan akurasi warna.";
+
+function calcGrade(avgDE, wpAch) {
+  var dev    = Math.abs(wpAch - 6500);
+  var grades = ["Excellent", "Good", "Acceptable", "Hardware Limited"];
+  var deG    = avgDE < 1.0 ? 0 : avgDE <= 2.0 ? 1 : avgDE <= 3.0 ? 2 : 3;
+  var wpG    = dev <= 100 ? 0 : dev <= 200 ? 1 : dev <= 300 ? 2 : 3;
+  return grades[Math.max(deG, wpG)];
+}
+
+function autoClassify() {
+  var avgDE = parseFloat(document.getElementById("avgDE").value);
+  var wpAch = parseFloat(document.getElementById("wpAchieved").value);
+
+  if (isNaN(avgDE) || isNaN(wpAch)) {
+    document.getElementById("calibResult").style.display        = "none";
+    document.getElementById("calibStatusOverride").style.display = "none";
+    return;
+  }
+
+  var grade  = calcGrade(avgDE, wpAch);
+  var status = grade === "Hardware Limited" ? "PASS WITH LIMITATION" : "PASS";
+  var dev    = Math.abs(wpAch - 6500);
+
+  // Grade display
+  var gradeEl = document.getElementById("calibGradeDisplay");
+  var gradeClass = { "Excellent": "grade-excellent", "Good": "grade-good",
+                     "Acceptable": "grade-acceptable", "Hardware Limited": "grade-limited" };
+  gradeEl.textContent  = grade;
+  gradeEl.className    = "cr-value " + (gradeClass[grade] || "");
+
+  // Status display
+  var statusEl = document.getElementById("calibStatusDisplay");
+  var statusClass = { "PASS": "status-pass", "PASS WITH LIMITATION": "status-limitation", "FAIL": "status-fail" };
+  statusEl.textContent = status;
+  statusEl.className   = "cr-value " + (statusClass[status] || "");
+
+  // WP Deviation
+  document.getElementById("wpDevDisplay").textContent = dev + "K";
+
+  // Sync override select
+  document.getElementById("calibStatusSelect").value = status;
+
+  // Auto-fill tech notes jika kosong
+  var tn = document.getElementById("techNotes");
+  if (!tn.value.trim()) tn.value = DEFAULT_TECH_NOTES;
+
+  document.getElementById("calibResult").style.display        = "block";
+  document.getElementById("calibStatusOverride").style.display = "block";
+}
+
+function onCalibStatusChange() {
+  var val = document.getElementById("calibStatusSelect").value;
+  if (!val) return;
+  var statusEl = document.getElementById("calibStatusDisplay");
+  var statusClass = { "PASS": "status-pass", "PASS WITH LIMITATION": "status-limitation", "FAIL": "status-fail" };
+  statusEl.textContent = val;
+  statusEl.className   = "cr-value " + (statusClass[val] || "");
+}
+
 
 // ════════════════════════════════════════════════
 //  STEP HELPERS
@@ -1352,16 +1472,25 @@ function setStep(id, state, sub) {
 // ════════════════════════════════════════════════
 async function submitForm() {
   var fields = {
-    nama:      document.getElementById("nama").value.trim(),
-    hp:        document.getElementById("hp").value.trim(),
-    kategori:  document.getElementById("kategori").value,
-    jenis:     document.getElementById("jenis").value,
-    model:     document.getElementById("model").value.trim(),
-    metode:    document.getElementById("metode").value,
-    jumlah:    document.getElementById("jumlah").value,
-    transport: document.getElementById("transport").value || "0",
-    gamma:     document.getElementById("gamma").value,
-    luminance: document.getElementById("luminance").value
+    nama:        document.getElementById("nama").value.trim(),
+    hp:          document.getElementById("hp").value.trim(),
+    kategori:    document.getElementById("kategori").value,
+    jenis:       document.getElementById("jenis").value,
+    model:       document.getElementById("model").value.trim(),
+    metode:      document.getElementById("metode").value,
+    jumlah:      document.getElementById("jumlah").value,
+    transport:   document.getElementById("transport").value || "0",
+    gamma:       document.getElementById("gamma").value,
+    luminance:   document.getElementById("luminance").value,
+    wpAchieved:  document.getElementById("wpAchieved").value  || "",
+    gammaAch:    document.getElementById("gammaAch").value    || "",
+    lumAch:      document.getElementById("lumAch").value      || "",
+    avgDE:       document.getElementById("avgDE").value       || "",
+    maxDE:       document.getElementById("maxDE").value       || "",
+    techNotes:   document.getElementById("techNotes").value   || "",
+    grade:       document.getElementById("calibGradeDisplay").textContent !== "—"
+               ? document.getElementById("calibGradeDisplay").textContent : "",
+    calibStatus: document.getElementById("calibStatusSelect").value || ""
   };
 
   var required = ["nama","hp","kategori","jenis","model","metode","gamma","luminance"];
@@ -1503,6 +1632,15 @@ function resetForm() {
   document.getElementById("jumlah").value    = "1";
   document.getElementById("gamma").value     = "";
   document.getElementById("luminance").value = "";
+  ["wpAchieved","gammaAch","lumAch","avgDE","maxDE"].forEach(function(id) {
+    document.getElementById(id).value = "";
+  });
+  document.getElementById("techNotes").value               = "";
+  document.getElementById("calibResult").style.display     = "none";
+  document.getElementById("calibStatusOverride").style.display = "none";
+  document.getElementById("calibStatusSelect").selectedIndex   = 0;
+  document.getElementById("calibGradeDisplay").textContent     = "—";
+  document.getElementById("calibStatusDisplay").textContent    = "—";
   document.getElementById("btnSubmit").disabled = false;
   document.getElementById("progressWrap").classList.remove("visible");
   document.getElementById("priceCard").classList.remove("visible");
