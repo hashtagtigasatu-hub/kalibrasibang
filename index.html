@@ -792,7 +792,9 @@
           <option>Cash</option>
         </select>
       </div>
-      <div class="field"><input type="number" id="transport" placeholder="Biaya Transport" oninput="updatePrice()" autocomplete="off"></div>
+      <div class="field">
+        <input type="text" inputmode="numeric" id="transport" placeholder="Biaya Transport" oninput="updatePrice()" autocomplete="off">
+      </div>
 
       <div class="section-label">Parameter</div>
       <div class="field">
@@ -812,11 +814,11 @@
       </div>
 
       <div class="section-label">Hasil Kalibrasi</div>
-      <div class="field"><input type="number" id="wpAchieved"  placeholder="White Point Achieved (K) — contoh: 6685"  oninput="autoClassify()" autocomplete="off" step="1"></div>
-      <div class="field"><input type="number" id="gammaAch"    placeholder="Gamma Achieved — contoh: 2.19"             oninput="autoClassify()" autocomplete="off" step="0.01"></div>
-      <div class="field"><input type="number" id="lumAch"      placeholder="Luminance Achieved (cd/m²) — contoh: 119" oninput="autoClassify()" autocomplete="off" step="1"></div>
-      <div class="field"><input type="number" id="avgDE"       placeholder="Average Delta-E — contoh: 1.4"            oninput="autoClassify()" autocomplete="off" step="0.1"></div>
-      <div class="field"><input type="number" id="maxDE"       placeholder="Maximum Delta-E — contoh: 2.8"            oninput="autoClassify()" autocomplete="off" step="0.1"></div>
+      <div class="field"><input type="text" inputmode="decimal" id="wpAchieved"  placeholder="WP Achieved - contoh: 6685"    oninput="autoClassify()" autocomplete="off" step="1"></div>
+      <div class="field"><input type="text" inputmode="decimal" id="gammaAch"    placeholder="Gamma Achieved - contoh: 2.19" oninput="autoClassify()" autocomplete="off" step="0.01"></div>
+      <div class="field"><input type="text" inputmode="decimal" id="lumAch"      placeholder="Lum Achieved - contoh: 119"    oninput="autoClassify()" autocomplete="off" step="1"></div>
+      <div class="field"><input type="text" inputmode="decimal" id="avgDE"       placeholder="Avg ΔE - contoh: 1.4"          oninput="autoClassify()" autocomplete="off" step="0.1"></div>
+      <div class="field"><input type="text" inputmode="decimal" id="maxDE"       placeholder="Max ΔE - contoh: 2.8"          oninput="autoClassify()" autocomplete="off" step="0.1"></div>
 
       <!-- Auto-classified result -->
       <div class="calib-result" id="calibResult" style="display:none">
@@ -1378,7 +1380,7 @@ function updatePrice() {
   //filterJenis(); ← nonaktif sementara perbaikan
   var kat       = document.getElementById("kategori").value;
   var jumlah    = parseInt(document.getElementById("jumlah").value) || 1;
-  var transport = parseInt(document.getElementById("transport").value) || 0;
+  var transport = Math.round(parseNum("transport")) || 0;
   if (!kat) { document.getElementById("priceCard").classList.remove("visible"); return; }
   var harga    = kat === "Profesional" ? 335000 : 235000;
   var subtotal = harga * jumlah;
@@ -1391,6 +1393,11 @@ function updatePrice() {
 }
 
 function rupiah(n) { return "Rp" + Number(n).toLocaleString("id-ID"); }
+
+  function parseNum(id) {
+  var val = document.getElementById(id).value.replace(",", ".");
+  return parseFloat(val);
+}
 
 // ════════════════════════════════════════
 //  AUTO CLASSIFICATION
@@ -1406,8 +1413,8 @@ function calcGrade(avgDE, wpAch) {
 }
 
 function autoClassify() {
-  var avgDE = parseFloat(document.getElementById("avgDE").value);
-  var wpAch = parseFloat(document.getElementById("wpAchieved").value);
+  var avgDE = parseNum("avgDE");
+  var wpAch = parseNum("wpAchieved");
 
   if (isNaN(avgDE) || isNaN(wpAch)) {
     document.getElementById("calibResult").style.display        = "none";
