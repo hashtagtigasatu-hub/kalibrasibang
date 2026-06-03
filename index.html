@@ -764,7 +764,7 @@
 
       <div class="section-label">Device</div>
       <div class="field">
-        <select id="kategori" onchange="updatePrice()">
+        <select id="kategori" onchange="filterJenis(); updatePrice()">
           <option value="">Kategori</option>
           <option value="Profesional">Profesional</option>
           <option value="Mobile">Mobile</option>
@@ -1375,7 +1375,7 @@ function changeQty(delta) {
 }
 
 function updatePrice() {
-  filterJenis();
+  //filterJenis(); ← nonaktif sementara perbaikan
   var kat       = document.getElementById("kategori").value;
   var jumlah    = parseInt(document.getElementById("jumlah").value) || 1;
   var transport = parseInt(document.getElementById("transport").value) || 0;
