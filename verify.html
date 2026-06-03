@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificate Verification — Kalibrasi Bang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #1c1c1c;
+      --surface:  #242424;
+      --surface2: #2e2e2e;
+      --border:   #393939;
+      --accent:   #f0ff00;
+      --text:     #f0f0f0;
+      --muted:    #777;
+      --danger:   #ff4545;
+      --success:  #49adf4;
+      --wa:       #18ba55;
+      --radius:   19px;
+      --pending:  #f59e0b;
+      --mono:     'DM Sans', sans-serif;
+      --sans:     'DM Sans', sans-serif;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 480px; margin: 0 auto; padding: 32px 20px 60px; }
+
+    /* ── HEADER ── */
+    .header { text-align: center; margin-bottom: 32px; }
+
+    .logo-wrap {
+      width: 56px; height: 56px; background: var(--accent);
+      border-radius: 12px; display: flex; align-items: center;
+      justify-content: center; margin: 0 auto 12px;
+    }
+
+    .logo-wrap svg { width: 30px; height: 30px; }
+
+    .brand-name {
+      font-family: var(--mono); font-size: 14px; font-weight: 700;
+      letter-spacing: 0.1em; color: var(--text); margin-bottom: 4px;
+    }
+
+    .brand-sub {
+      font-size: 10px; color: var(--muted);
+      letter-spacing: 0.15em; text-transform: uppercase;
+    }
+
+    /* ── LOADING & ERROR ── */
+    .state-loading, .state-error, .state-notfound {
+      text-align: center; padding: 48px 20px;
+    }
+
+    .state-icon { font-size: 40px; display: block; margin-bottom: 16px; }
+
+    .state-title {
+      font-family: var(--mono); font-size: 13px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;
+    }
+
+    .state-title.error    { color: var(--danger); }
+    .state-title.notfound { color: var(--muted); }
+
+    .state-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── STATUS BANNER ── */
+    .status-banner {
+      border-radius: var(--radius); padding: 14px 18px;
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    }
+
+    .status-banner.pass {
+      background: rgba(73,173,244,0.1); border: 1px solid var(--success);
+    }
+
+    .status-banner.limitation {
+      background: rgba(245,158,11,0.1); border: 1px solid var(--pending);
+    }
+
+    .status-banner.fail {
+      background: rgba(255,69,69,0.1); border: 1px solid var(--danger);
+    }
+
+    .status-banner.na {
+      background: var(--surface); border: 1px solid var(--border);
+    }
+
+    .status-icon { font-size: 24px; flex-shrink: 0; }
+
+    .status-text {}
+
+    .status-label {
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+
+    .status-label.pass       { color: var(--success); }
+    .status-label.limitation { color: var(--pending); }
+    .status-label.fail       { color: var(--danger); }
+    .status-label.na         { color: var(--muted); }
+
+    .status-grade {
+      font-size: 11px; color: var(--muted); margin-top: 3px;
+    }
+
+    /* ── SECTION ── */
+    .section { margin-bottom: 16px; }
+
+    .section-title {
+      font-family: var(--mono); font-size: 8px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px; padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+
+    .card-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 10px 14px; border-bottom: 1px solid var(--border);
+    }
+
+    .card-row:last-child { border-bottom: none; }
+
+    .card-label { font-size: 11px; color: var(--muted); flex-shrink: 0; padding-right: 12px; }
+
+    .card-value {
+      font-size: 11px; font-family: var(--mono); color: var(--text);
+      text-align: right; word-break: break-word;
+    }
+
+    .card-value.na { color: var(--muted); font-style: italic; }
+
+    /* Grade colors */
+    .grade-excellent  { color: var(--success) !important; }
+    .grade-good       { color: var(--accent)  !important; }
+    .grade-acceptable { color: var(--pending) !important; }
+    .grade-limited    { color: var(--danger)  !important; }
+
+    /* ── MEASUREMENT TABLE ── */
+    .meas-table { width: 100%; border-collapse: collapse; }
+
+    .meas-table thead th {
+      font-family: var(--mono); font-size: 8px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted);
+      padding: 8px 14px; text-align: left; border-bottom: 1px solid var(--border);
+    }
+
+    .meas-table thead th:not(:first-child) { text-align: right; }
+
+    .meas-table tbody tr { border-bottom: 1px solid var(--border); }
+    .meas-table tbody tr:last-child { border-bottom: none; }
+
+    .meas-table tbody td {
+      padding: 10px 14px; font-size: 11px; color: var(--text);
+    }
+
+    .meas-table tbody td:not(:first-child) {
+      text-align: right; font-family: var(--mono); color: var(--muted);
+    }
+
+    .meas-table tbody td.achieved { color: var(--text); font-weight: 700; }
+
+    .meas-table tbody td.na-cell { color: var(--muted); font-style: italic; }
+
+    /* ── TECH NOTES ── */
+    .tech-notes-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px;
+      font-size: 11px; color: var(--muted); line-height: 1.8;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      text-align: center; margin-top: 32px; padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-text {
+      font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    .footer-cert {
+      font-family: var(--mono); font-size: 10px; color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* ── CERT INFO CERT NO BADGE ── */
+    .cert-no-badge {
+      display: inline-block; background: var(--surface2);
+      border: 1px solid var(--accent); border-radius: 6px;
+      padding: 4px 10px; font-family: var(--mono); font-size: 11px;
+      font-weight: 700; color: var(--accent); letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-wrap">
+      <svg viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="7" stroke="#000" stroke-width="2"/>
+        <circle cx="10" cy="10" r="3" fill="#000"/>
+        <line x1="10" y1="3" x2="10" y2="1" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="17" y1="10" x2="19" y2="10" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="brand-name">KALIBRASI BANG</div>
+    <div class="brand-sub">Certificate Verification</div>
+  </div>
+
+  <!-- Dynamic content -->
+  <div id="content">
+    <div class="state-loading">
+      <div class="spinner"></div>
+      <div class="state-title" style="color:var(--muted)">Memverifikasi Sertifikat</div>
+      <div class="state-desc">Mohon tunggu sebentar...</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-text">Borneo Color Lab • Kalibrasi Bang</div>
+    <div class="footer-cert" id="footerCertNo"></div>
+  </div>
+
+</div>
+
+<script>
+// ⚠️ Samakan dengan API_URL di Index.html
+var API_URL = "PASTE_APPS_SCRIPT_WEB_APP_URL_DI_SINI";
+
+// ── Helpers ──
+function val(v) {
+  return (!v || v === "" || v === "N/A") ? null : String(v);
+}
+
+function display(v, fallback) {
+  return val(v) || (fallback || "N/A");
+}
+
+function naClass(v) {
+  return (!val(v)) ? " na-cell" : " achieved";
+}
+
+function gradeClass(g) {
+  if (!g) return "";
+  var map = { "Excellent": "grade-excellent", "Good": "grade-good",
+              "Acceptable": "grade-acceptable", "Hardware Limited": "grade-limited" };
+  return map[g] || "";
+}
+
+// ── Status Banner ──
+function renderBanner(calibStatus, grade) {
+  if (!val(calibStatus)) {
+    return '<div class="status-banner na">' +
+      '<span class="status-icon">📄</span>' +
+      '<div class="status-text">' +
+        '<div class="status-label na">Sertifikat Valid</div>' +
+        '<div class="status-grade">Data hasil kalibrasi tidak tersedia</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  var bannerClass = calibStatus === "PASS" ? "pass"
+                  : calibStatus === "PASS WITH LIMITATION" ? "limitation"
+                  : calibStatus === "FAIL" ? "fail" : "na";
+
+  var icon = calibStatus === "PASS" ? "✓"
+           : calibStatus === "PASS WITH LIMITATION" ? "⚠"
+           : calibStatus === "FAIL" ? "✗" : "?";
+
+  var gradeText = val(grade)
+    ? '<div class="status-grade">Grade: <span class="' + gradeClass(grade) + '">' + grade + '</span></div>'
+    : '';
+
+  return '<div class="status-banner ' + bannerClass + '">' +
+    '<span class="status-icon" style="font-size:20px">' + icon + '</span>' +
+    '<div class="status-text">' +
+      '<div class="status-label ' + bannerClass + '">' + calibStatus + '</div>' +
+      gradeText +
+    '</div>' +
+  '</div>';
+}
+
+// ── Measurement Table ──
+function renderMeasTable(res) {
+  if (!val(res.calibStatus)) return "";
+
+  var rows = [
+    ["White Point", "D65 (6500K)", display(res.wpAchieved), val(res.wpAchieved) ? (Math.abs(Number(res.wpAchieved) - 6500) + "K dev") : "N/A"],
+    ["Gamma",      val(res.gammaTarget) || "2.2",  display(res.gammaAch)],
+    ["Luminance",  val(res.lumTarget)   || "120 cd/m²", display(res.lumAch)],
+    ["Avg ΔE",     "≤ 2.0",             display(res.avgDE)],
+    ["Max ΔE",     "≤ 3.0",             display(res.maxDE)]
+  ];
+
+  var rowsHtml = rows.map(function(r) {
+    var achieved = r[2];
+    var extra    = r[3] ? '<br><span style="font-size:9px;color:var(--muted)">' + r[3] + '</span>' : '';
+    var achClass = (!val(achieved)) ? " na-cell" : " achieved";
+    return '<tr>' +
+      '<td>' + r[0] + '</td>' +
+      '<td>' + r[1] + '</td>' +
+      '<td class="' + achClass + '">' + achieved + extra + '</td>' +
+    '</tr>';
+  }).join("");
+
+  return '<div class="section">' +
+    '<div class="section-title">Measurement Report</div>' +
+    '<div class="card">' +
+      '<table class="meas-table">' +
+        '<thead><tr><th>Parameter</th><th>Target</th><th>Achieved</th></tr></thead>' +
+        '<tbody>' + rowsHtml + '</tbody>' +
+      '</table>' +
+    '</div>' +
+  '</div>';
+}
+
+// ── Tech Notes ──
+function renderTechNotes(notes) {
+  if (!val(notes)) return "";
+  return '<div class="section">' +
+    '<div class="section-title">Technical Notes</div>' +
+    '<div class="tech-notes-box">' + notes + '</div>' +
+  '</div>';
+}
+
+// ── Main Render ──
+function renderResult(res) {
+  document.getElementById("footerCertNo").textContent = res.certNo;
+
+  var html = "";
+
+  // Cert No badge
+  html += '<div style="text-align:center">' +
+    '<div class="cert-no-badge">' + res.certNo + '</div>' +
+  '</div>';
+
+  // Status banner
+  html += renderBanner(res.calibStatus, res.grade);
+
+  // Certificate Info
+  html += '<div class="section">' +
+    '<div class="section-title">Certificate Info</div>' +
+    '<div class="card">' +
+      row("Nama",            res.nama) +
+      row("Device",          res.device) +
+      row("Jenis",           res.jenis) +
+      row("Tgl Kalibrasi",   res.tanggal) +
+      row("Berlaku s/d",     res.expired) +
+    '</div>' +
+  '</div>';
+
+  // Calibration Result (only if data available)
+  if (val(res.calibStatus)) {
+    html += '<div class="section">' +
+      '<div class="section-title">Calibration Result</div>' +
+      '<div class="card">' +
+        rowColor("Status",   res.calibStatus,
+          res.calibStatus === "PASS" ? "var(--success)" :
+          res.calibStatus === "PASS WITH LIMITATION" ? "var(--pending)" : "var(--danger)") +
+        rowColor("Grade",    res.grade, res.grade ? getComputedGradeColor(res.grade) : "") +
+      '</div>' +
+    '</div>';
+  }
+
+  // Measurement table
+  html += renderMeasTable(res);
+
+  // Tech notes
+  html += renderTechNotes(res.techNotes);
+
+  document.getElementById("content").innerHTML = html;
+}
+
+function row(label, value) {
+  var v = display(value);
+  return '<div class="card-row">' +
+    '<span class="card-label">' + label + '</span>' +
+    '<span class="card-value' + (!val(value) ? " na" : "") + '">' + v + '</span>' +
+  '</div>';
+}
+
+function rowColor(label, value, color) {
+  var v = display(value);
+  var style = color ? ' style="color:' + color + '"' : '';
+  return '<div class="card-row">' +
+    '<span class="card-label">' + label + '</span>' +
+    '<span class="card-value"' + style + '>' + v + '</span>' +
+  '</div>';
+}
+
+function getComputedGradeColor(g) {
+  return g === "Excellent" ? "var(--success)" :
+         g === "Good" ? "var(--accent)" :
+         g === "Acceptable" ? "var(--pending)" :
+         g === "Hardware Limited" ? "var(--danger)" : "";
+}
+
+function showError(msg) {
+  document.getElementById("content").innerHTML =
+    '<div class="state-error">' +
+      '<span class="state-icon">⚠️</span>' +
+      '<div class="state-title error">Verifikasi Gagal</div>' +
+      '<div class="state-desc">' + msg + '</div>' +
+    '</div>';
+}
+
+function showNotFound(certNo) {
+  document.getElementById("content").innerHTML =
+    '<div class="state-notfound">' +
+      '<span class="state-icon">🔍</span>' +
+      '<div class="state-title notfound">Sertifikat Tidak Ditemukan</div>' +
+      '<div class="state-desc">Sertifikat dengan nomor <strong style="color:var(--text)">' +
+        certNo + '</strong> tidak ditemukan atau sudah tidak aktif.</div>' +
+    '</div>';
+}
+
+// ── Init ──
+window.addEventListener("DOMContentLoaded", async function() {
+  var params = new URLSearchParams(window.location.search);
+  var certNo = params.get("cert");
+
+  if (!certNo) {
+    showError("Nomor sertifikat tidak ditemukan di URL.<br>Pastikan QR code dipindai dengan benar.");
+    return;
+  }
+
+  try {
+    var res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action: "verifyCert", data: { certNo: certNo } })
+    });
+
+    if (!res.ok) throw new Error("HTTP " + res.status);
+
+    var data = await res.json();
+
+    if (!data.ok) {
+      showError(data.error || "Terjadi kesalahan saat memverifikasi.");
+      return;
+    }
+
+    if (!data.found) {
+      showNotFound(certNo);
+      return;
+    }
+
+    renderResult(data);
+
+  } catch (err) {
+    showError("Koneksi gagal. Periksa koneksi internet dan coba lagi.<br><small>" + err.message + "</small>");
+  }
+});
+</script>
+
+</body>
+</html>
