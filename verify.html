@@ -314,9 +314,9 @@ function renderMeasTable(res) {
   if (!val(res.calibStatus)) return "";
 
   var rows = [
-    ["White Point", "D65 (6500K)", display(res.wpAchieved), val(res.wpAchieved) ? (Math.abs(Number(res.wpAchieved) - 6500) + "K dev") : "N/A"],
+    ["White Point", "D65 (6500K)", val(res.wpAchieved) ? res.wpAchieved + "K" : "N/A", val(res.wpAchieved) ? (Math.abs(Number(res.wpAchieved) - 6500) + "K dev") : "N/A"],
     ["Gamma",      val(res.gammaTarget) || "2.2",  display(res.gammaAch)],
-    ["Luminance",  val(res.lumTarget)   || "120 cd/m²", display(res.lumAch)],
+    ["Luminance",  val(res.lumTarget)   || "120 cd/m²", val(res.lumAch) ? res.lumAch + " cd/m²" : "N/A"],
     ["Avg ΔE",     "≤ 2.0",             display(res.avgDE)],
     ["Max ΔE",     "≤ 3.0",             display(res.maxDE)]
   ];
