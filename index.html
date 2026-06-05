@@ -1193,8 +1193,12 @@
 
 <script>
 
-  window.onerror = function(msg, src, line) {
-  alert("Error: " + msg + "\nBaris: " + line);
+  window.onerror = function(msg, src, line, col, err) {
+  document.body.innerHTML = '<div style="color:red;padding:20px;font-size:14px;">' +
+    '<b>Error:</b> ' + msg + '<br>' +
+    '<b>Baris:</b> ' + line + '<br>' +
+    '<b>File:</b> ' + src +
+  '</div>';
   return false;
 };
 
