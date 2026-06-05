@@ -2443,18 +2443,35 @@ async function updateProspek(row) {
 }
 
 async function kirimWAProspek(waNum) {
-  var pesan = document.getElementById("d_pesan").value;
+  var pesan    = document.getElementById("d_pesan").value;
+  var status   = document.getElementById("d_status").value;
+  var followUp = document.getElementById("d_followUp").value;
+  var catatan  = document.getElementById("d_catatan").value.trim();
+
   if (!pesan || !waNum) { showToast("⚠️ Pesan atau nomor WA kosong", "error"); return; }
-  
-  var prospek = prospekData.find(function(p) { 
-    return formatWANumber(p.hp) === waNum; 
+
+  var prospek = prospekData.find(function(p) {
+    return formatWANumber(p.hp) === waNum;
   });
+
   if (prospek) {
-    await callAPI("updateProspekStatus", { row: prospek.row, pesanWA: pesan });
+    // Simpan semua sekaligus — status, catatan, followUp, dan pesanWA
+    await callAPI("updateProspekStatus", {
+      row:      prospek.row,
+      status:   status,
+      followUp: followUp,
+      catatan:  catatan,
+      pesanWA:  pesan
+    });
   }
 
   window.open("https://wa.me/" + waNum + "?text=" + encodeURIComponent(pesan), "_blank");
+  showToast("✅ Status diperbarui & WA dibuka", "success");
+  hideDetailProspek();
+  dashboardLoaded = false;
+  loadDashboard();
 }
+  
 async function konversiProspek(row, nama, hp, device) {
   if (!confirm("Konversi " + nama + " ke Customer dan lanjut ke form kalibrasi?")) return;
 
