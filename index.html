@@ -2309,6 +2309,15 @@ async function simpanProspek() {
   }
 }
 
+async function loadProspek() {
+  try {
+    var res = await callAPI("getProspek", {});
+    if (!res.ok) return;
+    prospekData = res.prospek;
+    renderProspek();
+  } catch (e) { /* silent */ }
+}
+
 function renderProspek() {
   var el = document.getElementById("prospekList");
   if (!prospekData.length) {
@@ -2510,6 +2519,10 @@ async function konversiProspek(row, nama, hp, device) {
   } catch (err) {
     showToast("❌ " + err.message, "error");
   }
+}
+
+  function updateStatusColor() {
+  // placeholder — mencegah error dari onchange dropdown status
 }
   
 </script>
