@@ -1193,15 +1193,6 @@
 
 <script>
 
-  window.onerror = function(msg, src, line, col, err) {
-  document.body.innerHTML = '<div style="color:red;padding:20px;font-size:14px;">' +
-    '<b>Error:</b> ' + msg + '<br>' +
-    '<b>Baris:</b> ' + line + '<br>' +
-    '<b>File:</b> ' + src +
-  '</div>';
-  return false;
-};
-
 // Tambahkan di awal script
 function updateHeaderHeight() {
   const headerEl = document.querySelector('.header');
@@ -2318,15 +2309,6 @@ async function simpanProspek() {
   }
 }
 
-async function loadProspek() {
-  try {
-    var res = await callAPI("getProspek", {});
-    if (!res.ok) return;
-    prospekData = res.prospek;
-    renderProspek();
-  } catch (e) { /* silent */ }
-}
-
 function renderProspek() {
   var el = document.getElementById("prospekList");
   if (!prospekData.length) {
@@ -2334,13 +2316,13 @@ function renderProspek() {
     return;
   }
 
-  var showAll = false;
+  // Tampilkan 5 terbaru dulu
+  var tampil   = prospekData.slice(0, 5);
+  var sisanya  = prospekData.length - 5;
+  var showAll  = false;
 
-  function renderList() {
-    var list = showAll ? prospekData : prospekData.slice(0, 5);
-    var sisanya = prospekData.length - 5;
-
-    el.innerHTML = list.map(function(p) {
+  function render(list) {
+    return list.map(function(p) {
       var badgeClass = {
         "Baru": "badge-baru", "Dihubungi": "badge-dihubungi",
         "Hot": "badge-hot", "Cold": "badge-cold"
@@ -2365,20 +2347,28 @@ function renderProspek() {
         '<div class="prospek-followup ' + fuClass + '">⏰ ' + fuLabel + '</div>' +
       '</div>';
     }).join("");
-
-    if (sisanya > 0) {
-      var btn = document.createElement("button");
-      btn.style.cssText = "width:100%; padding:10px; margin-top:4px; background:transparent; border:1px solid var(--border); border-radius:var(--radius); color:var(--muted); font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;";
-      btn.textContent   = showAll
-        ? "SEMBUNYIKAN"
-        : "LIHAT SEMUA (" + prospekData.length + " prospek)";
-      btn.onclick = function() {
-        showAll = !showAll;
-        renderList();
-      };
-      el.appendChild(btn);
-    }
   }
+
+  el.innerHTML = render(tampil);
+
+  // Tombol Lihat Semua jika ada lebih dari 5
+  if (sisanya > 0) {
+    var btnEl = document.createElement("button");
+    btnEl.style.cssText = "width:100%; padding:10px; margin-top:4px; background:transparent; border:1px solid var(--border); border-radius:var(--radius); color:var(--muted); font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;";
+    btnEl.textContent   = "LIHAT SEMUA (" + prospekData.length + " prospek)";
+    btnEl.onclick       = function() {
+      el.innerHTML  = render(prospekData);
+      btnEl.textContent = "SEMBUNYIKAN";
+      btnEl.onclick = function() {
+        el.innerHTML = render(tampil);
+        el.appendChild(btnEl);
+        btnEl.textContent = "LIHAT SEMUA (" + prospekData.length + " prospek)";
+      };
+      el.appendChild(btnEl);
+    };
+    el.appendChild(btnEl);
+  }
+}
 
   renderList();
 }
@@ -2524,8 +2514,6 @@ async function konversiProspek(row, nama, hp, device) {
     showToast("❌ " + err.message, "error");
   }
 }
-
-  function updateStatusColor() {
   
 </script>
 
