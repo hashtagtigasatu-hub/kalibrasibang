@@ -1096,10 +1096,6 @@
 <div class="section-label">Transaksi Terakhir</div>
 <div id="historyList"></div>
 
-    <!-- Riwayat -->
-    <div class="section-label">Transaksi Terakhir</div>
-    <div id="historyList"></div>
-
   </div>
 </div><!-- /page-stats -->  
 
@@ -2317,7 +2313,6 @@ async function loadProspek() {
   try {
     var res = await callAPI("getProspek", {});
     if (!res.ok) return;
-
     prospekData = res.prospek;
     renderProspek();
   } catch (e) { /* silent */ }
@@ -2377,26 +2372,6 @@ function renderProspek() {
   }
 
   renderList();
-}
-  el.innerHTML = render(tampil);
-
-  // Tombol Lihat Semua jika ada lebih dari 5
-  if (sisanya > 0) {
-    var btnEl = document.createElement("button");
-    btnEl.style.cssText = "width:100%; padding:10px; margin-top:4px; background:transparent; border:1px solid var(--border); border-radius:var(--radius); color:var(--muted); font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;";
-    btnEl.textContent   = "LIHAT SEMUA (" + prospekData.length + " prospek)";
-    btnEl.onclick       = function() {
-      el.innerHTML  = render(prospekData);
-      btnEl.textContent = "SEMBUNYIKAN";
-      btnEl.onclick = function() {
-        el.innerHTML = render(tampil);
-        el.appendChild(btnEl);
-        btnEl.textContent = "LIHAT SEMUA (" + prospekData.length + " prospek)";
-      };
-      el.appendChild(btnEl);
-    };
-    el.appendChild(btnEl);
-  }
 }
 
 function showDetailProspek(row) {
@@ -2540,6 +2515,8 @@ async function konversiProspek(row, nama, hp, device) {
     showToast("❌ " + err.message, "error");
   }
 }
+
+  function updateStatusColor() {
   
 </script>
 
