@@ -1193,6 +1193,11 @@
 
 <script>
 
+  window.onerror = function(msg, src, line) {
+  alert("Error: " + msg + "\nBaris: " + line);
+  return false;
+};
+
 // Tambahkan di awal script
 function updateHeaderHeight() {
   const headerEl = document.querySelector('.header');
