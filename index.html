@@ -2330,31 +2330,58 @@ function renderProspek() {
     return;
   }
 
-  el.innerHTML = prospekData.map(function(p) {
-    var badgeClass = {
-      "Baru": "badge-baru", "Dihubungi": "badge-dihubungi",
-      "Hot": "badge-hot", "Cold": "badge-cold"
-    }[p.status] || "badge-baru";
+  // Tampilkan 5 terbaru dulu
+  var tampil   = prospekData.slice(0, 5);
+  var sisanya  = prospekData.length - 5;
+  var showAll  = false;
 
-    var fuClass = p.followUpDiff !== null
-      ? (p.followUpDiff <= 0 ? "urgent" : p.followUpDiff <= 3 ? "soon" : "")
-      : "";
+  function render(list) {
+    return list.map(function(p) {
+      var badgeClass = {
+        "Baru": "badge-baru", "Dihubungi": "badge-dihubungi",
+        "Hot": "badge-hot", "Cold": "badge-cold"
+      }[p.status] || "badge-baru";
 
-    var fuLabel = p.followUpDiff !== null
-      ? (p.followUpDiff < 0 ? "Follow up " + Math.abs(p.followUpDiff) + " hari lalu"
-       : p.followUpDiff === 0 ? "Follow up hari ini!"
-       : "Follow up " + p.followUpDiff + " hari lagi")
-      : "Belum ada jadwal";
+      var fuClass = p.followUpDiff !== null
+        ? (p.followUpDiff <= 0 ? "urgent" : p.followUpDiff <= 3 ? "soon" : "")
+        : "";
 
-    return '<div class="prospek-item" onclick="showDetailProspek(' + p.row + ')">' +
-      '<div class="prospek-top">' +
-        '<span class="prospek-nama">' + p.nama + '</span>' +
-        '<span class="prospek-badge ' + badgeClass + '">' + p.status + '</span>' +
-      '</div>' +
-      '<div class="prospek-meta">' + p.device + ' • ' + p.kebutuhan + '</div>' +
-      '<div class="prospek-followup ' + fuClass + '">⏰ ' + fuLabel + '</div>' +
-    '</div>';
-  }).join("");
+      var fuLabel = p.followUpDiff !== null
+        ? (p.followUpDiff < 0 ? "Follow up " + Math.abs(p.followUpDiff) + " hari lalu"
+         : p.followUpDiff === 0 ? "Follow up hari ini!"
+         : "Follow up " + p.followUpDiff + " hari lagi")
+        : "Belum ada jadwal";
+
+      return '<div class="prospek-item" onclick="showDetailProspek(' + p.row + ')">' +
+        '<div class="prospek-top">' +
+          '<span class="prospek-nama">' + p.nama + '</span>' +
+          '<span class="prospek-badge ' + badgeClass + '">' + p.status + '</span>' +
+        '</div>' +
+        '<div class="prospek-meta">' + p.device + ' • ' + p.kebutuhan + '</div>' +
+        '<div class="prospek-followup ' + fuClass + '">⏰ ' + fuLabel + '</div>' +
+      '</div>';
+    }).join("");
+  }
+
+  el.innerHTML = render(tampil);
+
+  // Tombol Lihat Semua jika ada lebih dari 5
+  if (sisanya > 0) {
+    var btnEl = document.createElement("button");
+    btnEl.style.cssText = "width:100%; padding:10px; margin-top:4px; background:transparent; border:1px solid var(--border); border-radius:var(--radius); color:var(--muted); font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;";
+    btnEl.textContent   = "LIHAT SEMUA (" + prospekData.length + " prospek)";
+    btnEl.onclick       = function() {
+      el.innerHTML  = render(prospekData);
+      btnEl.textContent = "SEMBUNYIKAN";
+      btnEl.onclick = function() {
+        el.innerHTML = render(tampil);
+        el.appendChild(btnEl);
+        btnEl.textContent = "LIHAT SEMUA (" + prospekData.length + " prospek)";
+      };
+      el.appendChild(btnEl);
+    };
+    el.appendChild(btnEl);
+  }
 }
 
 function showDetailProspek(row) {
