@@ -2442,12 +2442,19 @@ async function updateProspek(row) {
   }
 }
 
-function kirimWAProspek(waNum) {
+async function kirimWAProspek(waNum) {
   var pesan = document.getElementById("d_pesan").value;
   if (!pesan || !waNum) { showToast("⚠️ Pesan atau nomor WA kosong", "error"); return; }
+  
+  var prospek = prospekData.find(function(p) { 
+    return formatWANumber(p.hp) === waNum; 
+  });
+  if (prospek) {
+    await callAPI("updateProspekStatus", { row: prospek.row, pesanWA: pesan });
+  }
+
   window.open("https://wa.me/" + waNum + "?text=" + encodeURIComponent(pesan), "_blank");
 }
-
 async function konversiProspek(row, nama, hp, device) {
   if (!confirm("Konversi " + nama + " ke Customer dan lanjut ke form kalibrasi?")) return;
 
