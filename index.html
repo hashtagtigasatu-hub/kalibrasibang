@@ -688,6 +688,39 @@
 .status-pass     { color: var(--success); }
 .status-limitation { color: var(--pending); }
 .status-fail     { color: var(--danger); }
+
+    /* ── PROSPEK ── */
+.prospek-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px;
+  cursor: pointer; transition: border-color 0.2s;
+}
+.prospek-item:active { border-color: var(--accent); }
+.prospek-item.hot    { border-color: rgba(255,69,69,0.4); }
+.prospek-item.warm   { border-color: rgba(240,255,0,0.3); }
+
+.prospek-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 4px;
+}
+.prospek-nama  { font-size: 13px; font-weight: 500; color: var(--text); }
+.prospek-badge {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  padding: 3px 8px; border-radius: 20px;
+}
+.badge-baru      { background: rgba(73,173,244,0.15); color: var(--success); }
+.badge-dihubungi { background: rgba(240,255,0,0.12);  color: var(--accent); }
+.badge-hot       { background: rgba(255,69,69,0.15);  color: var(--danger); }
+.badge-cold      { background: rgba(119,119,119,0.15);color: var(--muted); }
+
+.prospek-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.prospek-followup {
+  font-family: var(--mono); font-size: 10px; margin-top: 6px;
+  padding-top: 6px; border-top: 1px solid var(--border);
+  color: var(--muted);
+}
+.prospek-followup.urgent { color: var(--danger); }
+.prospek-followup.soon   { color: var(--accent); }
     
   </style>
 
@@ -1047,6 +1080,21 @@
         <span style="color: var(--muted); font-size: 12px;">Tidak ada jadwal dalam 14 hari ke depan</span>
       </div>
     </div>
+
+    <!-- Pipeline Prospek -->
+    <div class="section-label" style="display:flex; justify-content:space-between; align-items:center;">
+      <span>Pipeline Prospek</span>
+      <button onclick="showAddProspek()" style="
+        background: var(--accent); border: none; border-radius: 20px;
+        padding: 5px 12px; font-family: var(--mono); font-size: 9px;
+        font-weight: 700; letter-spacing: 0.1em; color: #000; cursor: pointer;
+      ">+ TAMBAH</button>
+    </div>
+    <div id="prospekList"></div>
+
+<!-- Riwayat -->
+<div class="section-label">Transaksi Terakhir</div>
+<div id="historyList"></div>
 
     <!-- Riwayat -->
     <div class="section-label">Transaksi Terakhir</div>
@@ -2062,7 +2110,9 @@ async function loadDashboard() {
       }).join("");
     }
 
+    loadProspek();
     dashboardLoaded = true;
+    
 
   } catch (err) {
     document.getElementById("statsLoading").style.display = "none";
@@ -2200,8 +2250,309 @@ if ("serviceWorker" in navigator) {
       .catch(function(err) { console.log("SW failed:", err); });
   });
 }
+
+  // ════════════════════════════════════════════════
+//  PROSPEK
+// ════════════════════════════════════════════════
+var prospekData = [];
+
+function showAddProspek() {
+  document.getElementById("prospekModal").style.display = "block";
+  // Set default follow up H+3
+  var d = new Date();
+  d.setDate(d.getDate() + 3);
+  document.getElementById("p_followUp").value = d.toISOString().split("T")[0];
+}
+
+function hideAddProspek() {
+  document.getElementById("prospekModal").style.display = "none";
+  ["p_nama","p_hp","p_catatan"].forEach(function(id) {
+    document.getElementById(id).value = "";
+  });
+  document.getElementById("p_device").selectedIndex    = 0;
+  document.getElementById("p_kebutuhan").selectedIndex = 0;
+}
+
+async function simpanProspek() {
+  var nama      = document.getElementById("p_nama").value.trim();
+  var hp        = document.getElementById("p_hp").value.trim();
+  var device    = document.getElementById("p_device").value;
+  var kebutuhan = document.getElementById("p_kebutuhan").value;
+  var followUp  = document.getElementById("p_followUp").value;
+  var catatan   = document.getElementById("p_catatan").value.trim();
+
+  if (!nama || !hp || !device || !kebutuhan) {
+    showToast("⚠️ Nama, WA, Device, dan Kebutuhan wajib diisi", "error");
+    return;
+  }
+
+  var btn = document.getElementById("btnSimpanProspek");
+  btn.disabled    = true;
+  btn.textContent = "Menyimpan...";
+
+  try {
+    var res = await callAPI("submitProspek", {
+      nama: nama, hp: hp, device: device,
+      kebutuhan: kebutuhan, followUp: followUp, catatan: catatan
+    });
+
+    btn.disabled    = false;
+    btn.textContent = "Simpan Prospek";
+
+    if (!res.ok) { showToast("❌ " + res.error, "error"); return; }
+
+    showToast("✅ Prospek berhasil disimpan!", "success");
+    hideAddProspek();
+    dashboardLoaded = false;
+    loadDashboard();
+
+  } catch (err) {
+    btn.disabled    = false;
+    btn.textContent = "Simpan Prospek";
+    showToast("❌ " + err.message, "error");
+  }
+}
+
+async function loadProspek() {
+  try {
+    var res = await callAPI("getProspek", {});
+    if (!res.ok) return;
+
+    prospekData = res.prospek;
+    renderProspek();
+  } catch (e) { /* silent */ }
+}
+
+function renderProspek() {
+  var el = document.getElementById("prospekList");
+  if (!prospekData.length) {
+    el.innerHTML = '<div style="padding:12px 0; font-size:12px; color:var(--muted);">Belum ada prospek</div>';
+    return;
+  }
+
+  el.innerHTML = prospekData.map(function(p) {
+    var badgeClass = {
+      "Baru": "badge-baru", "Dihubungi": "badge-dihubungi",
+      "Hot": "badge-hot", "Cold": "badge-cold"
+    }[p.status] || "badge-baru";
+
+    var fuClass = p.followUpDiff !== null
+      ? (p.followUpDiff <= 0 ? "urgent" : p.followUpDiff <= 3 ? "soon" : "")
+      : "";
+
+    var fuLabel = p.followUpDiff !== null
+      ? (p.followUpDiff < 0 ? "Follow up " + Math.abs(p.followUpDiff) + " hari lalu"
+       : p.followUpDiff === 0 ? "Follow up hari ini!"
+       : "Follow up " + p.followUpDiff + " hari lagi")
+      : "Belum ada jadwal";
+
+    return '<div class="prospek-item" onclick="showDetailProspek(' + p.row + ')">' +
+      '<div class="prospek-top">' +
+        '<span class="prospek-nama">' + p.nama + '</span>' +
+        '<span class="prospek-badge ' + badgeClass + '">' + p.status + '</span>' +
+      '</div>' +
+      '<div class="prospek-meta">' + p.device + ' • ' + p.kebutuhan + '</div>' +
+      '<div class="prospek-followup ' + fuClass + '">⏰ ' + fuLabel + '</div>' +
+    '</div>';
+  }).join("");
+}
+
+function showDetailProspek(row) {
+  var p = prospekData.find(function(x) { return x.row === row; });
+  if (!p) return;
+
+  var templateWA = {
+    "Baru":
+`Halo ${p.nama} 👋\n\nTerima kasih sudah menghubungi Kalibrasi Bang! Kami siap bantu ${p.kebutuhan.toLowerCase()} kebutuhan layar kamu.\n\nBoleh ceritakan lebih lanjut device apa yang kamu gunakan? 😊\n\n*KALIBRASIBANG* • Layar Rasa Mahal`,
+    "Dihubungi":
+`Halo ${p.nama} 👋\n\nSebelumnya kamu sempat tanya tentang kalibrasi layar. Kalau masih butuh bantuan atau ada pertanyaan, kami siap membantu ya! 🎯\n\n*KALIBRASIBANG* • Layar Rasa Mahal`,
+    "Hot":
+`Halo ${p.nama} 👋\n\nGimana, sudah ada waktu untuk jadwalkan kalibrasi layarnya? Kami bisa menyesuaikan dengan jadwal kamu 😊\n\n*KALIBRASIBANG* • Layar Rasa Mahal`,
+    "Cold":
+`Halo ${p.nama} 👋\n\nLama tidak berkabar! Kalau sewaktu-waktu butuh kalibrasi layar, kami masih di sini ya 🙌\n\n*KALIBRASIBANG* • Layar Rasa Mahal`
+  };
+
+  var pesan = templateWA[p.status] || templateWA["Baru"];
+  var waNum = formatWANumber(p.hp);
+
+  document.getElementById("prospekDetailContent").innerHTML =
+    '<div class="calib-result">' +
+      '<div class="calib-row"><span class="cr-label">Nama</span><span class="cr-value">' + p.nama + '</span></div>' +
+      '<div class="calib-row"><span class="cr-label">Device</span><span class="cr-value">' + p.device + '</span></div>' +
+      '<div class="calib-row"><span class="cr-label">Kebutuhan</span><span class="cr-value">' + p.kebutuhan + '</span></div>' +
+      '<div class="calib-row"><span class="cr-label">Status</span><span class="cr-value">' + p.status + '</span></div>' +
+      '<div class="calib-row"><span class="cr-label">Follow Up</span><span class="cr-value">' + p.followUp + '</span></div>' +
+      (p.catatan ? '<div class="calib-row"><span class="cr-label">Catatan</span><span class="cr-value">' + p.catatan + '</span></div>' : '') +
+    '</div>' +
+
+    '<div class="section-label" style="margin-top:14px;">Update Status</div>' +
+    '<div class="field"><select id="d_status" onchange="updateStatusColor()">' +
+      ['Baru','Dihubungi','Hot','Cold'].map(function(s) {
+        return '<option value="' + s + '"' + (p.status === s ? ' selected' : '') + '>' + s + '</option>';
+      }).join("") +
+    '</select></div>' +
+    '<div class="field"><input type="date" id="d_followUp" value="' + toInputDate(p.followUp) + '"></div>' +
+    '<div class="field"><textarea id="d_catatan" rows="2" placeholder="Catatan">' + (p.catatan || "") + '</textarea></div>' +
+    '<button class="btn-submit" onclick="updateProspek(' + p.row + ')">Simpan Update</button>' +
+
+    '<div class="section-label" style="margin-top:14px;">Kirim WA</div>' +
+    '<div class="field"><textarea id="d_pesan" rows="6">' + pesan + '</textarea></div>' +
+    '<button class="btn-kirim-wa" onclick="kirimWAProspek(\'' + waNum + '\')">' +
+      '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.49 3.57 1.4 5.12L2 22l5.12-1.51c1.49.82 3.17 1.26 4.92 1.26 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0012.04 2z"/></svg>' +
+      'Kirim WhatsApp' +
+    '</button>' +
+
+    '<button class="btn-action-green" style="margin-top:10px;" onclick="konversiProspek(' + p.row + ', \'' + p.nama + '\', \'' + waNum + '\', \'' + p.device + '\')">⚡ Konversi ke Customer</button>';
+
+  document.getElementById("prospekDetailModal").style.display = "block";
+}
+
+function hideDetailProspek() {
+  document.getElementById("prospekDetailModal").style.display = "none";
+}
+
+function toInputDate(displayDate) {
+  if (!displayDate || displayDate === "-") return "";
+  var parts = displayDate.split(" ");
+  if (parts.length < 3) return "";
+  var months = {
+    "Jan":"01","Feb":"02","Mar":"03","Apr":"04","Mei":"05","Jun":"06",
+    "Jul":"07","Agu":"08","Sep":"09","Okt":"10","Nov":"11","Des":"12"
+  };
+  var m = months[parts[1]] || "01";
+  return parts[2] + "-" + m + "-" + parts[0].padStart(2,"0");
+}
+
+async function updateProspek(row) {
+  var status   = document.getElementById("d_status").value;
+  var followUp = document.getElementById("d_followUp").value;
+  var catatan  = document.getElementById("d_catatan").value.trim();
+
+  try {
+    var res = await callAPI("updateProspekStatus", {
+      row: row, status: status, followUp: followUp, catatan: catatan
+    });
+    if (!res.ok) { showToast("❌ " + res.error, "error"); return; }
+    showToast("✅ Status diperbarui", "success");
+    hideDetailProspek();
+    dashboardLoaded = false;
+    loadDashboard();
+  } catch (err) {
+    showToast("❌ " + err.message, "error");
+  }
+}
+
+function kirimWAProspek(waNum) {
+  var pesan = document.getElementById("d_pesan").value;
+  if (!pesan || !waNum) { showToast("⚠️ Pesan atau nomor WA kosong", "error"); return; }
+  window.open("https://wa.me/" + waNum + "?text=" + encodeURIComponent(pesan), "_blank");
+}
+
+async function konversiProspek(row, nama, hp, device) {
+  if (!confirm("Konversi " + nama + " ke Customer dan lanjut ke form kalibrasi?")) return;
+
+  try {
+    var res = await callAPI("konversiProspek", { row: row, nama: nama, hp: hp, device: device });
+    if (!res.ok) { showToast("❌ " + res.error, "error"); return; }
+
+    hideDetailProspek();
+    showToast("✅ Konversi berhasil! Melanjutkan ke form input...", "success");
+
+    // Pindah ke tab input dan pre-fill data
+    setTimeout(function() {
+      document.querySelectorAll(".page").forEach(function(p) { p.classList.remove("active"); });
+      document.querySelectorAll(".nav-btn").forEach(function(b) { b.classList.remove("active"); });
+      document.getElementById("page-input").classList.add("active");
+      document.querySelectorAll(".nav-btn")[0].classList.add("active");
+
+      document.getElementById("nama").value = nama;
+      document.getElementById("hp").value   = hp;
+      showToast("✅ Data prospek sudah diisi, lengkapi sisanya!", "success");
+    }, 800);
+
+  } catch (err) {
+    showToast("❌ " + err.message, "error");
+  }
+}
   
 </script>
+
+  <!-- MODAL PROSPEK -->
+<div id="prospekModal" style="
+  display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,0.85); padding:20px;
+  overflow-y:auto;
+">
+  <div style="
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); padding:20px; max-width:480px;
+    margin:40px auto;
+  ">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <span style="font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;">
+        Tambah Prospek
+      </span>
+      <button onclick="hideAddProspek()" style="
+        background:transparent; border:1px solid var(--border);
+        border-radius:8px; padding:5px 10px; color:var(--muted);
+        font-family:var(--mono); font-size:10px; cursor:pointer;
+      ">✕ Tutup</button>
+    </div>
+
+    <div class="field"><input type="text" id="p_nama" placeholder="Nama" autocomplete="off" autocapitalize="words"></div>
+    <div class="field"><input type="tel" id="p_hp" placeholder="Kontak WA (08xx)" autocomplete="off"></div>
+    <div class="field">
+      <select id="p_device">
+        <option value="">Jenis Device</option>
+        <option>Monitor</option>
+        <option>Laptop</option>
+        <option>MacBook Air</option>
+        <option>MacBook Pro</option>
+        <option>Projector</option>
+        <option>Tablet</option>
+        <option>Smart TV</option>
+        <option>Smart Phone</option>
+      </select>
+    </div>
+    <div class="field">
+      <select id="p_kebutuhan">
+        <option value="">Kebutuhan</option>
+        <option>Kalibrasi</option>
+        <option>Konsultasi</option>
+        <option>Free Assessment</option>
+      </select>
+    </div>
+    <div class="field"><input type="date" id="p_followUp"></div>
+    <div class="field"><textarea id="p_catatan" rows="3" placeholder="Catatan (opsional)"></textarea></div>
+
+    <button class="btn-submit" id="btnSimpanProspek" onclick="simpanProspek()">Simpan Prospek</button>
+  </div>
+</div>
+
+<!-- MODAL DETAIL PROSPEK -->
+<div id="prospekDetailModal" style="
+  display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,0.85); padding:20px; overflow-y:auto;
+">
+  <div style="
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); padding:20px; max-width:480px;
+    margin:40px auto;
+  ">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <span style="font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;">
+        Detail Prospek
+      </span>
+      <button onclick="hideDetailProspek()" style="
+        background:transparent; border:1px solid var(--border);
+        border-radius:8px; padding:5px 10px; color:var(--muted);
+        font-family:var(--mono); font-size:10px; cursor:pointer;
+      ">✕ Tutup</button>
+    </div>
+
+    <div id="prospekDetailContent"></div>
+  </div>
+</div>
 
 </body>
 </html>
