@@ -1011,8 +1011,12 @@
   <!-- Cek Sertifikat -->
   <div class="section-label">Verifikasi Sertifikat</div>
   <div class="verify-input-row">
-    <input type="text" id="certInput" placeholder="Nomor Sertifikat (BCL-)"
-       autocomplete="off" oninput="formatCertInput(this)">
+    <div style="display:flex; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;">
+  <span style="padding:13px 0 13px 14px; color:var(--muted); font-family:var(--mono); font-size:14px; white-space:nowrap;">BCL-</span>
+  <input type="text" id="certInput" placeholder="0626-016"
+     autocomplete="off" oninput="formatCertSuffix(this)"
+     style="border:none; border-radius:0; padding-left:4px; background:transparent;">
+    </div>
     <button class="btn-verify" id="btnCert" onclick="verifyCert()">Check</button>
   </div>
   <div class="verify-result" id="certResult"></div>
@@ -1020,8 +1024,12 @@
   <!-- Cek Voucher -->
   <div class="section-label">Verifikasi Voucher</div>
   <div class="verify-input-row">
-    <input type="text" id="voucherInput" placeholder="Kode Voucher (KB-)"
-       autocomplete="off" oninput="formatVoucherInput(this)">
+    <div style="display:flex; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;">
+  <span style="padding:13px 0 13px 14px; color:var(--muted); font-family:var(--mono); font-size:14px; white-space:nowrap;">KB-</span>
+  <input type="text" id="voucherInput" placeholder="335-LVE6"
+     autocomplete="off" oninput="formatVoucherSuffix(this)"
+     style="border:none; border-radius:0; padding-left:4px; background:transparent;">
+    </div>
     <button class="btn-verify" id="btnVoucherCheck" onclick="verifyVoucher()">Check</button>
   </div>
   <div class="verify-result" id="voucherResult"></div>
@@ -1845,7 +1853,7 @@ document.getElementById("jumlah").addEventListener("input", function() {
 //  VERIFIKASI SERTIFIKAT
 // ════════════════════════════════════════════════
 async function verifyCert() {
-  var certNo = document.getElementById("certInput").value.trim();
+ var certNo = "BCL-" + document.getElementById("certInput").value.trim();
   if (!certNo) { showToast("⚠️ Masukkan nomor sertifikat", "error"); return; }
 
   var btn = document.getElementById("btnCert");
@@ -1899,7 +1907,7 @@ async function verifyCert() {
 //  VERIFIKASI VOUCHER
 // ════════════════════════════════════════════════
 async function verifyVoucher() {
-  var kode = document.getElementById("voucherInput").value.trim();
+  var kode = "KB-" + document.getElementById("voucherInput").value.trim();
   if (!kode) { showToast("⚠️ Masukkan kode voucher", "error"); return; }
 
   var btn = document.getElementById("btnVoucherCheck");
@@ -2013,39 +2021,32 @@ async function deleteCert(certNo) {
   }
 }
 
-  function formatCertInput(el) {
-  // Format: BCL-0526-010
+  function formatCertSuffix(el) {
+  // User ketik suffix saja, prefix BCL- sudah ada di UI
+  // Format: 0626-016
+  var raw    = el.value.replace(/[^0-9]/gi, "");
+  var result = "";
+  if (raw.length <= 4) {
+    result = raw;
+  } else {
+    result = raw.slice(0, 4) + "-" + raw.slice(4, 7);
+  }
+  el.value = result;
+}
+
+function formatVoucherSuffix(el) {
+  // User ketik suffix saja, prefix KB- sudah ada di UI
+  // Format: 335-LVE6
   var raw    = el.value.replace(/[^A-Z0-9]/gi, "").toUpperCase();
   var result = "";
-
   if (raw.length <= 3) {
     result = raw;
-  } else if (raw.length <= 7) {
-    result = raw.slice(0, 3) + "-" + raw.slice(3);
   } else {
-    result = raw.slice(0, 3) + "-" + raw.slice(3, 7) + "-" + raw.slice(7, 11);
+    result = raw.slice(0, 3) + "-" + raw.slice(3, 7);
   }
-
   el.value = result;
 }
-
-
-function formatVoucherInput(el) {
-  // Format: KB-335-LVE6
-  var raw    = el.value.replace(/[^A-Z0-9]/gi, "").toUpperCase();
-  var result = "";
-
-  if (raw.length <= 2) {
-    result = raw;
-  } else if (raw.length <= 5) {
-    result = raw.slice(0, 2) + "-" + raw.slice(2);
-  } else {
-    result = raw.slice(0, 2) + "-" + raw.slice(2, 5) + "-" + raw.slice(5, 9);
-  }
-
-  el.value = result;
-}
-
+  
   // ════════════════════════════════════════════════
 //  DASHBOARD & HISTORY
 // ════════════════════════════════════════════════
