@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panduan Kalibrasi Layar — Kalibrasi Bang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #1c1c1c;
+      --surface:  #242424;
+      --surface2: #2e2e2e;
+      --border:   #393939;
+      --accent:   #f0ff00;
+      --text:     #f0f0f0;
+      --muted:    #777;
+      --danger:   #ff4545;
+      --success:  #49adf4;
+      --wa:       #18ba55;
+      --radius:   19px;
+      --mono:     'DM Sans', sans-serif;
+      --sans:     'DM Sans', sans-serif;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 640px; margin: 0 auto; padding: 0 20px 80px; }
+
+    /* ── HEADER ── */
+    .header {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg);
+      padding: max(20px, env(safe-area-inset-top)) 20px 16px;
+      margin: 0 -20px 32px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: transparent; border-radius: 8px; flex-shrink: 0;
+    }
+
+    .logo-mark img { width: 100%; height: 100%; object-fit: contain; border-radius: 8px; }
+
+    .brand-name {
+      font-family: var(--mono); font-size: 13px; font-weight: 700;
+      letter-spacing: 0.08em; color: var(--text); line-height: 1;
+    }
+
+    .brand-sub {
+      font-size: 9px; color: var(--muted);
+      letter-spacing: 0.2em; text-transform: uppercase; margin-top: 3px;
+    }
+
+    /* ── HERO ── */
+    .hero { margin-bottom: 32px; }
+
+    .hero-tag {
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-family: var(--mono); font-size: 22px; font-weight: 700;
+      line-height: 1.3; color: var(--text); margin-bottom: 12px;
+    }
+
+    .hero-desc { font-size: 13px; color: var(--muted); line-height: 1.8; }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 10px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+
+    .section-header {
+      padding: 16px 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      user-select: none; -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .section-header:active { background: var(--surface2); }
+
+    .section-left { display: flex; align-items: center; gap: 12px; }
+
+    .section-icon {
+      width: 34px; height: 34px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; display: flex; align-items: center;
+      justify-content: center; font-size: 15px; flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.05em; color: var(--text);
+    }
+
+    .section-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .chevron {
+      font-size: 10px; color: var(--muted);
+      transition: transform 0.2s; flex-shrink: 0;
+    }
+
+    .section.open .chevron { transform: rotate(180deg); }
+    .section.open .section-header { border-bottom: 1px solid var(--border); }
+    .section.open .section-icon { border-color: rgba(240,255,0,0.25); }
+
+    .section-body { display: none; padding: 18px; }
+    .section.open .section-body { display: block; }
+
+    /* ── CONTENT ── */
+    .desc { font-size: 13px; color: var(--muted); line-height: 1.8; margin-bottom: 14px; }
+    .desc:last-child { margin-bottom: 0; }
+    .desc strong { color: var(--text); font-weight: 600; }
+
+    .hr { height: 1px; background: var(--border); margin: 16px 0; }
+
+    .label {
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 10px;
+    }
+
+    /* ── TABLE ── */
+    .tbl { width: 100%; border-collapse: collapse; margin-top: 8px; }
+
+    .tbl th {
+      font-family: var(--mono); font-size: 8px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--muted); text-align: left;
+      padding: 8px 10px; border-bottom: 1px solid var(--border);
+    }
+
+    .tbl td {
+      padding: 10px 10px; font-size: 12px;
+      border-bottom: 1px solid var(--border); vertical-align: top;
+    }
+
+    .tbl tr:last-child td { border-bottom: none; }
+    .tbl td:first-child { font-family: var(--mono); font-size: 11px; white-space: nowrap; }
+    .tbl td.muted { color: var(--muted); }
+
+    /* ── BADGE ── */
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 20px;
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+    }
+
+    .b-excellent { background: rgba(73,173,244,0.15); color: var(--success); }
+    .b-good      { background: rgba(240,255,0,0.12); color: var(--accent); }
+    .b-acceptable{ background: rgba(245,158,11,0.15); color: #f59e0b; }
+    .b-limited   { background: rgba(255,69,69,0.15); color: var(--danger); }
+
+    /* ── VISUAL BAR ── */
+    .bar-wrap { margin: 10px 0 6px; }
+    .bar { display: flex; border-radius: 6px; overflow: hidden; height: 7px; }
+    .bar-seg { flex: 1; }
+    .bar-labels {
+      display: flex; justify-content: space-between;
+      font-family: var(--mono); font-size: 9px; color: var(--muted); margin-top: 4px;
+    }
+
+    /* ── HIGHLIGHT ── */
+    .hl {
+      background: rgba(240,255,0,0.05);
+      border: 1px solid rgba(240,255,0,0.15);
+      border-radius: 12px; padding: 12px 14px;
+      margin-top: 14px; font-size: 12px; color: var(--muted); line-height: 1.8;
+    }
+
+    .hl strong { color: var(--accent); }
+
+    .hl-blue {
+      background: rgba(73,173,244,0.06);
+      border: 1px solid rgba(73,173,244,0.2);
+      border-radius: 12px; padding: 12px 14px;
+      margin-top: 14px; font-size: 12px; color: var(--muted); line-height: 1.8;
+    }
+
+    .hl-blue strong { color: var(--success); }
+
+    /* ── PANEL CARD ── */
+    .panel-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px; margin-bottom: 10px;
+    }
+
+    .panel-card:last-child { margin-bottom: 0; }
+
+    .panel-name {
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      color: var(--text); margin-bottom: 4px;
+    }
+
+    .panel-tag {
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      letter-spacing: 0.08em; color: var(--accent);
+      margin-bottom: 8px; display: block;
+    }
+
+    .panel-desc { font-size: 12px; color: var(--muted); line-height: 1.7; margin-bottom: 10px; }
+
+    .panel-specs { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .spec-chip {
+      font-family: var(--mono); font-size: 9px;
+      padding: 3px 8px; border-radius: 20px;
+      border: 1px solid var(--border); color: var(--muted);
+    }
+
+    .spec-chip.pro { border-color: rgba(73,173,244,0.3); color: var(--success); }
+    .spec-chip.con { border-color: rgba(255,69,69,0.3); color: var(--danger); }
+
+    /* ── TIMELINE ── */
+    .timeline { padding-left: 16px; position: relative; }
+    .timeline::before {
+      content: ""; position: absolute; left: 5px; top: 6px; bottom: 6px;
+      width: 2px; background: var(--border);
+    }
+
+    .tl-item { position: relative; padding: 0 0 18px 18px; }
+    .tl-item:last-child { padding-bottom: 0; }
+
+    .tl-dot {
+      position: absolute; left: -11px; top: 5px;
+      width: 12px; height: 12px; border-radius: 50%;
+      border: 2px solid var(--border); background: var(--bg);
+    }
+
+    .tl-item.active .tl-dot { background: var(--accent); border-color: var(--accent); }
+
+    .tl-label {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      color: var(--accent); margin-bottom: 4px;
+    }
+
+    .tl-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+    /* ── INFO ROW ── */
+    .info-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 12px;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: var(--muted); }
+    .info-val { font-family: var(--mono); font-size: 11px; }
+
+    /* ── FOOTER ── */
+    .footer {
+      text-align: center; margin-top: 40px;
+      padding-top: 24px; border-top: 1px solid var(--border);
+    }
+
+    .footer-brand {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      letter-spacing: 0.15em; color: var(--accent); margin-bottom: 6px;
+    }
+
+    .footer-text { font-size: 11px; color: var(--muted); line-height: 1.7; }
+
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 16px; padding: 11px 22px;
+      background: var(--wa); border-radius: 50px;
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; color: #fff; text-decoration: none;
+    }
+
+    .btn-wa:active { opacity: 0.85; }
+
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-mark">
+      <img src="logokbweb.png" alt="Logo">
+    </div>
+    <div>
+      <div class="brand-name">KALIBRASI BANG</div>
+      <div class="brand-sub">Panduan Kalibrasi Layar</div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-tag">Display Calibration Guide</div>
+    <div class="hero-title">Memahami Hasil<br>Kalibrasi Layarmu</div>
+    <div class="hero-desc">Panduan lengkap istilah teknis dalam laporan kalibrasi — dari Delta-E, Gamma, Luminance, White Point, hingga perbedaan jenis panel layar.</div>
+  </div>
+
+  <!-- ═══ DELTA-E ═══ -->
+  <div class="section open" id="s1">
+    <div class="section-header" onclick="tog('s1')">
+      <div class="section-left">
+        <div class="section-icon">ΔE</div>
+        <div>
+          <div class="section-title">Delta-E (ΔE)</div>
+          <div class="section-sub">Akurasi reproduksi warna</div>
+        </div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="desc">Delta-E adalah satuan yang mengukur <strong>seberapa jauh perbedaan warna</strong> antara yang seharusnya ditampilkan dengan yang benar-benar tampil di layar. Semakin kecil nilainya, semakin akurat warna yang dihasilkan.</div>
+
+      <div class="label">Skala Interpretasi</div>
+      <div class="bar-wrap">
+        <div class="bar">
+          <div class="bar-seg" style="background:var(--success)"></div>
+          <div class="bar-seg" style="background:var(--accent)"></div>
+          <div class="bar-seg" style="background:#f59e0b"></div>
+          <div class="bar-seg" style="background:var(--danger)"></div>
+        </div>
+        <div class="bar-labels"><span>0</span><span>1.0</span><span>2.0</span><span>3.0</span><span>>3</span></div>
+      </div>
+
+      <table class="tbl" style="margin-top:12px;">
+        <thead><tr><th>Nilai ΔE</th><th>Grade</th><th>Keterangan</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="dot" style="background:var(--success)"></span>&lt; 1.0</td>
+            <td><span class="badge b-excellent">Excellent</span></td>
+            <td class="muted">Tidak terlihat oleh mata manusia</td>
+          </tr>
+          <tr>
+            <td><span class="dot" style="background:var(--accent)"></span>1.0–2.0</td>
+            <td><span class="badge b-good">Good</span></td>
+            <td class="muted">Hanya terlihat oleh mata terlatih</td>
+          </tr>
+          <tr>
+            <td><span class="dot" style="background:#f59e0b"></span>2.0–3.0</td>
+            <td><span class="badge b-acceptable">Acceptable</span></td>
+            <td class="muted">Terlihat jika dibandingkan langsung</td>
+          </tr>
+          <tr>
+            <td><span class="dot" style="background:var(--danger)"></span>&gt; 3.0</td>
+            <td><span class="badge b-limited">HW Limited</span></td>
+            <td class="muted">Keterbatasan hardware panel</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="hl"><strong>Tips:</strong> Untuk editing foto dan video profesional, targetkan ΔE Average di bawah 1.0. Untuk penggunaan umum, ΔE di bawah 2.0 sudah sangat baik.</div>
+    </div>
+  </div>
+
+  <!-- ═══ WHITE POINT ═══ -->
+  <div class="section" id="s2">
+    <div class="section-header" onclick="tog('s2')">
+      <div class="section-left">
+        <div class="section-icon">⬜</div>
+        <div>
+          <div class="section-title">White Point (D65)</div>
+          <div class="section-sub">Titik referensi warna putih</div>
+        </div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="desc">White Point adalah <strong>warna "putih" yang menjadi referensi</strong> seluruh reproduksi warna di layar. Standar internasional menggunakan <strong>D65 (6500K)</strong> — suhu warna yang menyerupai cahaya siang hari alami.</div>
+
+      <div class="hr"></div>
+
+      <div class="label">Kenapa D65?</div>
+      <div class="desc">D65 adalah standar yang digunakan oleh <strong>sRGB, Adobe RGB</strong>, dan hampir semua perangkat digital. Layar yang tidak dikalibrasi ke D65 akan menghasilkan warna yang berbeda — bisa terlalu kuning (warm) atau terlalu biru (cool).</div>
+
+      <div class="hr"></div>
+
+      <div class="label">White Point Deviation</div>
+      <div class="desc">Selisih antara white point target (6500K) dengan yang tercapai. Semakin kecil deviasinya, semakin akurat.</div>
+      <table class="tbl" style="margin-top:10px;">
+        <thead><tr><th>Deviasi</th><th>Keterangan</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--success)">≤ 100K</td><td class="muted">Excellent — tidak terlihat perbedaannya</td></tr>
+          <tr><td style="color:var(--accent)">≤ 200K</td><td class="muted">Good — sangat kecil</td></tr>
+          <tr><td style="color:#f59e0b">≤ 300K</td><td class="muted">Acceptable — masih dalam toleransi</td></tr>
+          <tr><td style="color:var(--danger)">&gt; 300K</td><td class="muted">Hardware Limited</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ GAMMA ═══ -->
+  <div class="section" id="s3">
+    <div class="section-header" onclick="tog('s3')">
+      <div class="section-left">
+        <div class="section-icon">γ</div>
+        <div>
+          <div class="section-title">Gamma</div>
+          <div class="section-sub">Kurva kecerahan dan kontras</div>
+        </div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="desc">Gamma mengatur <strong>bagaimana gradasi kecerahan ditampilkan</strong> dari gelap ke terang. Nilai gamma yang tepat memastikan shadow, midtone, dan highlight terlihat natural.</div>
+
+      <div class="hr"></div>
+
+      <div class="label">Gamma 2.2 vs 2.4</div>
+      <table class="tbl">
+        <thead><tr><th>Gamma</th><th>Cocok untuk</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--success)">2.2</td>
+            <td class="muted">Ruangan terang, desain web, presentasi, penggunaan umum</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent)">2.4</td>
+            <td class="muted">Ruangan redup, studio editing, color grading video profesional</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="hl"><strong>Rekomendasi:</strong> Gunakan Gamma 2.2 untuk ruangan normal. Gunakan Gamma 2.4 jika bekerja di ruangan minim cahaya atau untuk color grading profesional.</div>
+    </div>
+  </div>
+
+  <!-- ═══ LUMINANCE ═══ -->
+  <div class="section" id="s4">
+    <div class="section-header" onclick="tog('s4')">
+      <div class="section-left">
+        <div class="section-icon">☀</div>
+        <div>
+          <div class="section-title">Luminance</div>
+          <div class="section-sub">Kecerahan layar (cd/m²)</div>
+        </div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="desc">Luminance mengukur <strong>seberapa terang layar</strong> dalam satuan candela per meter persegi (cd/m²). Kecerahan yang tepat memastikan warna yang kamu lihat sesuai dengan output cetak atau tampilan di perangkat lain.</div>
+
+      <div class="hr"></div>
+
+      <div class="label">Panduan Target Luminance</div>
+      <table class="tbl">
+        <thead><tr><th>Target</th><th>Cocok untuk</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--success)">80 cd/m²</td><td class="muted">Ruangan gelap, color grading, prepress printing</td></tr>
+          <tr><td style="color:var(--accent)">100 cd/m²</td><td class="muted">Studio dengan cahaya terkontrol, fotografi profesional</td></tr>
+          <tr><td style="color:#f59e0b">120 cd/m²</td><td class="muted">Ruangan normal, desain umum, penggunaan sehari-hari</td></tr>
+        </tbody>
+      </table>
+
+      <div class="hl"><strong>Penting:</strong> Layar terlalu terang membuat warna terlihat lebih pucat saat dicetak. Sesuaikan luminance dengan kondisi pencahayaan ruangan kerjamu.</div>
+    </div>
+  </div>
+
+  <!-- ═══ CALIBRATION GRADE ═══ -->
+  <div class="section" id="s5">
+    <div class="section-header" onclick="tog('s5')">
+      <div class="section-left">
+        <div class="section-icon">★</div>
+        <div>
+          <div class="section-title">Calibration Grade</div>
+          <div class="section-sub">Hasil keseluruhan kalibrasi</div>
+        </div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="desc">Calibration Grade adalah <strong>penilaian keseluruhan</strong> hasil kalibrasi yang ditentukan dari kombinasi nilai ΔE dan White Point Deviation.</div>
+
+      <div class="hr"></div>
+
+      <div class="info-row"><span class="info-label">Excellent</span><span class="info-val" style="color:var(--success)">ΔE &lt; 1.0 • WP dev ≤ 100K</span></div>
+      <div class="info-row"><span class="info-label">Good</span><span class="info-val" style="color:var(--accent)">ΔE 1.0–2.0 • WP dev ≤ 200K</span></div>
+      <div class="info-row"><span class="info-label">Acceptable</span><span class="info-val" style="color:#f59e0b">ΔE 2.0–3.0 • WP dev ≤ 300K</span></div>
+      <div class="info-row"><span class="info-label">Hardware Limited</span><span class="info-val" style="color:var(--danger)">ΔE &gt; 3.0 • WP dev &gt; 300K</span></div>
+
+      <div class="hl"><strong>Hardware Limited</strong> bukan berarti kalibrasi gagal — layar sudah dikalibrasi semaksimal mungkin, namun ada keterbatasan hardware panel yang tidak bisa dikoreksi lebih jauh.</div>
+    </div>
+  </div>
+
+  <!-- ═══ ICC PROFILE ═══ -->
+  <div class="section" id="s6">
+    <div class="section-header" onclick="tog('s6')">
+      <div class="section-left">
+        <div class="section-icon">📁</div>
+        <div>
+          <div class="section-title">ICC Profile</div>
+          <div class="section-sub">File koreksi warna sistem</div>
+        </div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="desc">ICC Profile adalah <strong>file koreksi warna</strong> yang diinstal di sistem operasi setelah kalibrasi. File ini memberitahu sistem bagaimana menampilkan warna agar sesuai dengan standar yang sudah dikalibrasi.</div>
+
+      <div class="hr"></div>
+
+      <div class="label">Cara Kerja</div>
+      <div class="desc">Setiap layar memiliki karakteristik warna yang unik. ICC Profile "menerjemahkan" data warna dari aplikasi agar sesuai dengan karakteristik layarmu — sehingga warna yang kamu lihat akurat dan konsisten.</div>
+
+      <div class="hl"><strong>Penting:</strong> Jangan hapus atau ganti ICC Profile setelah kalibrasi. Jika OS di-reinstall, minta file ICC Profile ke teknisi kalibrasi untuk diinstal ulang.</div>
+    </div>
+  </div>
+
+  <!-- ═══ JENIS PANEL ═══ -->
+  <div class="section" id="s7">
+    <div class="section-header" onclick="tog('s7')">
+      <div class="section-left">
+        <div class="section-icon">🖥</div>
+        <div>
+          <div class="section-title">Jenis Panel Layar</div>
+          <div class="section-sub">LED, OLED, Mini-LED, dan lainnya</div>
+        </div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="desc">Jenis panel mempengaruhi <strong>kemampuan maksimal kalibrasi</strong> yang bisa dicapai. Memahami panel layarmu membantu menentukan ekspektasi hasil yang realistis.</div>
+
+      <div class="hr"></div>
+
+      <!-- IPS -->
+      <div class="panel-card">
+        <div class="panel-name">IPS (In-Plane Switching)</div>
+        <span class="panel-tag">LED Backlit</span>
+        <div class="panel-desc">Panel paling umum untuk profesional kreatif. Warna akurat, sudut pandang lebar, dan respons warna yang konsisten. Pilihan utama untuk kalibrasi warna.</div>
+        <div class="panel-specs">
+          <span class="spec-chip pro">✓ Akurasi warna tinggi</span>
+          <span class="spec-chip pro">✓ Sudut pandang lebar</span>
+          <span class="spec-chip pro">✓ Kalibrable</span>
+          <span class="spec-chip con">✗ Kontras terbatas</span>
+          <span class="spec-chip con">✗ Hitam kurang pekat</span>
+        </div>
+      </div>
+
+      <!-- TN -->
+      <div class="panel-card">
+        <div class="panel-name">TN (Twisted Nematic)</div>
+        <span class="panel-tag">LED Backlit</span>
+        <div class="panel-desc">Panel gaming dengan refresh rate tinggi dan respons cepat. Akurasi warna dan sudut pandang lebih terbatas dibanding IPS. Kurang ideal untuk color-critical work.</div>
+        <div class="panel-specs">
+          <span class="spec-chip pro">✓ Refresh rate tinggi</span>
+          <span class="spec-chip pro">✓ Respons cepat</span>
+          <span class="spec-chip con">✗ Akurasi warna rendah</span>
+          <span class="spec-chip con">✗ Sudut pandang sempit</span>
+        </div>
+      </div>
+
+      <!-- VA -->
+      <div class="panel-card">
+        <div class="panel-name">VA (Vertical Alignment)</div>
+        <span class="panel-tag">LED Backlit</span>
+        <div class="panel-desc">Kontras ratio terbaik di antara panel LED. Hitam lebih pekat dari IPS, namun bisa ada ghosting di area gelap. Cocok untuk hiburan dan HDR content.</div>
+        <div class="panel-specs">
+          <span class="spec-chip pro">✓ Kontras tinggi</span>
+          <span class="spec-chip pro">✓ Hitam pekat</span>
+          <span class="spec-chip con">✗ Ghosting di shadow</span>
+          <span class="spec-chip con">✗ Warna kurang konsisten</span>
+        </div>
+      </div>
+
+      <!-- Mini-LED -->
+      <div class="panel-card">
+        <div class="panel-name">Mini-LED</div>
+        <span class="panel-tag">Local Dimming Backlit</span>
+        <div class="panel-desc">Teknologi backlight yang menggunakan ribuan LED kecil dengan <strong>local dimming</strong> — bisa mematikan area gelap secara independen. Kontras jauh lebih baik dari IPS biasa, dengan akurasi warna yang tetap tinggi.</div>
+        <div class="panel-specs">
+          <span class="spec-chip pro">✓ Kontras sangat tinggi</span>
+          <span class="spec-chip pro">✓ HDR superior</span>
+          <span class="spec-chip pro">✓ Akurasi warna baik</span>
+          <span class="spec-chip con">✗ Blooming di edge</span>
+          <span class="spec-chip con">✗ Harga lebih mahal</span>
+        </div>
+      </div>
+
+      <!-- OLED -->
+      <div class="panel-card">
+        <div class="panel-name">OLED (Organic LED)</div>
+        <span class="panel-tag">Self-Emissive</span>
+        <div class="panel-desc">Setiap piksel memancarkan cahayanya sendiri — tidak butuh backlight. Hitam sempurna (piksel mati = hitam absolut), kontras tak terbatas, dan respons piksel sangat cepat. Namun rentan <strong>burn-in</strong> pada konten statis.</div>
+        <div class="panel-specs">
+          <span class="spec-chip pro">✓ Hitam sempurna</span>
+          <span class="spec-chip pro">✓ Kontras tak terbatas</span>
+          <span class="spec-chip pro">✓ Warna vivid</span>
+          <span class="spec-chip con">✗ Risiko burn-in</span>
+          <span class="spec-chip con">✗ Peak brightness terbatas</span>
+        </div>
+      </div>
+
+      <!-- QD-OLED -->
+      <div class="panel-card">
+        <div class="panel-name">QD-OLED (Quantum Dot OLED)</div>
+        <span class="panel-tag">Self-Emissive + Quantum Dot</span>
+        <div class="panel-desc">Kombinasi teknologi OLED dengan Quantum Dot filter — menghasilkan gamut warna yang lebih luas (DCI-P3 mendekati 100%) dengan tetap mempertahankan keunggulan OLED. Teknologi terdepan saat ini untuk layar profesional.</div>
+        <div class="panel-specs">
+          <span class="spec-chip pro">✓ Gamut sangat luas</span>
+          <span class="spec-chip pro">✓ Hitam sempurna</span>
+          <span class="spec-chip pro">✓ Brightness lebih tinggi</span>
+          <span class="spec-chip con">✗ Risiko burn-in</span>
+          <span class="spec-chip con">✗ Harga premium</span>
+        </div>
+      </div>
+
+      <div class="hl-blue"><strong>Catatan kalibrasi:</strong> Semua jenis panel di atas bisa dikalibrasi. IPS dan QD-OLED memberikan hasil kalibrasi terbaik. TN memiliki keterbatasan akurasi warna yang tidak bisa sepenuhnya dikoreksi via kalibrasi.</div>
+    </div>
+  </div>
+
+  <!-- ═══ COLOR SPACE ═══ -->
+  <div class="section" id="s8">
+    <div class="section-header" onclick="tog('s8')">
+      <div class="section-left">
+        <div class="section-icon">🎨</div>
+        <div>
+          <div class="section-title">Color Space</div>
+          <div class="section-sub">sRGB, Adobe RGB, DCI-P3</div>
+        </div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="desc">Color Space adalah <strong>rentang warna yang bisa direproduksi</strong> oleh sebuah perangkat. Semakin luas color space, semakin banyak warna yang bisa ditampilkan.</div>
+
+      <div class="hr"></div>
+
+      <table class="tbl">
+        <thead><tr><th>Color Space</th><th>Penggunaan</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--success)">sRGB</td>
+            <td class="muted">Standar web, social media, layar umum. Digunakan oleh 99% konten digital.</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent)">Adobe RGB</td>
+            <td class="muted">Fotografi profesional, prepress printing. Gamut lebih luas dari sRGB terutama di warna hijau dan cyan.</td>
+          </tr>
+          <tr>
+            <td style="color:#f59e0b">DCI-P3</td>
+            <td class="muted">Standar sinema digital dan HDR content. Digunakan oleh Apple dan produsen layar premium.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="hl"><strong>Kalibrasi Bang</strong> menggunakan standar <strong>sRGB + D65</strong> — standar paling universal yang memastikan warna konsisten di semua perangkat dan platform.</div>
+    </div>
+  </div>
+
+  <!-- ═══ RE-KALIBRASI ═══ -->
+  <div class="section" id="s9">
+    <div class="section-header" onclick="tog('s9')">
+      <div class="section-left">
+        <div class="section-icon">🔁</div>
+        <div>
+          <div class="section-title">Jadwal Re-Kalibrasi</div>
+          <div class="section-sub">Kapan perlu kalibrasi ulang?</div>
+        </div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="desc">Layar mengalami <strong>degradasi alami seiring waktu</strong> — backlight melemah, panel bergeser perlahan. Kalibrasi ulang berkala memastikan akurasi warna tetap terjaga.</div>
+
+      <div class="hr"></div>
+
+      <div class="timeline">
+        <div class="tl-item active">
+          <div class="tl-dot"></div>
+          <div class="tl-label">3 Bulan — Rekomendasi Utama</div>
+          <div class="tl-desc">Ideal untuk fotografer, desainer, dan content creator profesional yang mengandalkan akurasi warna untuk pekerjaan sehari-hari.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-label">6 Bulan</div>
+          <div class="tl-desc">Cocok untuk pengguna semi-profesional atau yang bekerja di lingkungan dengan pencahayaan stabil.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-label">12 Bulan — Maksimum</div>
+          <div class="tl-desc">Minimum untuk pengguna umum. Lebih dari 12 bulan, akurasi warna sudah tidak bisa diandalkan.</div>
+        </div>
+      </div>
+
+      <div class="hl" style="margin-top:16px;"><strong>Tanda perlu kalibrasi ulang:</strong> Foto yang diedit terlihat berbeda di perangkat lain, warna terasa lebih kuning/biru dari biasanya, atau sudah lebih dari 6 bulan sejak kalibrasi terakhir.</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-brand">KALIBRASI BANG</div>
+    <div class="footer-text">Layar Rasa Mahal<br>Borneo Color Lab • Banjarmasin</div>
+    <a href="https://wa.me/6282252445233" class="btn-wa">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.49 3.57 1.4 5.12L2 22l5.12-1.51c1.49.82 3.17 1.26 4.92 1.26 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0012.04 2z"/>
+      </svg>
+      Hubungi Kami
+    </a>
+  </div>
+
+</div>
+
+<script>
+function tog(id) {
+  document.getElementById(id).classList.toggle("open");
+}
+</script>
+
+</body>
+</html>
