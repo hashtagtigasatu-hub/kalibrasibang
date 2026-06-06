@@ -1011,27 +1011,27 @@
   <!-- Cek Sertifikat -->
   <div class="section-label">Verifikasi Sertifikat</div>
   <div class="verify-input-row">
-    <div style="display:flex; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;">
-  <span style="padding:13px 0 13px 14px; color:var(--muted); font-family:var(--mono); font-size:14px; white-space:nowrap;">BCL-</span>
-  <input type="text" id="certInput" placeholder="0626-016"
-     autocomplete="off" oninput="formatCertSuffix(this)"
-     style="border:none; border-radius:0; padding-left:4px; background:transparent;">
-    </div>
-    <button class="btn-verify" id="btnCert" onclick="verifyCert()">Check</button>
+  <div style="display:flex; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; flex:1;">
+    <span style="padding:13px 0 13px 14px; color:var(--muted); font-family:var(--mono); font-size:14px; white-space:nowrap;">BCL-</span>
+    <input type="text" id="certInput" placeholder="0626-016"
+       autocomplete="off" oninput="formatCertSuffix(this)"
+       style="border:none; border-radius:0; padding-left:4px; background:transparent; flex:1;">
   </div>
+  <button class="btn-verify" id="btnCert" onclick="verifyCert()">Check</button>
+</div>
   <div class="verify-result" id="certResult"></div>
 
   <!-- Cek Voucher -->
   <div class="section-label">Verifikasi Voucher</div>
   <div class="verify-input-row">
-    <div style="display:flex; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;">
-  <span style="padding:13px 0 13px 14px; color:var(--muted); font-family:var(--mono); font-size:14px; white-space:nowrap;">KB-</span>
-  <input type="text" id="voucherInput" placeholder="335-LVE6"
-     autocomplete="off" oninput="formatVoucherSuffix(this)"
-     style="border:none; border-radius:0; padding-left:4px; background:transparent;">
-    </div>
-    <button class="btn-verify" id="btnVoucherCheck" onclick="verifyVoucher()">Check</button>
+  <div style="display:flex; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; flex:1;">
+    <span style="padding:13px 0 13px 14px; color:var(--muted); font-family:var(--mono); font-size:14px; white-space:nowrap;">KB-</span>
+    <input type="text" id="voucherInput" placeholder="335-LVE6"
+       autocomplete="off" oninput="formatVoucherSuffix(this)"
+       style="border:none; border-radius:0; padding-left:4px; background:transparent; flex:1;">
   </div>
+  <button class="btn-verify" id="btnVoucherCheck" onclick="verifyVoucher()">Check</button>
+</div>
   <div class="verify-result" id="voucherResult"></div>
 
 </div><!-- /page-verify -->
