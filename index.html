@@ -1561,6 +1561,9 @@ async function submitForm() {
   currentHP = formatWANumber(fields.hp);
   document.getElementById("btnSubmit").disabled = true;
   document.getElementById("progressWrap").classList.add("visible");
+  setTimeout(function() {
+  document.getElementById("progressWrap").scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 100);
   setStep("step1", "active", "Menyimpan ke Google Sheets...");
   setStep("step2", "pending", "Menunggu...");
   setStep("step3", "pending", "Menunggu...");
