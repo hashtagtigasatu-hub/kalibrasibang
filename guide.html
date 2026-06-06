@@ -310,7 +310,7 @@
   </div>
 
   <!-- ═══ DELTA-E ═══ -->
-  <div class="section open" id="s1">
+  <div class="section" id="s1">
     <div class="section-header" onclick="tog('s1')">
       <div class="section-left">
         <div class="section-icon">ΔE</div>
@@ -715,6 +715,10 @@
 
 <script>
 function tog(id) {
+  var sections = document.querySelectorAll(".section");
+  sections.forEach(function(s) {
+    if (s.id !== id) s.classList.remove("open");
+  });
   document.getElementById(id).classList.toggle("open");
 }
 </script>
