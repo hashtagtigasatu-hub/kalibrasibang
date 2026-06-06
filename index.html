@@ -1271,6 +1271,7 @@ async function verifyPin() {
     var res = await callAPI("verifyPin", { pin: pinValue });
     if (res.ok && res.valid) {
       sessionStorage.setItem(STORAGE_KEY_AUTH, "true");
+      sessionStorage.setItem("kb_pin", pinValue); // ← tambahkan ini
       localStorage.removeItem(STORAGE_KEY_ATTEMPTS);
       localStorage.removeItem(STORAGE_KEY_LOCKTIME);
       document.getElementById("pinAttempts").textContent = "";
@@ -1347,6 +1348,7 @@ function showApp() {
 
 function logout() {
   sessionStorage.removeItem(STORAGE_KEY_AUTH);
+  sessionStorage.removeItem("kb_pin"); // ← tambahkan ini
   pinValue = "";
   updateDots();
   document.getElementById("pinLockMsg").textContent  = "";
@@ -1374,9 +1376,12 @@ var API_URL = "https://script.google.com/macros/s/AKfycbwtpqD0riftd5y9RL74in_ht5
 async function callAPI(action, data) {
   const res = await fetch(API_URL, {
     method:  "POST",
-    // Content-Type: text/plain menghindari CORS preflight
     headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body:    JSON.stringify({ action: action, data: data || {} })
+    body:    JSON.stringify({
+      action: action,
+      data:   data || {},
+      pin:    sessionStorage.getItem("kb_pin") || ""
+    })
   });
   if (!res.ok) throw new Error("HTTP " + res.status);
   return res.json();
