@@ -183,6 +183,23 @@
     .btn-wa { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 11px 22px; background: var(--wa); border-radius: 50px; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; color: #fff; text-decoration: none; }
     .btn-wa:active { opacity: 0.85; }
     .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+
+    .btn-wa-float {
+    position: fixed; bottom: 24px; right: 20px; z-index: 99;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px;
+    background: var(--wa); border-radius: 50px;
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; color: #fff; text-decoration: none;
+    box-shadow: 0 4px 20px rgba(24,186,85,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+    }
+  
+  .btn-wa-float:active {
+    transform: scale(0.96);
+    box-shadow: 0 2px 10px rgba(24,186,85,0.25);
+    }
+    
   </style>
 </head>
 <body>
@@ -717,15 +734,17 @@
   <div class="footer">
     <div class="footer-brand">KALIBRASI BANG</div>
     <div class="footer-text">Layar Rasa Mahal<br>BORNEO COLOR LAB • Banjarmasin</div>
-    <a href="https://wa.me/6282252445233" class="btn-wa">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
-        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.49 3.57 1.4 5.12L2 22l5.12-1.51c1.49.82 3.17 1.26 4.92 1.26 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0012.04 2z"/>
-      </svg>
-      Hubungi Kami
-    </a>
   </div>
 
 </div>
+
+<!-- Floating WA Button -->
+<a href="https://wa.me/6282252445233" class="btn-wa-float">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.49 3.57 1.4 5.12L2 22l5.12-1.51c1.49.82 3.17 1.26 4.92 1.26 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0012.04 2z"/>
+  </svg>
+  Chat WA
+</a>
 
 <script>
   
