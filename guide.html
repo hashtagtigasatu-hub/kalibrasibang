@@ -727,13 +727,22 @@
 </div>
 
 <script>
+  
 function tog(id) {
   var sections = document.querySelectorAll(".section");
   sections.forEach(function(s) {
     if (s.id !== id) s.classList.remove("open");
   });
   document.getElementById(id).classList.toggle("open");
+
+  // Scroll ke section yang dibuka
+  if (document.getElementById(id).classList.contains("open")) {
+    setTimeout(function() {
+      document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  }
 }
+  
 </script>
 
 </body>
