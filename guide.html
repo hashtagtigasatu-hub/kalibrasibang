@@ -271,6 +271,128 @@
       transform: scale(0.96);
       box-shadow: 0 2px 10px rgba(24,186,85,0.25);
     }
+
+    /* ── AI SEARCH ── */
+.ai-search-wrap {
+  margin-top: 32px;
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+}
+ 
+.ai-search-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+ 
+.ai-search-icon {
+  width: 37px; height: 37px;
+  background: rgba(240,255,0,0.08);
+  border: 1px solid rgba(240,255,0,0.25);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+ 
+.ai-search-icon svg { width: 18px; height: 18px; color: var(--accent); }
+ 
+.ai-search-title {
+  font-family: var(--mono); font-size: 12px; font-weight: 700;
+  letter-spacing: 0.05em; color: var(--text);
+}
+ 
+.ai-search-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+ 
+.ai-search-examples {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
+}
+ 
+.ai-example-chip {
+  font-family: var(--mono); font-size: 10px;
+  padding: 5px 10px; border-radius: 20px;
+  border: 1px solid var(--border); color: var(--muted);
+  cursor: pointer; transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--surface);
+}
+ 
+.ai-example-chip:active,
+.ai-example-chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(240,255,0,0.05); }
+ 
+.ai-input-row {
+  display: flex; gap: 8px; align-items: flex-end;
+}
+ 
+.ai-input-wrap { flex: 1; position: relative; }
+ 
+.ai-input {
+  width: 100%; padding: 13px 14px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text);
+  font-family: var(--sans); font-size: 13px; outline: none;
+  transition: border-color 0.2s;
+  resize: none; min-height: 50px; max-height: 120px;
+  overflow-y: auto; line-height: 1.5;
+}
+ 
+.ai-input::placeholder { color: var(--muted); }
+.ai-input:focus { border-color: var(--accent); }
+ 
+.ai-btn {
+  width: 50px; height: 50px; flex-shrink: 0;
+  background: var(--accent); border: none; border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s;
+}
+ 
+.ai-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.ai-btn:not(:disabled):active { transform: scale(0.95); }
+.ai-btn svg { width: 18px; height: 18px; color: #000; }
+ 
+.ai-result {
+  display: none; margin-top: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+}
+ 
+.ai-result.visible { display: block; }
+ 
+.ai-result-header {
+  padding: 10px 14px;
+  background: rgba(240,255,0,0.05);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+ 
+.ai-result-label {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+}
+ 
+.ai-result-body {
+  padding: 16px;
+  font-size: 13px; color: var(--text); line-height: 1.8;
+  white-space: pre-wrap; word-break: break-word;
+}
+ 
+.ai-result-body strong { color: var(--accent); font-weight: 700; }
+ 
+/* Typing dots */
+.ai-typing {
+  display: inline-flex; gap: 4px; align-items: center; padding: 4px 0;
+}
+ 
+.ai-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); opacity: 0.4;
+  animation: aiDotBounce 1.2s ease infinite;
+}
+ 
+.ai-dot:nth-child(2) { animation-delay: 0.2s; }
+.ai-dot:nth-child(3) { animation-delay: 0.4s; }
+ 
+@keyframes aiDotBounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40%            { transform: translateY(-6px); opacity: 1; }
+}
+    
   </style>
 </head>
 <body>
@@ -922,6 +1044,61 @@
     </div>
   </div>
 
+  <div class="ai-search-wrap">
+  <div class="ai-search-header">
+    <div class="ai-search-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        <path d="M11 8v3l2 2" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div>
+      <div class="ai-search-title">Tanya Spesifikasi Layar</div>
+      <div class="ai-search-sub">Powered by AI — tanya apa saja tentang layarmu</div>
+    </div>
+  </div>
+ 
+  <!-- Contoh pertanyaan -->
+  <div class="ai-search-examples">
+    <div class="ai-example-chip" onclick="setQuery('Apa jenis panel AOC 27G4 dan berapa cakupan gamutnya?')">AOC 27G4</div>
+    <div class="ai-example-chip" onclick="setQuery('Spesifikasi warna LG 27UK850 untuk kalibrasi')">LG 27UK850</div>
+    <div class="ai-example-chip" onclick="setQuery('Dell U2723D cocok untuk kalibrasi profesional?')">Dell U2723D</div>
+    <div class="ai-example-chip" onclick="setQuery('MacBook Pro 14 M3 panel type dan color gamut?')">MacBook Pro M3</div>
+    <div class="ai-example-chip" onclick="setQuery('Berapa white point default layar Samsung Odyssey G7?')">Samsung G7</div>
+  </div>
+ 
+  <div class="ai-input-row">
+    <div class="ai-input-wrap">
+      <textarea
+        class="ai-input"
+        id="aiQuery"
+        placeholder="Contoh: Apa jenis panel ASUS ProArt PA278QV dan berapa cakupan sRGB-nya?"
+        rows="2"
+        onkeydown="handleAiKey(event)"
+        oninput="autoResize(this)"
+      ></textarea>
+    </div>
+    <button class="ai-btn" id="aiBtnSend" onclick="sendAiQuery()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"/>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+ 
+  <div class="ai-result" id="aiResult">
+    <div class="ai-result-header">
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round">
+        <path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/>
+        <path d="M12 16v-4M12 8h.01"/>
+      </svg>
+      <span class="ai-result-label">Hasil Analisis AI</span>
+    </div>
+    <div class="ai-result-body" id="aiResultBody"></div>
+  </div>
+</div>
+
   <!-- Footer -->
   <div class="footer">
     <div class="footer-brand">KALIBRASI BANG</div>
@@ -1051,6 +1228,80 @@ window.addEventListener("beforeunload", stopSpeech);
 document.addEventListener("visibilitychange", function() {
   if (document.hidden) stopSpeech();
 });
+
+  function setQuery(text) {
+  var el = document.getElementById("aiQuery");
+  el.value = text;
+  autoResize(el);
+  el.focus();
+}
+ 
+function autoResize(el) {
+  el.style.height = "auto";
+  el.style.height = Math.min(el.scrollHeight, 120) + "px";
+}
+ 
+function handleAiKey(e) {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendAiQuery();
+  }
+}
+ 
+async function sendAiQuery() {
+  var query = document.getElementById("aiQuery").value.trim();
+  if (!query) return;
+ 
+  var btn    = document.getElementById("aiBtnSend");
+  var result = document.getElementById("aiResult");
+  var body   = document.getElementById("aiResultBody");
+ 
+  btn.disabled = true;
+  result.classList.add("visible");
+  body.innerHTML = '<div class="ai-typing"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div></div>';
+ 
+  var systemPrompt = `Kamu adalah asisten teknis spesialis layar dan kalibrasi warna untuk Kalibrasi Bang, layanan kalibrasi layar profesional di Banjarmasin oleh Borneo Color Lab.
+ 
+Tugasmu: Menjawab pertanyaan tentang spesifikasi teknis layar — jenis panel, cakupan gamut warna (sRGB, Adobe RGB, DCI-P3), white point, bit depth, response time, dan relevansinya untuk kalibrasi warna profesional.
+ 
+Format jawaban:
+- Gunakan bahasa Indonesia yang jelas dan mudah dipahami
+- Strukturkan dengan heading singkat menggunakan tanda **teks** untuk bold
+- Sertakan rekomendasi apakah layar tersebut cocok untuk kalibrasi profesional
+- Jika tidak tahu spesifikasi pasti suatu model, katakan dengan jujur dan berikan estimasi berdasarkan lini produk atau generasinya
+- Jawaban ringkas dan to the point, maksimal 300 kata
+- Selalu akhiri dengan satu kalimat rekomendasi apakah layar tersebut recommended untuk dikalibrasi`;
+ 
+  try {
+    var response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: "user", content: query }]
+      })
+    });
+ 
+    var data = await response.json();
+ 
+    if (data.content && data.content[0] && data.content[0].text) {
+      var text = data.content[0].text;
+      // Format **bold** → <strong>
+      text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+      body.innerHTML = text;
+    } else {
+      body.innerHTML = "Maaf, tidak dapat memproses pertanyaan saat ini. Coba lagi sebentar.";
+    }
+ 
+  } catch (err) {
+    body.innerHTML = "Koneksi gagal. Pastikan koneksi internet kamu aktif dan coba lagi.";
+  }
+ 
+  btn.disabled = false;
+}
+  
 </script>
 
 </body>
