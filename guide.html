@@ -25,6 +25,16 @@
       --sans:     'DM Sans', sans-serif;
     }
 
+    /* ── LIGHT MODE ── */
+    body.light {
+      --bg:      #f5f5f5;
+      --surface: #ffffff;
+      --surface2:#eeeeee;
+      --border:  #dddddd;
+      --text:    #1a1a1a;
+      --muted:   #888888;
+    }
+
     html, body {
       min-height: 100%;
       background: var(--bg);
@@ -32,6 +42,7 @@
       font-family: var(--sans);
       font-size: 16px;
       -webkit-font-smoothing: antialiased;
+      transition: background 0.3s, color 0.3s;
     }
 
     .container { max-width: 640px; margin: 0 auto; padding: 0 20px 40px; }
@@ -44,6 +55,7 @@
       margin: 0 -20px 32px;
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 12px;
+      transition: background 0.3s, border-color 0.3s;
     }
 
     .logo-mark { width: 36px; height: 36px; background: transparent; border-radius: 8px; flex-shrink: 0; }
@@ -51,6 +63,19 @@
 
     .brand-name { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: var(--text); line-height: 1; }
     .brand-sub { font-size: 10px; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 3px; }
+
+    /* ── THEME TOGGLE ── */
+    .btn-theme {
+      margin-left: auto; flex-shrink: 0;
+      width: 34px; height: 34px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-theme:active { transform: scale(0.9); }
+    .btn-theme svg { width: 16px; height: 16px; color: var(--muted); transition: color 0.2s; }
+    .btn-theme:hover svg { color: var(--accent); }
 
     /* ── HERO ── */
     .hero {
@@ -61,6 +86,7 @@
       border-radius: var(--radius);
       position: relative;
       overflow: hidden;
+      transition: background 0.3s, border-color 0.3s;
     }
 
     .hero::before {
@@ -96,9 +122,7 @@
       padding-top: 12px; border-top: 1px solid var(--border);
     }
 
-    .hero-pills {
-      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;
-    }
+    .hero-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 
     .hero-pill {
       font-family: var(--mono); font-size: 10px; font-weight: 700;
@@ -120,6 +144,7 @@
       background: var(--surface); border: 1px solid var(--border);
       border-radius: var(--radius); overflow: hidden;
       scroll-margin-top: 80px;
+      transition: background 0.3s, border-color 0.3s;
     }
 
     .section-header {
@@ -168,12 +193,25 @@
     .btn-play.playing { background: rgba(240,255,0,0.1); border-color: var(--accent); }
     .btn-play.playing svg { color: var(--accent); }
 
-    .chevron { font-size: 12px; color: var(--text); transition: transform 0.2s; flex-shrink: 0; }
+    /* ── CHEVRON — spring animation ── */
+    .chevron {
+      font-size: 12px; color: var(--text); flex-shrink: 0;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
     .section.open .chevron { transform: rotate(180deg); }
     .section.open .section-header { border-bottom: 1px solid var(--border); }
 
+    /* ── SECTION BODY — fade-in ── */
     .section-body { display: none; padding: 18px; }
-    .section.open .section-body { display: block; }
+    .section.open .section-body {
+      display: block;
+      animation: fadeInBody 0.25s ease forwards;
+    }
+
+    @keyframes fadeInBody {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
     /* ── CONTENT ── */
     .desc { font-size: 12px; color: var(--text); line-height: 1.8; margin-bottom: 14px; }
@@ -264,7 +302,7 @@
       font-family: var(--mono); font-size: 12px; font-weight: 700;
       letter-spacing: 0.08em; color: #fff; text-decoration: none;
       box-shadow: 0 4px 20px rgba(24,186,85,0.35);
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s;
     }
 
     .btn-wa-float:active {
@@ -272,127 +310,84 @@
       box-shadow: 0 2px 10px rgba(24,186,85,0.25);
     }
 
+    /* ── BACK TO TOP ── */
+    .btn-top {
+      position: fixed; bottom: 24px; left: 20px; z-index: 99;
+      width: 44px; height: 44px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s, transform 0.2s, background 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-top.visible { opacity: 1; pointer-events: auto; }
+    .btn-top:active { transform: scale(0.92); }
+    .btn-top svg { width: 18px; height: 18px; color: var(--muted); }
+    .btn-top:hover svg { color: var(--accent); }
+
     /* ── AI SEARCH ── */
-.ai-search-wrap {
-  margin-top: 32px;
-  border-top: 1px solid var(--border);
-  padding-top: 28px;
-}
- 
-.ai-search-header {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
-}
- 
-.ai-search-icon {
-  width: 37px; height: 37px;
-  background: rgba(240,255,0,0.08);
-  border: 1px solid rgba(240,255,0,0.25);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
- 
-.ai-search-icon svg { width: 18px; height: 18px; color: var(--accent); }
- 
-.ai-search-title {
-  font-family: var(--mono); font-size: 12px; font-weight: 700;
-  letter-spacing: 0.05em; color: var(--text);
-}
- 
-.ai-search-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
- 
-.ai-search-examples {
-  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
-}
- 
-.ai-example-chip {
-  font-family: var(--mono); font-size: 10px;
-  padding: 5px 10px; border-radius: 20px;
-  border: 1px solid var(--border); color: var(--muted);
-  cursor: pointer; transition: all 0.15s;
-  -webkit-tap-highlight-color: transparent;
-  background: var(--surface);
-}
- 
-.ai-example-chip:active,
-.ai-example-chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(240,255,0,0.05); }
- 
-.ai-input-row {
-  display: flex; gap: 8px; align-items: flex-end;
-}
- 
-.ai-input-wrap { flex: 1; position: relative; }
- 
-.ai-input {
-  width: 100%; padding: 13px 14px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); color: var(--text);
-  font-family: var(--sans); font-size: 13px; outline: none;
-  transition: border-color 0.2s;
-  resize: none; min-height: 50px; max-height: 120px;
-  overflow-y: auto; line-height: 1.5;
-}
- 
-.ai-input::placeholder { color: var(--muted); }
-.ai-input:focus { border-color: var(--accent); }
- 
-.ai-btn {
-  width: 50px; height: 50px; flex-shrink: 0;
-  background: var(--accent); border: none; border-radius: var(--radius);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: all 0.15s;
-}
- 
-.ai-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.ai-btn:not(:disabled):active { transform: scale(0.95); }
-.ai-btn svg { width: 18px; height: 18px; color: #000; }
- 
-.ai-result {
-  display: none; margin-top: 12px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); overflow: hidden;
-}
- 
-.ai-result.visible { display: block; }
- 
-.ai-result-header {
-  padding: 10px 14px;
-  background: rgba(240,255,0,0.05);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 8px;
-}
- 
-.ai-result-label {
-  font-family: var(--mono); font-size: 9px; font-weight: 700;
-  letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
-}
- 
-.ai-result-body {
-  padding: 16px;
-  font-size: 13px; color: var(--text); line-height: 1.8;
-  white-space: pre-wrap; word-break: break-word;
-}
- 
-.ai-result-body strong { color: var(--accent); font-weight: 700; }
- 
-/* Typing dots */
-.ai-typing {
-  display: inline-flex; gap: 4px; align-items: center; padding: 4px 0;
-}
- 
-.ai-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--accent); opacity: 0.4;
-  animation: aiDotBounce 1.2s ease infinite;
-}
- 
-.ai-dot:nth-child(2) { animation-delay: 0.2s; }
-.ai-dot:nth-child(3) { animation-delay: 0.4s; }
- 
-@keyframes aiDotBounce {
-  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-  40%            { transform: translateY(-6px); opacity: 1; }
-}
-    
+    .ai-search-wrap {
+      margin-top: 32px;
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+    }
+
+    .ai-search-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+
+    .ai-search-icon {
+      width: 37px; height: 37px;
+      background: rgba(240,255,0,0.08);
+      border: 1px solid rgba(240,255,0,0.25);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+
+    .ai-search-icon svg { width: 18px; height: 18px; color: var(--accent); }
+
+    .ai-search-title { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.05em; color: var(--text); }
+    .ai-search-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .ai-search-examples { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+
+    .ai-example-chip {
+      font-family: var(--mono); font-size: 10px;
+      padding: 5px 10px; border-radius: 20px;
+      border: 1px solid var(--border); color: var(--muted);
+      cursor: pointer; transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      background: var(--surface);
+    }
+
+    .ai-example-chip:active,
+    .ai-example-chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(240,255,0,0.05); }
+
+    .ai-input-row { display: flex; gap: 8px; align-items: flex-end; }
+    .ai-input-wrap { flex: 1; position: relative; }
+
+    .ai-input {
+      width: 100%; padding: 13px 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text);
+      font-family: var(--sans); font-size: 13px; outline: none;
+      transition: border-color 0.2s;
+      resize: none; line-height: 1.5;
+    }
+
+    .ai-input::placeholder { color: var(--muted); }
+    .ai-input:focus { border-color: var(--accent); }
+
+    .ai-btn {
+      width: 50px; height: 50px; flex-shrink: 0;
+      background: var(--accent); border: none; border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.15s;
+    }
+
+    .ai-btn:active { transform: scale(0.95); }
+    .ai-btn svg { width: 18px; height: 18px; color: #000; }
   </style>
 </head>
 <body>
@@ -406,6 +401,13 @@
       <div class="brand-name">KALIBRASI BANG</div>
       <div class="brand-sub">Panduan Kalibrasi Layar</div>
     </div>
+    <!-- Theme Toggle -->
+    <button class="btn-theme" id="btnTheme" onclick="toggleTheme()" title="Ganti tema">
+      <svg id="iconTheme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/>
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+    </button>
   </div>
 
   <!-- Hero -->
@@ -420,12 +422,10 @@
       <span class="hero-pill">Mitos & Fakta</span>
       <span class="hero-pill">Umur Layar</span>
     </div>
-
     <button onclick="document.getElementById('displaySearch').scrollIntoView({behavior:'smooth', block:'start'})"
       style="margin-bottom:14px; background:transparent; border:1px solid var(--accent); border-radius:20px; padding:6px 14px; font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.1em; color:var(--accent); cursor:pointer; text-transform:uppercase;">
       Cek Spesifikasi Layar ↓
     </button>
-    
     <div class="hero-desc">Panduan lengkap tentang kalibrasi layar — dari manfaat kesehatan, efisiensi daya, istilah teknis, hingga perbedaan jenis panel.</div>
   </div>
 
@@ -1050,51 +1050,50 @@
     </div>
   </div>
 
-   <!-- AI-Search -->
+  <!-- AI-Search -->
   <div class="ai-search-wrap" id="displaySearch">
-
-  <div class="ai-search-header">
-    <div class="ai-search-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
+    <div class="ai-search-header">
+      <div class="ai-search-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </div>
+      <div>
+        <div class="ai-search-title">Cek Spesifikasi Layar</div>
+        <div class="ai-search-sub">Cari spesifikasi lengkap layarmu di database display</div>
+      </div>
     </div>
-    <div>
-      <div class="ai-search-title">Cek Spesifikasi Layar</div>
-      <div class="ai-search-sub">Cari spesifikasi lengkap layarmu di database display</div>
+
+    <div class="ai-search-examples">
+      <div class="ai-example-chip" onclick="setQuery('AOC 27G4')">AOC 27G4</div>
+      <div class="ai-example-chip" onclick="setQuery('LG 27UK850')">LG 27UK850</div>
+      <div class="ai-example-chip" onclick="setQuery('Dell U2723D')">Dell U2723D</div>
+      <div class="ai-example-chip" onclick="setQuery('ASUS ProArt PA278QV')">ASUS ProArt PA278QV</div>
+      <div class="ai-example-chip" onclick="setQuery('BenQ SW271C')">BenQ SW271C</div>
+      <div class="ai-example-chip" onclick="setQuery('Samsung Odyssey G7')">Samsung Odyssey G7</div>
+    </div>
+
+    <div class="ai-input-row">
+      <div class="ai-input-wrap">
+        <input type="text" class="ai-input"
+          id="aiQuery"
+          placeholder="Ketik nama device, contoh: Dell U2723D"
+          onkeydown="handleSearchKey(event)"
+          style="min-height:unset; height:50px; resize:none;">
+      </div>
+      <button class="ai-btn" onclick="searchDisplay()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="hl" style="margin-top:12px;">
+      Hasil pencarian akan dibuka di tab baru dari <strong>displayspecifications.com</strong> — database spesifikasi layar terlengkap, mencakup jenis panel, gamut warna, white point, dan ratusan parameter lainnya.
     </div>
   </div>
-
-  <div class="ai-search-examples">
-  <div class="ai-example-chip" onclick="setQuery('AOC 27G4')">AOC 27G4</div>
-  <div class="ai-example-chip" onclick="setQuery('LG 27UK850')">LG 27UK850</div>
-  <div class="ai-example-chip" onclick="setQuery('Dell U2723D')">Dell U2723D</div>
-  <div class="ai-example-chip" onclick="setQuery('ASUS ProArt PA278QV')">ASUS ProArt PA278QV</div>
-  <div class="ai-example-chip" onclick="setQuery('BenQ SW271C')">BenQ SW271C</div>
-  <div class="ai-example-chip" onclick="setQuery('Samsung Odyssey G7')">Samsung Odyssey G7</div>
-</div>
-
-  <div class="ai-input-row">
-    <div class="ai-input-wrap">
-      <input type="text" class="ai-input"
-        id="aiQuery"
-        placeholder="Ketik nama device, contoh: Dell U2723D"
-        onkeydown="handleSearchKey(event)"
-        style="min-height:unset; height:50px; resize:none;">
-    </div>
-    <button class="ai-btn" onclick="searchDisplay()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-    </button>
-  </div>
-
-  <div class="hl" style="margin-top:12px;">
-    Hasil pencarian akan dibuka di tab baru dari <strong>displayspecifications.com</strong> — database spesifikasi layar terlengkap, mencakup jenis panel, gamut warna, white point, dan ratusan parameter lainnya.
-  </div>
-</div>
 
   <!-- Footer -->
   <div class="footer">
@@ -1112,6 +1111,13 @@
   Chat WA
 </a>
 
+<!-- Back to Top -->
+<button class="btn-top" id="btnTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
 <script>
 // ── ACCORDION SOLO EXPAND ──
 function tog(id) {
@@ -1125,6 +1131,27 @@ function tog(id) {
       document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
   }
+}
+
+// ── BACK TO TOP ──
+var btnTop = document.getElementById("btnTop");
+window.addEventListener("scroll", function() {
+  if (window.scrollY > 300) {
+    btnTop.classList.add("visible");
+  } else {
+    btnTop.classList.remove("visible");
+  }
+});
+
+// ── DARK / LIGHT MODE ──
+var isLight = false;
+var SVG_SUN  = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
+var SVG_MOON = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+
+function toggleTheme() {
+  isLight = !isLight;
+  document.body.classList.toggle("light", isLight);
+  document.getElementById("iconTheme").innerHTML = isLight ? SVG_MOON : SVG_SUN;
 }
 
 // ── TEXT TO SPEECH ──
@@ -1142,21 +1169,14 @@ function getBodyText(id) {
 
 function togglePlay(event, id) {
   event.stopPropagation();
-
-  // Kalau section belum open, buka dulu
   if (!document.getElementById(id).classList.contains("open")) {
     tog(id);
     setTimeout(function() { startSpeech(id); }, 350);
     return;
   }
-
-  // Kalau sedang main section ini → stop
   if (currentPlayId === id && currentUtterance) {
-    stopSpeech();
-    return;
+    stopSpeech(); return;
   }
-
-  // Kalau ada yang main lain → stop dulu, lalu main ini
   stopSpeech();
   startSpeech(id);
 }
@@ -1166,68 +1186,46 @@ function startSpeech(id) {
     alert("Browser kamu tidak mendukung fitur Text-to-Speech.");
     return;
   }
-
   var text = getBodyText(id);
   if (!text.trim()) return;
 
-  var utter = new SpeechSynthesisUtterance(text);
+  var utter   = new SpeechSynthesisUtterance(text);
   utter.lang  = "id-ID";
-  utter.rate  = 0.95;
-  utter.pitch = 1;
+  utter.rate  = 0.9;
+  utter.pitch = 0.85;
 
-  utter.onstart = function() {
-    currentPlayId    = id;
-    currentUtterance = utter;
-    setPlayState(id, true);
-  };
+  var voices = window.speechSynthesis.getVoices();
+  var picked = voices.find(function(v) { return v.lang.startsWith("id") && /male|pria|laki/i.test(v.name); })
+            || voices.find(function(v) { return v.lang.startsWith("id"); })
+            || voices.find(function(v) { return /male|david|mark|daniel/i.test(v.name); });
+  if (picked) utter.voice = picked;
 
-  utter.onend = function() {
-    currentPlayId    = null;
-    currentUtterance = null;
-    setPlayState(id, false);
-  };
-
-  utter.onerror = function() {
-    currentPlayId    = null;
-    currentUtterance = null;
-    setPlayState(id, false);
-  };
+  utter.onstart = function() { currentPlayId = id; currentUtterance = utter; setPlayState(id, true); };
+  utter.onend   = function() { currentPlayId = null; currentUtterance = null; setPlayState(id, false); };
+  utter.onerror = function() { currentPlayId = null; currentUtterance = null; setPlayState(id, false); };
 
   window.speechSynthesis.speak(utter);
 }
 
 function stopSpeech() {
-  if (window.speechSynthesis) {
-    window.speechSynthesis.cancel();
-  }
-  if (currentPlayId) {
-    setPlayState(currentPlayId, false);
-  }
-  currentPlayId    = null;
-  currentUtterance = null;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  if (currentPlayId) setPlayState(currentPlayId, false);
+  currentPlayId = null; currentUtterance = null;
 }
 
 function setPlayState(id, playing) {
   var btn  = document.getElementById("play_" + id);
   var icon = document.getElementById("playicon_" + id);
   if (!btn || !icon) return;
-  if (playing) {
-    btn.classList.add("playing");
-    icon.innerHTML = ICON_STOP;
-  } else {
-    btn.classList.remove("playing");
-    icon.innerHTML = ICON_PLAY;
-  }
+  if (playing) { btn.classList.add("playing"); icon.innerHTML = ICON_STOP; }
+  else         { btn.classList.remove("playing"); icon.innerHTML = ICON_PLAY; }
 }
 
-// Stop speech saat pindah tab / tutup halaman
 window.addEventListener("beforeunload", stopSpeech);
-document.addEventListener("visibilitychange", function() {
-  if (document.hidden) stopSpeech();
-});
-  
-// Fungsi AI
-  function setQuery(text) {
+document.addEventListener("visibilitychange", function() { if (document.hidden) stopSpeech(); });
+
+// ── DISPLAY SEARCH ──
+function setQuery(text) {
   document.getElementById("aiQuery").value = text;
   document.getElementById("aiQuery").focus();
 }
@@ -1239,10 +1237,8 @@ function handleSearchKey(e) {
 function searchDisplay() {
   var query = document.getElementById("aiQuery").value.trim();
   if (!query) return;
-  var url = "https://www.google.com/search?q=" + encodeURIComponent(query + " site:displayspecifications.com");
-  window.open(url, "_blank");
+  window.open("https://www.google.com/search?q=" + encodeURIComponent(query + " site:displayspecifications.com"), "_blank");
 }
-  
 </script>
 
 </body>
