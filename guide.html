@@ -1044,58 +1044,48 @@
     </div>
   </div>
 
+   <!-- AI-Search -->
   <div class="ai-search-wrap">
+
   <div class="ai-search-header">
     <div class="ai-search-icon">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"/>
         <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        <path d="M11 8v3l2 2" stroke-width="1.5"/>
       </svg>
     </div>
     <div>
-      <div class="ai-search-title">Tanya Spesifikasi Layar</div>
-      <div class="ai-search-sub">Powered by AI — tanya apa saja tentang layarmu</div>
+      <div class="ai-search-title">Cek Spesifikasi Layar</div>
+      <div class="ai-search-sub">Cari spesifikasi lengkap layarmu di database display</div>
     </div>
   </div>
- 
-  <!-- Contoh pertanyaan -->
+
   <div class="ai-search-examples">
-    <div class="ai-example-chip" onclick="setQuery('Apa jenis panel AOC 27G4 dan berapa cakupan gamutnya?')">AOC 27G4</div>
-    <div class="ai-example-chip" onclick="setQuery('Spesifikasi warna LG 27UK850 untuk kalibrasi')">LG 27UK850</div>
-    <div class="ai-example-chip" onclick="setQuery('Dell U2723D cocok untuk kalibrasi profesional?')">Dell U2723D</div>
-    <div class="ai-example-chip" onclick="setQuery('MacBook Pro 14 M3 panel type dan color gamut?')">MacBook Pro M3</div>
-    <div class="ai-example-chip" onclick="setQuery('Berapa white point default layar Samsung Odyssey G7?')">Samsung G7</div>
+    <div class="ai-example-chip" onclick="setQuery('AOC 27G4')">AOC 27G4</div>
+    <div class="ai-example-chip" onclick="setQuery('LG 27UK850')">LG 27UK850</div>
+    <div class="ai-example-chip" onclick="setQuery('Dell U2723D')">Dell U2723D</div>
+    <div class="ai-example-chip" onclick="setQuery('MacBook Pro 14 M3')">MacBook Pro M3</div>
+    <div class="ai-example-chip" onclick="setQuery('ASUS ProArt PA278QV')">ASUS ProArt PA278QV</div>
   </div>
- 
+
   <div class="ai-input-row">
     <div class="ai-input-wrap">
-      <textarea
-        class="ai-input"
+      <input type="text" class="ai-input"
         id="aiQuery"
-        placeholder="Contoh: Apa jenis panel ASUS ProArt PA278QV dan berapa cakupan sRGB-nya?"
-        rows="2"
-        onkeydown="handleAiKey(event)"
-        oninput="autoResize(this)"
-      ></textarea>
+        placeholder="Ketik nama monitor atau laptop, contoh: Dell U2723D"
+        onkeydown="handleSearchKey(event)"
+        style="min-height:unset; height:50px; resize:none;">
     </div>
-    <button class="ai-btn" id="aiBtnSend" onclick="sendAiQuery()">
+    <button class="ai-btn" onclick="searchDisplay()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="22" y1="2" x2="11" y2="13"/>
-        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
     </button>
   </div>
- 
-  <div class="ai-result" id="aiResult">
-    <div class="ai-result-header">
-      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round">
-        <path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/>
-        <path d="M12 16v-4M12 8h.01"/>
-      </svg>
-      <span class="ai-result-label">Hasil Analisis AI</span>
-    </div>
-    <div class="ai-result-body" id="aiResultBody"></div>
+
+  <div class="hl" style="margin-top:12px;">
+    Hasil pencarian akan dibuka di tab baru dari <strong>displayspecifications.com</strong> — database spesifikasi layar terlengkap, mencakup jenis panel, gamut warna, white point, dan ratusan parameter lainnya.
   </div>
 </div>
 
@@ -1228,78 +1218,22 @@ window.addEventListener("beforeunload", stopSpeech);
 document.addEventListener("visibilitychange", function() {
   if (document.hidden) stopSpeech();
 });
-
+  
+// Fungsi AI
   function setQuery(text) {
-  var el = document.getElementById("aiQuery");
-  el.value = text;
-  autoResize(el);
-  el.focus();
+  document.getElementById("aiQuery").value = text;
+  document.getElementById("aiQuery").focus();
 }
- 
-function autoResize(el) {
-  el.style.height = "auto";
-  el.style.height = Math.min(el.scrollHeight, 120) + "px";
+
+function handleSearchKey(e) {
+  if (e.key === "Enter") searchDisplay();
 }
- 
-function handleAiKey(e) {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    sendAiQuery();
-  }
-}
- 
-async function sendAiQuery() {
+
+function searchDisplay() {
   var query = document.getElementById("aiQuery").value.trim();
   if (!query) return;
- 
-  var btn    = document.getElementById("aiBtnSend");
-  var result = document.getElementById("aiResult");
-  var body   = document.getElementById("aiResultBody");
- 
-  btn.disabled = true;
-  result.classList.add("visible");
-  body.innerHTML = '<div class="ai-typing"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div></div>';
- 
-  var systemPrompt = `Kamu adalah asisten teknis spesialis layar dan kalibrasi warna untuk Kalibrasi Bang, layanan kalibrasi layar profesional di Banjarmasin oleh Borneo Color Lab.
- 
-Tugasmu: Menjawab pertanyaan tentang spesifikasi teknis layar — jenis panel, cakupan gamut warna (sRGB, Adobe RGB, DCI-P3), white point, bit depth, response time, dan relevansinya untuk kalibrasi warna profesional.
- 
-Format jawaban:
-- Gunakan bahasa Indonesia yang jelas dan mudah dipahami
-- Strukturkan dengan heading singkat menggunakan tanda **teks** untuk bold
-- Sertakan rekomendasi apakah layar tersebut cocok untuk kalibrasi profesional
-- Jika tidak tahu spesifikasi pasti suatu model, katakan dengan jujur dan berikan estimasi berdasarkan lini produk atau generasinya
-- Jawaban ringkas dan to the point, maksimal 300 kata
-- Selalu akhiri dengan satu kalimat rekomendasi apakah layar tersebut recommended untuk dikalibrasi`;
- 
-  try {
-    var response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: [{ role: "user", content: query }]
-      })
-    });
- 
-    var data = await response.json();
- 
-    if (data.content && data.content[0] && data.content[0].text) {
-      var text = data.content[0].text;
-      // Format **bold** → <strong>
-      text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-      body.innerHTML = text;
-    } else {
-      body.innerHTML = "Maaf, tidak dapat memproses pertanyaan saat ini. Coba lagi sebentar.";
-    }
- 
-  } catch (err) {
-    body.innerHTML = "Koneksi gagal. Pastikan koneksi internet kamu aktif dan coba lagi.";
-  }
- 
-  btn.disabled = false;
+  var url = "https://www.displayspecifications.com/en/search?q=" + encodeURIComponent(query);
+  window.open(url, "_blank");
 }
   
 </script>
