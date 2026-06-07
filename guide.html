@@ -420,6 +420,12 @@
       <span class="hero-pill">Mitos & Fakta</span>
       <span class="hero-pill">Umur Layar</span>
     </div>
+
+    <button onclick="document.getElementById('displaySearch').scrollIntoView({behavior:'smooth', block:'start'})"
+      style="margin-bottom:14px; background:transparent; border:1px solid var(--accent); border-radius:20px; padding:6px 14px; font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.1em; color:var(--accent); cursor:pointer; text-transform:uppercase;">
+      Cek Spesifikasi Layar ↓
+    </button>
+    
     <div class="hero-desc">Panduan lengkap tentang kalibrasi layar — dari manfaat kesehatan, efisiensi daya, istilah teknis, hingga perbedaan jenis panel.</div>
   </div>
 
@@ -1045,7 +1051,7 @@
   </div>
 
    <!-- AI-Search -->
-  <div class="ai-search-wrap">
+  <div class="ai-search-wrap" id="displaySearch">
 
   <div class="ai-search-header">
     <div class="ai-search-icon">
@@ -1061,12 +1067,13 @@
   </div>
 
   <div class="ai-search-examples">
-    <div class="ai-example-chip" onclick="setQuery('AOC 27G4')">AOC 27G4</div>
-    <div class="ai-example-chip" onclick="setQuery('LG 27UK850')">LG 27UK850</div>
-    <div class="ai-example-chip" onclick="setQuery('Dell U2723D')">Dell U2723D</div>
-    <div class="ai-example-chip" onclick="setQuery('MacBook Pro 14 M3')">MacBook Pro M3</div>
-    <div class="ai-example-chip" onclick="setQuery('ASUS ProArt PA278QV')">ASUS ProArt PA278QV</div>
-  </div>
+  <div class="ai-example-chip" onclick="setQuery('AOC 27G4')">AOC 27G4</div>
+  <div class="ai-example-chip" onclick="setQuery('LG 27UK850')">LG 27UK850</div>
+  <div class="ai-example-chip" onclick="setQuery('Dell U2723D')">Dell U2723D</div>
+  <div class="ai-example-chip" onclick="setQuery('ASUS ProArt PA278QV')">ASUS ProArt PA278QV</div>
+  <div class="ai-example-chip" onclick="setQuery('BenQ SW271C')">BenQ SW271C</div>
+  <div class="ai-example-chip" onclick="setQuery('Samsung Odyssey G7')">Samsung Odyssey G7</div>
+</div>
 
   <div class="ai-input-row">
     <div class="ai-input-wrap">
