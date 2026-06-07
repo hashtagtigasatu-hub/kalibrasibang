@@ -53,10 +53,59 @@
     .brand-sub { font-size: 11px; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 3px; }
 
     /* ── HERO ── */
-    .hero { margin-bottom: 32px; }
-    .hero-tag { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
-    .hero-title { font-family: var(--mono); font-size: 22px; font-weight: 700; line-height: 1.3; color: var(--text); margin-bottom: 12px; }
-    .hero-desc { font-size: 12px; color: var(--text); line-height: 1.8; }
+    .hero {
+      margin-bottom: 36px;
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+    }
+
+    .hero-tag {
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .hero-tag::after {
+      content: "";
+      flex: 1; height: 1px;
+      background: rgba(240,255,0,0.2);
+    }
+
+    .hero-title {
+      font-family: var(--mono); font-size: 22px; font-weight: 700;
+      line-height: 1.3; color: var(--text); margin-bottom: 12px;
+    }
+
+    .hero-title span { color: var(--accent); }
+
+    .hero-desc {
+      font-size: 12px; color: var(--text); line-height: 1.8;
+      padding-top: 12px; border-top: 1px solid var(--border);
+    }
+
+    .hero-pills {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;
+    }
+
+    .hero-pill {
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      padding: 4px 10px; border-radius: 20px;
+      border: 1px solid var(--border); color: var(--muted);
+      letter-spacing: 0.05em;
+    }
 
     /* ── CATEGORY LABEL ── */
     .cat-label {
@@ -70,7 +119,7 @@
       margin-bottom: 10px;
       background: var(--surface); border: 1px solid var(--border);
       border-radius: var(--radius); overflow: hidden;
-      scroll-margin-top: 80px; /* ← tambahkan ini */
+      scroll-margin-top: 80px;
     }
 
     .section-header {
@@ -81,22 +130,47 @@
     }
 
     .section-header:active { background: var(--surface2); }
-    .section-left { display: flex; align-items: center; gap: 12px; }
+    .section-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
 
     .section-icon {
       width: 37px; height: 37px;
       background: var(--surface2); border: 1px solid var(--border);
       border-radius: 10px; display: flex; align-items: center;
-      justify-content: center; font-size: 17px; flex-shrink: 0;
+      justify-content: center; flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s;
     }
+
+    .section-icon svg { width: 18px; height: 18px; color: var(--muted); transition: color 0.2s; }
+
+    .section.open .section-icon {
+      background: rgba(240,255,0,0.08);
+      border-color: rgba(240,255,0,0.35);
+    }
+
+    .section.open .section-icon svg { color: var(--accent); }
 
     .section-title { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.05em; color: var(--text); }
     .section-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
+    .section-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+    /* ── PLAY BUTTON ── */
+    .btn-play {
+      width: 30px; height: 30px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-play:active { transform: scale(0.9); }
+    .btn-play svg { width: 12px; height: 12px; color: var(--muted); transition: color 0.15s; }
+    .btn-play.playing { background: rgba(240,255,0,0.1); border-color: var(--accent); }
+    .btn-play.playing svg { color: var(--accent); }
+
     .chevron { font-size: 12px; color: var(--text); transition: transform 0.2s; flex-shrink: 0; }
     .section.open .chevron { transform: rotate(180deg); }
     .section.open .section-header { border-bottom: 1px solid var(--border); }
-    .section.open .section-icon { border-color: rgba(240,255,0,0.25); }
 
     .section-body { display: none; padding: 18px; }
     .section.open .section-body { display: block; }
@@ -134,10 +208,8 @@
     /* ── HIGHLIGHT ── */
     .hl { background: rgba(240,255,0,0.05); border: 1px solid rgba(240,255,0,0.15); border-radius: 12px; padding: 12px 14px; margin-top: 14px; font-size: 12px; color: var(--text); line-height: 1.8; }
     .hl strong { color: var(--accent); }
-
     .hl-blue { background: rgba(73,173,244,0.06); border: 1px solid rgba(73,173,244,0.2); border-radius: 12px; padding: 12px 14px; margin-top: 14px; font-size: 12px; color: var(--text); line-height: 1.8; }
     .hl-blue strong { color: var(--success); }
-
     .hl-red { background: rgba(255,69,69,0.05); border: 1px solid rgba(255,69,69,0.2); border-radius: 12px; padding: 12px 14px; margin-top: 14px; font-size: 12px; color: var(--text); line-height: 1.8; }
     .hl-red strong { color: var(--danger); }
 
@@ -171,8 +243,8 @@
     /* ── MYTH CARD ── */
     .myth-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
     .myth-card:last-child { margin-bottom: 0; }
-    .myth-q { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-    .myth-q::before { content: "❓ "; }
+    .myth-q { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 8px; padding-left: 20px; position: relative; }
+    .myth-q::before { content: "?"; position: absolute; left: 0; top: 0; width: 16px; height: 16px; background: rgba(240,255,0,0.1); border: 1px solid rgba(240,255,0,0.2); border-radius: 50%; font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--accent); display: flex; align-items: center; justify-content: center; line-height: 16px; text-align: center; }
     .myth-a { font-size: 12px; color: var(--text); line-height: 1.7; }
     .myth-a strong { color: var(--success); }
 
@@ -180,26 +252,25 @@
     .footer { text-align: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); }
     .footer-brand { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 6px; }
     .footer-text { font-size: 12px; color: var(--muted); line-height: 1.7; }
-    .btn-wa { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 11px 22px; background: var(--wa); border-radius: 50px; font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #fff; text-decoration: none; }
-    .btn-wa:active { opacity: 0.85; }
+
     .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
 
+    /* ── FLOATING WA ── */
     .btn-wa-float {
-    position: fixed; bottom: 24px; right: 20px; z-index: 99;
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 12px 20px;
-    background: var(--wa); border-radius: 50px;
-    font-family: var(--mono); font-size: 12px; font-weight: 700;
-    letter-spacing: 0.08em; color: #fff; text-decoration: none;
-    box-shadow: 0 4px 20px rgba(24,186,85,0.35);
-    transition: transform 0.2s, box-shadow 0.2s;
+      position: fixed; bottom: 24px; right: 20px; z-index: 99;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 20px;
+      background: var(--wa); border-radius: 50px;
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; color: #fff; text-decoration: none;
+      box-shadow: 0 4px 20px rgba(24,186,85,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-  
-  .btn-wa-float:active {
-    transform: scale(0.96);
-    box-shadow: 0 2px 10px rgba(24,186,85,0.25);
+
+    .btn-wa-float:active {
+      transform: scale(0.96);
+      box-shadow: 0 2px 10px rgba(24,186,85,0.25);
     }
-    
   </style>
 </head>
 <body>
@@ -218,45 +289,53 @@
   <!-- Hero -->
   <div class="hero">
     <div class="hero-tag">Display Calibration Guide</div>
-    <div class="hero-title">Memahami Hasil<br>Kalibrasi Layarmu</div>
+    <div class="hero-title">Memahami <span>Kalibrasi</span><br>Layarmu</div>
+    <div class="hero-pills">
+      <span class="hero-pill">Kesehatan Mata</span>
+      <span class="hero-pill">Efisiensi Daya</span>
+      <span class="hero-pill">Akurasi Warna</span>
+      <span class="hero-pill">Jenis Panel</span>
+      <span class="hero-pill">Mitos & Fakta</span>
+    </div>
     <div class="hero-desc">Panduan lengkap tentang kalibrasi layar — dari manfaat kesehatan, efisiensi daya, istilah teknis, hingga perbedaan jenis panel.</div>
   </div>
 
-  <!-- ══════════════════════════════════
-       KATEGORI 1: KENAPA PERLU KALIBRASI
-  ══════════════════════════════════ -->
+  <!-- ══ KATEGORI 1 ══ -->
   <div class="cat-label">Kenapa Perlu Kalibrasi?</div>
 
   <!-- Kesehatan Mata -->
   <div class="section" id="s_mata">
     <div class="section-header" onclick="tog('s_mata')">
       <div class="section-left">
-        <div class="section-icon">👁</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">Kalibrasi & Kesehatan Mata</div>
           <div class="section-sub">Apakah layar terkalibrasi lebih nyaman?</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s_mata" onclick="togglePlay(event, 's_mata')">
+          <svg id="playicon_s_mata" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s_mata">
       <div class="desc">Ya — <strong>layar yang terkalibrasi secara signifikan mengurangi kelelahan mata</strong> (eye strain). Ada beberapa alasan ilmiahnya.</div>
-
       <div class="hr"></div>
-
       <div class="label">Luminance yang Terlalu Tinggi</div>
       <div class="desc">Layar yang terlalu terang memaksa pupil mata bekerja lebih keras untuk menyesuaikan diri, terutama di ruangan gelap. Kalibrasi menyetel luminance ke nilai optimal (80–120 cd/m²) sesuai kondisi ruangan — mengurangi kontras berlebihan antara layar dan lingkungan sekitar.</div>
-
       <div class="hr"></div>
-
       <div class="label">White Point & Blue Light</div>
       <div class="desc">Layar yang tidak dikalibrasi sering memiliki white point yang terlalu tinggi (>7000K) — warna putih terlihat kebiruan. Sinar biru berlebihan terbukti mengganggu produksi melatonin dan kualitas tidur. Kalibrasi ke D65 (6500K) mengurangi paparan blue light berlebihan <strong>tanpa mengorbankan akurasi warna</strong> seperti mode "Night Mode" yang membuat warna menjadi kuning tidak alami.</div>
-
       <div class="hr"></div>
-
       <div class="label">Gamma yang Tepat</div>
       <div class="desc">Gamma yang salah membuat mata terus-menerus "berjuang" untuk membaca detail di area gelap atau terang. Gamma 2.2 yang dikalibrasi dengan tepat memastikan gradasi warna terlihat natural, sehingga mata tidak perlu bekerja ekstra.</div>
-
       <div class="hl"><strong>Kesimpulan:</strong> Kalibrasi layar adalah investasi kesehatan mata jangka panjang — terutama untuk kamu yang menghabiskan 6–10 jam sehari di depan layar.</div>
     </div>
   </div>
@@ -265,81 +344,99 @@
   <div class="section" id="s_daya">
     <div class="section-header" onclick="tog('s_daya')">
       <div class="section-left">
-        <div class="section-icon">⚡</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">Kalibrasi & Efisiensi Daya</div>
           <div class="section-sub">Apakah bisa menghemat listrik?</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s_daya" onclick="togglePlay(event, 's_daya')">
+          <svg id="playicon_s_daya" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s_daya">
       <div class="desc">Ya — <strong>kalibrasi luminance ke nilai optimal bisa mengurangi konsumsi daya layar hingga 20–40%</strong> dibanding brightness default pabrik yang biasanya terlalu tinggi.</div>
-
       <div class="hr"></div>
-
       <div class="label">Brightness Default vs Terkalibrasi</div>
       <div class="desc">Kebanyakan layar dari pabrik disetel ke brightness 250–350 cd/m² — jauh di atas kebutuhan normal. Kalibrasi menyetel ke 80–120 cd/m² yang sesuai kebutuhan. Backlight yang bekerja lebih rendah berarti:</div>
       <div class="desc">• Konsumsi daya lebih rendah<br>• Suhu komponen lebih dingin<br>• Umur backlight lebih panjang<br>• Untuk laptop: baterai lebih tahan lama</div>
-
       <div class="hr"></div>
-
       <div class="label">Umur Layar</div>
       <div class="desc">Backlight LED yang terus beroperasi di brightness tinggi akan mengalami degradasi lebih cepat — warna menjadi kekuningan dan tidak merata. Kalibrasi yang mempertahankan brightness optimal <strong>memperpanjang umur layar secara signifikan</strong>.</div>
-
       <div class="hl"><strong>Estimasi penghematan:</strong> Monitor 27" yang dikalibrasi dari 300 cd/m² ke 120 cd/m² bisa menghemat sekitar 15–25 watt — setara dengan mengurangi tagihan listrik hingga Rp50.000–100.000 per tahun untuk penggunaan 8 jam/hari.</div>
     </div>
   </div>
 
-  <!-- Akurasi & Produktivitas -->
+  <!-- Produktivitas -->
   <div class="section" id="s_prod">
     <div class="section-header" onclick="tog('s_prod')">
       <div class="section-left">
-        <div class="section-icon">🎯</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="12" x2="15" y2="14"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">Kalibrasi & Produktivitas</div>
           <div class="section-sub">Dampak pada pekerjaan kreatif</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s_prod" onclick="togglePlay(event, 's_prod')">
+          <svg id="playicon_s_prod" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s_prod">
       <div class="desc">Layar yang tidak terkalibrasi adalah <strong>sumber kesalahan yang tidak terlihat</strong> — kamu mengedit foto dengan warna yang kamu pikir sudah benar, tapi hasilnya berbeda di perangkat lain atau saat dicetak.</div>
-
       <div class="hr"></div>
-
       <div class="label">Masalah yang sering terjadi</div>
       <div class="desc">• Foto yang cerah di layar terlihat gelap saat dicetak<br>• Warna skin tone terlihat terlalu orange atau terlalu pucat<br>• Desain yang bagus di layar terlihat berbeda di HP klien<br>• Video yang sudah di-grade terlihat berbeda di YouTube</div>
-
       <div class="hr"></div>
-
       <div class="label">Solusinya</div>
       <div class="desc">Layar yang terkalibrasi ke standar sRGB D65 memastikan apa yang kamu lihat <strong>mendekati apa yang dilihat orang lain</strong> di perangkat yang berbeda. Ini mengurangi revisi, menghemat waktu, dan meningkatkan kepercayaan diri dalam pekerjaan kreatif.</div>
-
       <div class="hl"><strong>Fakta:</strong> Studio foto dan percetakan profesional mengharuskan semua monitor dikalibrasi — ini bukan kemewahan, tapi standar industri.</div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════
-       KATEGORI 2: MEMAHAMI LAPORAN KALIBRASI
-  ══════════════════════════════════ -->
+  <!-- ══ KATEGORI 2 ══ -->
   <div class="cat-label">Memahami Laporan Kalibrasi</div>
 
   <!-- Delta-E -->
   <div class="section" id="s1">
     <div class="section-header" onclick="tog('s1')">
       <div class="section-left">
-        <div class="section-icon">ΔE</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 20h20L12 2z"/>
+            <line x1="12" y1="10" x2="12" y2="14"/>
+            <line x1="12" y1="17" x2="12" y2="17.5" stroke-width="2.5"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">Delta-E (ΔE)</div>
           <div class="section-sub">Akurasi reproduksi warna</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s1" onclick="togglePlay(event, 's1')">
+          <svg id="playicon_s1" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s1">
       <div class="desc">Delta-E adalah satuan yang mengukur <strong>seberapa jauh perbedaan warna</strong> antara yang seharusnya ditampilkan dengan yang benar-benar tampil di layar. Semakin kecil nilainya, semakin akurat warna yang dihasilkan.</div>
-
       <div class="label">Skala Interpretasi</div>
       <div class="bar-wrap">
         <div class="bar">
@@ -350,7 +447,6 @@
         </div>
         <div class="bar-labels"><span>0</span><span>1.0</span><span>2.0</span><span>3.0</span><span>>3</span></div>
       </div>
-
       <table class="tbl" style="margin-top:12px;">
         <thead><tr><th>Nilai ΔE</th><th>Grade</th><th>Keterangan</th></tr></thead>
         <tbody>
@@ -360,7 +456,6 @@
           <tr><td><span class="dot" style="background:var(--danger)"></span>&gt; 3.0</td><td><span class="badge b-limited">HW Limited</span></td><td class="muted">Keterbatasan hardware panel</td></tr>
         </tbody>
       </table>
-
       <div class="hl"><strong>Tips:</strong> Untuk editing foto dan video profesional, targetkan ΔE Average di bawah 1.0. Untuk penggunaan umum, ΔE di bawah 2.0 sudah sangat baik.</div>
     </div>
   </div>
@@ -369,15 +464,32 @@
   <div class="section" id="s2">
     <div class="section-header" onclick="tog('s2')">
       <div class="section-left">
-        <div class="section-icon">⬜</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">White Point (D65)</div>
           <div class="section-sub">Titik referensi warna putih</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s2" onclick="togglePlay(event, 's2')">
+          <svg id="playicon_s2" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s2">
       <div class="desc">White Point adalah <strong>warna "putih" yang menjadi referensi</strong> seluruh reproduksi warna di layar. Standar internasional menggunakan <strong>D65 (6500K)</strong> — suhu warna yang menyerupai cahaya siang hari alami.</div>
       <div class="hr"></div>
       <div class="label">Kenapa D65?</div>
@@ -401,15 +513,26 @@
   <div class="section" id="s3">
     <div class="section-header" onclick="tog('s3')">
       <div class="section-left">
-        <div class="section-icon">γ</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c1.5 0 2.9-.3 4.2-.9"/>
+            <path d="M12 8v4l3 3"/>
+            <path d="M18 14c0 3.3-2.7 6-6 6"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">Gamma</div>
           <div class="section-sub">Kurva kecerahan dan kontras</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s3" onclick="togglePlay(event, 's3')">
+          <svg id="playicon_s3" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s3">
       <div class="desc">Gamma mengatur <strong>bagaimana gradasi kecerahan ditampilkan</strong> dari gelap ke terang. Nilai gamma yang tepat memastikan shadow, midtone, dan highlight terlihat natural.</div>
       <div class="hr"></div>
       <div class="label">Gamma 2.2 vs 2.4</div>
@@ -428,15 +551,25 @@
   <div class="section" id="s4">
     <div class="section-header" onclick="tog('s4')">
       <div class="section-left">
-        <div class="section-icon">☀</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">Luminance</div>
           <div class="section-sub">Kecerahan layar (cd/m²)</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s4" onclick="togglePlay(event, 's4')">
+          <svg id="playicon_s4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s4">
       <div class="desc">Luminance mengukur <strong>seberapa terang layar</strong> dalam satuan candela per meter persegi (cd/m²). Kecerahan yang tepat memastikan warna yang kamu lihat sesuai dengan output cetak atau tampilan di perangkat lain.</div>
       <div class="hr"></div>
       <div class="label">Panduan Target Luminance</div>
@@ -456,15 +589,24 @@
   <div class="section" id="s5">
     <div class="section-header" onclick="tog('s5')">
       <div class="section-left">
-        <div class="section-icon">★</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">Calibration Grade</div>
           <div class="section-sub">Hasil keseluruhan kalibrasi</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s5" onclick="togglePlay(event, 's5')">
+          <svg id="playicon_s5" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s5">
       <div class="desc">Calibration Grade adalah <strong>penilaian keseluruhan</strong> hasil kalibrasi yang ditentukan dari kombinasi nilai ΔE dan White Point Deviation.</div>
       <div class="hr"></div>
       <div class="info-row"><span class="info-label">Excellent</span><span class="info-val" style="color:var(--success)">ΔE &lt; 1.0 • WP dev ≤ 100K</span></div>
@@ -479,15 +621,27 @@
   <div class="section" id="s6">
     <div class="section-header" onclick="tog('s6')">
       <div class="section-left">
-        <div class="section-icon">📁</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="9" y1="13" x2="15" y2="13"/>
+            <line x1="9" y1="17" x2="12" y2="17"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">ICC Profile</div>
           <div class="section-sub">File koreksi warna sistem</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s6" onclick="togglePlay(event, 's6')">
+          <svg id="playicon_s6" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s6">
       <div class="desc">ICC Profile adalah <strong>file koreksi warna</strong> yang diinstal di sistem operasi setelah kalibrasi. File ini memberitahu sistem bagaimana menampilkan warna agar sesuai dengan standar yang sudah dikalibrasi.</div>
       <div class="hr"></div>
       <div class="label">Cara Kerja</div>
@@ -496,27 +650,35 @@
     </div>
   </div>
 
-  <!-- ══════════════════════════════════
-       KATEGORI 3: MENGENAL LAYARMU
-  ══════════════════════════════════ -->
+  <!-- ══ KATEGORI 3 ══ -->
   <div class="cat-label">Mengenal Layarmu</div>
 
   <!-- Jenis Panel -->
   <div class="section" id="s7">
     <div class="section-header" onclick="tog('s7')">
       <div class="section-left">
-        <div class="section-icon">🖥</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">Jenis Panel Layar</div>
           <div class="section-sub">IPS, TN, VA, OLED, Mini-LED</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s7" onclick="togglePlay(event, 's7')">
+          <svg id="playicon_s7" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s7">
       <div class="desc">Jenis panel mempengaruhi <strong>kemampuan maksimal kalibrasi</strong> yang bisa dicapai. Memahami panel layarmu membantu menentukan ekspektasi hasil yang realistis.</div>
       <div class="hr"></div>
-
       <div class="panel-card">
         <div class="panel-name">IPS (In-Plane Switching)</div>
         <span class="panel-tag">LED Backlit</span>
@@ -528,7 +690,6 @@
           <span class="spec-chip con">✗ Hitam kurang pekat</span>
         </div>
       </div>
-
       <div class="panel-card">
         <div class="panel-name">TN (Twisted Nematic)</div>
         <span class="panel-tag">LED Backlit</span>
@@ -540,7 +701,6 @@
           <span class="spec-chip con">✗ Sudut pandang sempit</span>
         </div>
       </div>
-
       <div class="panel-card">
         <div class="panel-name">VA (Vertical Alignment)</div>
         <span class="panel-tag">LED Backlit</span>
@@ -552,7 +712,6 @@
           <span class="spec-chip con">✗ Warna kurang konsisten</span>
         </div>
       </div>
-
       <div class="panel-card">
         <div class="panel-name">Mini-LED</div>
         <span class="panel-tag">Local Dimming Backlit</span>
@@ -564,11 +723,10 @@
           <span class="spec-chip con">✗ Harga lebih mahal</span>
         </div>
       </div>
-
       <div class="panel-card">
         <div class="panel-name">OLED (Organic LED)</div>
         <span class="panel-tag">Self-Emissive</span>
-        <div class="panel-desc">Setiap piksel memancarkan cahayanya sendiri — tidak butuh backlight. Hitam sempurna, kontras tak terbatas, respons piksel sangat cepat. Rentan <strong>burn-in</strong> pada konten statis.</div>
+        <div class="panel-desc">Setiap piksel memancarkan cahayanya sendiri — tidak butuh backlight. Hitam sempurna, kontras tak terbatas, respons piksel sangat cepat. Rentan burn-in pada konten statis.</div>
         <div class="panel-specs">
           <span class="spec-chip pro">✓ Hitam sempurna</span>
           <span class="spec-chip pro">✓ Kontras tak terbatas</span>
@@ -576,7 +734,6 @@
           <span class="spec-chip con">✗ Peak brightness terbatas</span>
         </div>
       </div>
-
       <div class="panel-card">
         <div class="panel-name">QD-OLED (Quantum Dot OLED)</div>
         <span class="panel-tag">Self-Emissive + Quantum Dot</span>
@@ -588,7 +745,6 @@
           <span class="spec-chip con">✗ Harga premium</span>
         </div>
       </div>
-
       <div class="hl-blue"><strong>Catatan kalibrasi:</strong> Semua panel di atas bisa dikalibrasi. IPS dan QD-OLED memberikan hasil terbaik. TN memiliki keterbatasan akurasi warna yang tidak bisa sepenuhnya dikoreksi.</div>
     </div>
   </div>
@@ -597,15 +753,27 @@
   <div class="section" id="s8">
     <div class="section-header" onclick="tog('s8')">
       <div class="section-left">
-        <div class="section-icon">🎨</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="8" cy="10" r="3"/>
+            <circle cx="16" cy="10" r="3"/>
+            <circle cx="12" cy="16" r="3"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">Color Space</div>
           <div class="section-sub">sRGB, Adobe RGB, DCI-P3</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s8" onclick="togglePlay(event, 's8')">
+          <svg id="playicon_s8" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s8">
       <div class="desc">Color Space adalah <strong>rentang warna yang bisa direproduksi</strong> oleh sebuah perangkat. Semakin luas color space, semakin banyak warna yang bisa ditampilkan.</div>
       <div class="hr"></div>
       <table class="tbl">
@@ -620,73 +788,86 @@
     </div>
   </div>
 
-  <!-- Umur Layar & Burn-in -->
+  <!-- Umur Layar -->
   <div class="section" id="s_umur">
     <div class="section-header" onclick="tog('s_umur')">
       <div class="section-left">
-        <div class="section-icon">🔋</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"/>
+            <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+            <line x1="12" y1="12" x2="12" y2="16"/>
+            <line x1="10" y1="14" x2="14" y2="14"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">Umur Layar & Burn-in</div>
           <div class="section-sub">Cara memperpanjang usia layar</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s_umur" onclick="togglePlay(event, 's_umur')">
+          <svg id="playicon_s_umur" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s_umur">
       <div class="desc">Semua layar mengalami degradasi seiring waktu, tapi ada beberapa hal yang bisa dilakukan untuk memperlambat prosesnya.</div>
-
       <div class="hr"></div>
-
       <div class="label">Backlight Degradation (LED/IPS)</div>
       <div class="desc">Backlight LED akan melemah dan bergeser warnanya seiring waktu — biasanya mulai terasa setelah 3–5 tahun pemakaian. Tanda-tandanya: warna putih terlihat kekuningan, kecerahan menurun, atau ada ketidakrataan warna di tepi layar. Kalibrasi berkala membantu <strong>mendeteksi dan mengkoreksi degradasi ini sejak dini</strong>.</div>
-
       <div class="hr"></div>
-
       <div class="label">Burn-in (OLED)</div>
       <div class="desc">Burn-in terjadi ketika elemen UI statis (taskbar, logo, HUD game) ditampilkan dalam waktu lama dan meninggalkan "bekas" permanen di panel. Cara mencegahnya:</div>
-      <div class="desc">• Aktifkan screen saver atau auto-off<br>• Hindari brightness >200 cd/m² untuk penggunaan jangka panjang<br>• Variasikan konten yang ditampilkan<br>• Gunakan fitur pixel shifting jika tersedia</div>
-
+      <div class="desc">• Aktifkan screen saver atau auto-off<br>• Hindari brightness lebih dari 200 cd/m² untuk penggunaan jangka panjang<br>• Variasikan konten yang ditampilkan<br>• Gunakan fitur pixel shifting jika tersedia</div>
       <div class="hl-red"><strong>Perlu diketahui:</strong> Burn-in tidak bisa diperbaiki melalui kalibrasi. Kalibrasi hanya mengoptimalkan warna pada kondisi panel saat ini, bukan memperbaiki kerusakan fisik.</div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════
-       KATEGORI 4: MITOS & FAKTA
-  ══════════════════════════════════ -->
+  <!-- ══ KATEGORI 4 ══ -->
   <div class="cat-label">Mitos & Fakta</div>
 
+  <!-- Mitos -->
   <div class="section" id="s_mitos">
     <div class="section-header" onclick="tog('s_mitos')">
       <div class="section-left">
-        <div class="section-icon">💡</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">Mitos Seputar Kalibrasi</div>
           <div class="section-sub">Yang sering salah dipahami</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s_mitos" onclick="togglePlay(event, 's_mitos')">
+          <svg id="playicon_s_mitos" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s_mitos">
       <div class="myth-card">
         <div class="myth-q">Layar mahal tidak perlu dikalibrasi</div>
         <div class="myth-a"><strong>Salah.</strong> Bahkan layar flagship dari merek ternama memiliki toleransi produksi — setiap unit berbeda. Kalibrasi memastikan layarmu benar-benar sesuai standar, bukan hanya "mungkin sudah bagus dari pabrik".</div>
       </div>
-
       <div class="myth-card">
         <div class="myth-q">Night Mode / Blue Light Filter sudah cukup</div>
         <div class="myth-a"><strong>Tidak sama.</strong> Night Mode hanya menggeser warna ke arah kuning untuk mengurangi blue light — tapi ini mengorbankan akurasi warna dan tidak mengkoreksi gamma atau luminance. Kalibrasi mengurangi blue light berlebihan dengan cara yang lebih akurat tanpa mendistorsi warna.</div>
       </div>
-
       <div class="myth-card">
         <div class="myth-q">Kalibrasi hanya untuk fotografer profesional</div>
         <div class="myth-a"><strong>Tidak benar.</strong> Siapapun yang menghabiskan banyak waktu di depan layar bisa merasakan manfaatnya — mata lebih nyaman, warna lebih natural, dan produktivitas meningkat. Kalibrasi juga relevan untuk gamer yang ingin visual game lebih akurat.</div>
       </div>
-
       <div class="myth-card">
         <div class="myth-q">Kalibrasi cukup sekali seumur hidup</div>
         <div class="myth-a"><strong>Tidak.</strong> Layar terus berubah seiring waktu akibat degradasi backlight dan panel. Kalibrasi ulang setiap 3–6 bulan memastikan akurasi warna tetap terjaga sesuai kondisi layar yang terus berubah.</div>
       </div>
-
       <div class="myth-card">
         <div class="myth-q">Layar yang sudah dikalibrasi warnanya pasti bagus di semua aplikasi</div>
         <div class="myth-a"><strong>Perlu catatan.</strong> ICC Profile hanya aktif di aplikasi yang mendukung color management seperti Photoshop, Lightroom, dan browser modern. Aplikasi yang tidak mendukung color management akan tetap menampilkan warna tanpa koreksi.</div>
@@ -698,15 +879,25 @@
   <div class="section" id="s9">
     <div class="section-header" onclick="tog('s9')">
       <div class="section-left">
-        <div class="section-icon">🔁</div>
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+          </svg>
+        </div>
         <div>
           <div class="section-title">Jadwal Re-Kalibrasi</div>
           <div class="section-sub">Kapan perlu kalibrasi ulang?</div>
         </div>
       </div>
-      <div class="chevron">▼</div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s9" onclick="togglePlay(event, 's9')">
+          <svg id="playicon_s9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
     </div>
-    <div class="section-body">
+    <div class="section-body" id="body_s9">
       <div class="desc">Layar mengalami <strong>degradasi alami seiring waktu</strong> — backlight melemah, panel bergeser perlahan. Kalibrasi ulang berkala memastikan akurasi warna tetap terjaga.</div>
       <div class="hr"></div>
       <div class="timeline">
@@ -726,7 +917,7 @@
           <div class="tl-desc">Minimum untuk pengguna umum. Lebih dari 12 bulan, akurasi warna sudah tidak bisa diandalkan.</div>
         </div>
       </div>
-      <div class="hl" style="margin-top:16px;"><strong>Tanda perlu kalibrasi ulang:</strong> Foto yang diedit terlihat berbeda di perangkat lain, warna terasa lebih kuning/biru dari biasanya, atau sudah lebih dari 6 bulan sejak kalibrasi terakhir.</div>
+      <div class="hl" style="margin-top:16px;"><strong>Tanda perlu kalibrasi ulang:</strong> Foto yang diedit terlihat berbeda di perangkat lain, warna terasa lebih kuning atau biru dari biasanya, atau sudah lebih dari 6 bulan sejak kalibrasi terakhir.</div>
     </div>
   </div>
 
@@ -740,29 +931,125 @@
 
 <!-- Floating WA Button -->
 <a href="https://wa.me/6282252445233?text=Halo%20Kalibrasi%20Bang!%20Boleh%20tanya-tanya%20soal%20kalibrasi%20layar%20dulu%3F%20%F0%9F%98%8A" class="btn-wa-float">
-  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
     <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.49 3.57 1.4 5.12L2 22l5.12-1.51c1.49.82 3.17 1.26 4.92 1.26 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0012.04 2z"/>
   </svg>
-  Chat WA
+  Tanya-tanya
 </a>
 
 <script>
-  
+// ── ACCORDION SOLO EXPAND ──
 function tog(id) {
   var sections = document.querySelectorAll(".section");
   sections.forEach(function(s) {
     if (s.id !== id) s.classList.remove("open");
   });
   document.getElementById(id).classList.toggle("open");
-
-  // Scroll ke section yang dibuka
   if (document.getElementById(id).classList.contains("open")) {
     setTimeout(function() {
       document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
   }
 }
-  
+
+// ── TEXT TO SPEECH ──
+var currentUtterance = null;
+var currentPlayId    = null;
+
+var ICON_PLAY = '<path d="M8 5v14l11-7z"/>';
+var ICON_STOP = '<rect x="6" y="6" width="12" height="12" rx="1"/>';
+
+function getBodyText(id) {
+  var body = document.getElementById("body_" + id);
+  if (!body) return "";
+  return body.innerText || body.textContent || "";
+}
+
+function togglePlay(event, id) {
+  event.stopPropagation();
+
+  // Kalau section belum open, buka dulu
+  if (!document.getElementById(id).classList.contains("open")) {
+    tog(id);
+    setTimeout(function() { startSpeech(id); }, 350);
+    return;
+  }
+
+  // Kalau sedang main section ini → stop
+  if (currentPlayId === id && currentUtterance) {
+    stopSpeech();
+    return;
+  }
+
+  // Kalau ada yang main lain → stop dulu, lalu main ini
+  stopSpeech();
+  startSpeech(id);
+}
+
+function startSpeech(id) {
+  if (!window.speechSynthesis) {
+    alert("Browser kamu tidak mendukung fitur Text-to-Speech.");
+    return;
+  }
+
+  var text = getBodyText(id);
+  if (!text.trim()) return;
+
+  var utter = new SpeechSynthesisUtterance(text);
+  utter.lang  = "id-ID";
+  utter.rate  = 0.95;
+  utter.pitch = 1;
+
+  utter.onstart = function() {
+    currentPlayId    = id;
+    currentUtterance = utter;
+    setPlayState(id, true);
+  };
+
+  utter.onend = function() {
+    currentPlayId    = null;
+    currentUtterance = null;
+    setPlayState(id, false);
+  };
+
+  utter.onerror = function() {
+    currentPlayId    = null;
+    currentUtterance = null;
+    setPlayState(id, false);
+  };
+
+  window.speechSynthesis.speak(utter);
+}
+
+function stopSpeech() {
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+  }
+  if (currentPlayId) {
+    setPlayState(currentPlayId, false);
+  }
+  currentPlayId    = null;
+  currentUtterance = null;
+}
+
+function setPlayState(id, playing) {
+  var btn  = document.getElementById("play_" + id);
+  var icon = document.getElementById("playicon_" + id);
+  if (!btn || !icon) return;
+  if (playing) {
+    btn.classList.add("playing");
+    icon.innerHTML = ICON_STOP;
+  } else {
+    btn.classList.remove("playing");
+    icon.innerHTML = ICON_PLAY;
+  }
+}
+
+// Stop speech saat pindah tab / tutup halaman
+window.addEventListener("beforeunload", stopSpeech);
+document.addEventListener("visibilitychange", function() {
+  if (document.hidden) stopSpeech();
+});
 </script>
 
 </body>
