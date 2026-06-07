@@ -410,6 +410,58 @@
       cursor: pointer; transition: all 0.15s;
     }
 
+    .sim-tabs { display:flex; gap:6px; margin-bottom:14px; }
+.sim-tab {
+  flex:1; padding:8px; border-radius:10px;
+  background:var(--surface2); border:1px solid var(--border);
+  font-family:var(--mono); font-size:11px; font-weight:700;
+  letter-spacing:0.08em; color:var(--muted); cursor:pointer;
+  transition:all 0.2s; -webkit-tap-highlight-color:transparent;
+}
+.sim-tab.active { background:rgba(240,255,0,0.08); border-color:rgba(240,255,0,0.35); color:var(--accent); }
+body.light .sim-tab.active { background:rgba(161,98,7,0.08); border-color:rgba(161,98,7,0.3); }
+
+.sim-wrap {
+  position:relative; width:100%; overflow:hidden;
+  border-radius:12px; border:1px solid var(--border);
+  cursor:col-resize; user-select:none; -webkit-user-select:none;
+  touch-action:none; aspect-ratio:4/3; background:var(--surface2);
+}
+.sim-img {
+  position:absolute; top:0; left:0;
+  width:100%; height:100%; object-fit:cover;
+  display:block; pointer-events:none;
+}
+.sim-after-clip {
+  position:absolute; top:0; left:0;
+  width:50%; height:100%; overflow:hidden;
+}
+.sim-after-clip .sim-img { width:auto; min-width:200%; }
+.sim-divider {
+  position:absolute; top:0; left:50%;
+  transform:translateX(-50%);
+  width:3px; height:100%;
+  background:rgba(255,255,255,0.9);
+  box-shadow:0 0 8px rgba(0,0,0,0.4);
+  display:flex; align-items:center; justify-content:center;
+  pointer-events:none;
+}
+.sim-handle {
+  width:36px; height:36px; border-radius:50%;
+  background:#fff; box-shadow:0 2px 12px rgba(0,0,0,0.3);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; color:#333;
+}
+.sim-label {
+  position:absolute; top:12px; z-index:10;
+  font-family:var(--mono); font-size:10px; font-weight:700;
+  letter-spacing:0.15em; padding:4px 10px; border-radius:20px;
+  pointer-events:none;
+}
+.sim-label-before { right:12px; background:rgba(255,69,69,0.85); color:#fff; }
+.sim-label-after  { left:12px;  background:rgba(73,173,244,0.85); color:#fff; }
+.sim-caption { margin-top:12px; font-size:11px; color:var(--muted); line-height:1.8; }
+
     .ai-btn:active { transform: scale(0.95); }
     .ai-btn svg { width: 18px; height: 18px; color: #000; }
   </style>
@@ -1074,6 +1126,54 @@
     </div>
   </div>
 
+  
+    <!-- SIMULATOR KALIBRASI -->
+  <div class="cat-label">Simulator Kalibrasi</div>
+<div class="section open" id="s_sim">
+  <div class="section-header" onclick="tog('s_sim')">
+    <div class="section-left">
+      <div class="section-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/>
+        </svg>
+      </div>
+      <div>
+        <div class="section-title">Sebelum & Sesudah Kalibrasi</div>
+        <div class="section-sub">Geser untuk melihat perbedaannya</div>
+      </div>
+    </div>
+    <div class="section-right">
+      <div class="chevron">▼</div>
+    </div>
+  </div>
+  <div class="section-body" id="body_s_sim" style="padding:16px;">
+    <div class="sim-tabs">
+      <button class="sim-tab active" onclick="switchScene(0)">Portrait</button>
+      <button class="sim-tab" onclick="switchScene(1)">Color Checker</button>
+    </div>
+    <div class="sim-wrap" id="simWrap">
+      <div class="sim-label sim-label-before">BEFORE</div>
+      <div class="sim-label sim-label-after">AFTER</div>
+      <img class="sim-img sim-before" id="simBefore" src="Prillbefore.jpg" alt="Before" draggable="false">
+      <div class="sim-after-clip" id="simAfterClip">
+        <img class="sim-img sim-after" id="simAfter" src="Prillafter.jpg" alt="After" draggable="false">
+      </div>
+      <div class="sim-divider" id="simDivider">
+        <div class="sim-handle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="sim-caption" id="simCaption">
+      <span style="color:var(--danger)">● Before</span> &nbsp;Layar belum terkalibrasi — skin tone kemerahan, shadow kehilangan detail
+      &nbsp;&nbsp;
+      <span style="color:var(--success)">● After</span> &nbsp;Setelah kalibrasi — warna natural, white point D65 tercapai
+    </div>
+  </div>
+</div>
+
   <!-- AI-Search -->
   <div class="ai-search-wrap" id="displaySearch">
     <div class="ai-search-header">
@@ -1263,6 +1363,49 @@ function searchDisplay() {
   if (!query) return;
   window.open("https://www.google.com/search?q=" + encodeURIComponent(query + " site:displayspecifications.com"), "_blank");
 }
+
+  // ── SIMULATOR ──
+var simPos = 0.5;
+var simDragging = false;
+var scenes = [
+  {
+    before: 'Prillbefore.jpg', after: 'Prillafter.jpg',
+    caption: '<span style="color:var(--danger)">● Before</span> &nbsp;Layar belum terkalibrasi — skin tone kemerahan, shadow kehilangan detail&nbsp;&nbsp;<span style="color:var(--success)">● After</span> &nbsp;Setelah kalibrasi — warna natural, white point D65 tercapai'
+  },
+  {
+    before: 'Digital_ColorChecker_Before.jpg', after: 'Digital_ColorChecker_After.jpg',
+    caption: '<span style="color:var(--danger)">● Before</span> &nbsp;Color checker sebelum kalibrasi — saturasi tidak konsisten, putih kebiruan&nbsp;&nbsp;<span style="color:var(--success)">● After</span> &nbsp;Setelah kalibrasi — setiap patch akurat, gray scale netral'
+  }
+];
+function switchScene(idx) {
+  document.querySelectorAll('.sim-tab').forEach(function(t,i){ t.classList.toggle('active', i===idx); });
+  document.getElementById('simBefore').src = scenes[idx].before;
+  document.getElementById('simAfter').src  = scenes[idx].after;
+  document.getElementById('simCaption').innerHTML = scenes[idx].caption;
+  simPos = 0.5; updateSim();
+}
+function updateSim() {
+  var pct = (simPos * 100).toFixed(2) + '%';
+  document.getElementById('simAfterClip').style.width = pct;
+  document.getElementById('simDivider').style.left    = pct;
+}
+function getSimX(e, wrap) {
+  var rect = wrap.getBoundingClientRect();
+  var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  return Math.min(Math.max((clientX - rect.left) / rect.width, 0.02), 0.98);
+}
+var simWrap = document.getElementById('simWrap');
+if (simWrap) {
+  simWrap.addEventListener('mousedown',  function(e){ simDragging=true; simPos=getSimX(e,simWrap); updateSim(); });
+  simWrap.addEventListener('mousemove',  function(e){ if(simDragging){ simPos=getSimX(e,simWrap); updateSim(); } });
+  simWrap.addEventListener('mouseup',    function(){ simDragging=false; });
+  simWrap.addEventListener('mouseleave', function(){ simDragging=false; });
+  simWrap.addEventListener('touchstart', function(e){ simDragging=true; simPos=getSimX(e,simWrap); updateSim(); e.preventDefault(); },{passive:false});
+  simWrap.addEventListener('touchmove',  function(e){ if(simDragging){ simPos=getSimX(e,simWrap); updateSim(); } e.preventDefault(); },{passive:false});
+  simWrap.addEventListener('touchend',   function(){ simDragging=false; });
+  updateSim();
+}
+  
 </script>
 
 </body>
