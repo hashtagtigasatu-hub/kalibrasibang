@@ -1072,7 +1072,7 @@
     <div class="ai-input-wrap">
       <input type="text" class="ai-input"
         id="aiQuery"
-        placeholder="Ketik nama monitor atau laptop, contoh: Dell U2723D"
+        placeholder="Ketik nama device, contoh: Dell U2723D"
         onkeydown="handleSearchKey(event)"
         style="min-height:unset; height:50px; resize:none;">
     </div>
@@ -1232,7 +1232,7 @@ function handleSearchKey(e) {
 function searchDisplay() {
   var query = document.getElementById("aiQuery").value.trim();
   if (!query) return;
-  var url = "https://www.displayspecifications.com/en/search?q=" + encodeURIComponent(query);
+  var url = "https://www.google.com/search?q=" + encodeURIComponent(query + " site:displayspecifications.com");
   window.open(url, "_blank");
 }
   
