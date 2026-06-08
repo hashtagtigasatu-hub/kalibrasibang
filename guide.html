@@ -1638,16 +1638,17 @@ if (simWrap) {
 var diagScores = { 1: null, 2: null, 3: null, 4: null };
 
 function selectOpt(q, score, el) {
-  // Deselect semua opsi di pertanyaan yang sama
   var opts = el.closest('.diag-options').querySelectorAll('.diag-opt');
   opts.forEach(function(o) { o.classList.remove('selected'); });
   el.classList.add('selected');
   diagScores[q] = score;
 
-  // Cek apakah semua pertanyaan sudah dijawab
   var allAnswered = Object.values(diagScores).every(function(v) { return v !== null; });
   var btn = document.getElementById('diagSubmit');
-  if (allAnswered) btn.classList.add('ready');
+  if (allAnswered) {
+    btn.classList.add('ready');
+    btn.removeAttribute('disabled'); // tambah ini
+  }
 }
 
 function showDiagResult() {
