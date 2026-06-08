@@ -1254,6 +1254,11 @@ function tog(id) {
     setTimeout(function() {
       document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
+
+    // Trigger animasi simulator saat section simulator dibuka
+    if (id === 's_sim') {
+      setTimeout(autoSlideDemo, 600);
+    }
   }
 }
 
