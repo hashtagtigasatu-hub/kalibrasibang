@@ -1389,6 +1389,45 @@ function updateSim() {
   document.getElementById('simAfter').style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
   document.getElementById('simDivider').style.left   = pct + '%';
 }
+
+  // Auto-animate simulator saat pertama dibuka
+function autoSlideDemo() {
+  var duration = 1200; // ms, total durasi gerak
+  var start = null;
+  var from = 0.5;
+  var to = 0.82;
+  var returning = false;
+
+  function step(ts) {
+    if (!start) start = ts;
+    var elapsed = ts - start;
+    var progress = Math.min(elapsed / duration, 1);
+    // Easing: ease-in-out
+    var ease = progress < 0.5
+      ? 2 * progress * progress
+      : -1 + (4 - 2 * progress) * progress;
+
+    if (!returning) {
+      simPos = from + (to - from) * ease;
+    } else {
+      simPos = to + (from - to) * ease;
+    }
+    updateSim();
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else if (!returning) {
+      // Jeda sebentar di posisi kanan, lalu balik ke tengah
+      returning = true;
+      start = null;
+      setTimeout(function() { requestAnimationFrame(step); }, 400);
+    }
+  }
+  requestAnimationFrame(step);
+}
+// Jalankan sekali saat halaman load, dengan delay kecil
+setTimeout(autoSlideDemo, 800);
+  
 function getSimX(e, wrap) {
   var rect = wrap.getBoundingClientRect();
   var clientX = e.touches ? e.touches[0].clientX : e.clientX;
