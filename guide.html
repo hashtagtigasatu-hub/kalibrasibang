@@ -229,11 +229,11 @@
     .section-body { display: none; padding: 18px; }
     .section.open .section-body {
       display: block;
-      animation: fadeInBody 0.25s ease forwards;
+      animation: fadeInBody 0.4s ease-out forwards;
     }
 
     @keyframes fadeInBody {
-      from { opacity: 0; transform: translateY(-6px); }
+      from { opacity: 0; transform: translateY(-12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
@@ -489,7 +489,7 @@
       color: var(--accent);
       cursor: pointer;
       text-transform: uppercase;
-      animation: pulseScale 1.8s ease-in-out infinite;
+      animation: pulseScale 1.5s ease-in-out infinite;
     }
     
   </style>
