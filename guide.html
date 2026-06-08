@@ -466,6 +466,31 @@
     .sim-label-before { right:5px; background:rgba(255,69,69,0.85); color:#fff; }
     .sim-label-after  { left:5px;  background:rgba(73,173,244,0.85); color:#fff; }
     .sim-caption { margin-top:12px; font-size:11px; color:var(--muted); line-height:1.8; }
+
+    @keyframes pulseScale {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.08); }
+    }
+    
+    .btn-cek-spec {
+      animation: pulseScale 1.8s ease-in-out infinite;
+    }
+
+    .btn-cek-spec {
+      margin-bottom: 14px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      cursor: pointer;
+      text-transform: uppercase;
+      animation: pulseScale 1.8s ease-in-out infinite;
+    }
     
   </style>
 </head>
@@ -493,16 +518,9 @@
   <div class="hero">
     <div class="hero-tag">Display Calibration Guide</div>
     <div class="hero-title">Memahami <span>Kalibrasi</span><br>Layarmu</div>
-    <div class="hero-pills">
-      <span class="hero-pill">Efisiensi Daya</span>
-      <span class="hero-pill">Akurasi Warna</span>
-      <span class="hero-pill">Kesehatan Mata</span>
-      <span class="hero-pill">Jenis Panel</span>
-      <span class="hero-pill">Mitos & Fakta</span>
-      <span class="hero-pill">Umur Layar</span>
-    </div>
-    <button onclick="document.getElementById('displaySearch').scrollIntoView({behavior:'smooth', block:'start'})"
-      style="margin-bottom:14px; background:transparent; border:1px solid var(--accent); border-radius:20px; padding:6px 14px; font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.1em; color:var(--accent); cursor:pointer; text-transform:uppercase;">
+    
+    <button class="btn-cek-spec"
+      onclick="document.getElementById('displaySearch').scrollIntoView({behavior:'smooth', block:'start'})">
       Cek Spesifikasi Layar ↓
     </button>
     <div class="hero-desc">Panduan lengkap tentang kalibrasi layar — dari manfaat kesehatan, efisiensi daya, istilah teknis, hingga perbedaan jenis panel.</div>
@@ -1430,6 +1448,8 @@ function autoSlideDemo() {
   }
   requestAnimationFrame(step);
 }
+  // Jalankan sekali saat halaman load, dengan delay kecil
+setTimeout(autoSlideDemo, 800);
 
   
 function getSimX(e, wrap) {
