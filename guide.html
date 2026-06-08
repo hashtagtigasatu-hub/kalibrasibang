@@ -1404,6 +1404,7 @@ function searchDisplay() {
   // ── SIMULATOR ──
 var simPos = 0.5;
 var simDragging = false;
+var simAnimating = false;
 var scenes = [
   {
     before: 'Prillbefore.jpg', after: 'Prillafter.jpg',
@@ -1429,17 +1430,18 @@ function updateSim() {
 
   // Auto-animate simulator saat pertama dibuka
 function autoSlideDemo() {
-  var duration = 1200; // ms, total durasi gerak
+  var duration = 1200;
   var start = null;
   var from = 0.5;
   var to = 0.82;
   var returning = false;
+  simAnimating = true;
 
   function step(ts) {
+    if (!simAnimating) return; // stop jika flag dimatikan
     if (!start) start = ts;
     var elapsed = ts - start;
     var progress = Math.min(elapsed / duration, 1);
-    // Easing: ease-in-out
     var ease = progress < 0.5
       ? 2 * progress * progress
       : -1 + (4 - 2 * progress) * progress;
@@ -1454,10 +1456,11 @@ function autoSlideDemo() {
     if (progress < 1) {
       requestAnimationFrame(step);
     } else if (!returning) {
-      // Jeda sebentar di posisi kanan, lalu balik ke tengah
       returning = true;
       start = null;
       setTimeout(function() { requestAnimationFrame(step); }, 400);
+    } else {
+      simAnimating = false; // selesai normal
     }
   }
   requestAnimationFrame(step);
@@ -1473,11 +1476,11 @@ function getSimX(e, wrap) {
 }
 var simWrap = document.getElementById('simWrap');
 if (simWrap) {
-  simWrap.addEventListener('mousedown',  function(e){ simDragging=true; simPos=getSimX(e,simWrap); updateSim(); });
+  simWrap.addEventListener('mousedown',  function(e){ simAnimating=false; simDragging=true; simPos=getSimX(e,simWrap); updateSim(); });
   simWrap.addEventListener('mousemove',  function(e){ if(simDragging){ simPos=getSimX(e,simWrap); updateSim(); } });
   simWrap.addEventListener('mouseup',    function(){ simDragging=false; });
   simWrap.addEventListener('mouseleave', function(){ simDragging=false; });
-  simWrap.addEventListener('touchstart', function(e){ simDragging=true; simPos=getSimX(e,simWrap); updateSim(); e.preventDefault(); },{passive:false});
+  simWrap.addEventListener('touchstart', function(e){ simAnimating=false; simDragging=true; simPos=getSimX(e,simWrap); updateSim(); e.preventDefault(); },{passive:false});
   simWrap.addEventListener('touchmove',  function(e){ if(simDragging){ simPos=getSimX(e,simWrap); updateSim(); } e.preventDefault(); },{passive:false});
   simWrap.addEventListener('touchend',   function(){ simDragging=false; });
   updateSim();
