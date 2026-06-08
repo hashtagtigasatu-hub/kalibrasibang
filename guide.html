@@ -510,6 +510,9 @@
       cursor: pointer;
       text-transform: uppercase;
       animation: pulseScale 1.5s ease-in-out infinite;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     /* ── SELF DIAGNOSIS ── */
@@ -566,6 +569,28 @@
       text-decoration: none; cursor: pointer; transition: all 0.2s;
     }
     .btn-wa-diag:active { transform: scale(0.97); }
+
+    .dot-a1 {
+      position: relative;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .dot-a1::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: dotPulseA1 2s ease-out infinite;
+    }
+    @keyframes dotPulseA1 {
+      0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+      100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+    }
     
   </style>
 </head>
@@ -596,6 +621,7 @@
     
     <button class="btn-cek-spec"
       onclick="document.getElementById('displaySearch').scrollIntoView({behavior:'smooth', block:'start'})">
+      <span class="dot-a1"></span>
       Cek Spesifikasi Layar ↓
     </button>
     <div class="hero-desc">Panduan lengkap tentang kalibrasi layar, mulai dari manfaat kesehatan, efisiensi daya, istilah teknis, perbedaan jenis panel, hingga mitos seputar kalibrasi layar.</div>
@@ -727,6 +753,7 @@
       </div>
     </div>
     <div class="section-right">
+      <div class="dot-a1"></div>
       <div class="chevron">▼</div>
     </div>
   </div>
@@ -1188,6 +1215,7 @@
       </div>
     </div>
     <div class="section-right">
+      <div class="dot-a1"></div>
       <div class="chevron">▼</div>
     </div>
   </div>
