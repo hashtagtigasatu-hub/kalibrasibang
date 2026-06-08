@@ -69,6 +69,31 @@
     filter: brightness(0) saturate(100%);
     }
 
+    body.light .section.open .section-icon {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    
+    body.light .section.open .section-icon svg {
+      color: #fff;
+    }
+    
+    body.light .diag-opt.selected {
+      background: rgba(100,100,0,0.08);
+      border-color: rgba(100,100,0,0.35);
+      color: var(--accent);
+    }
+    
+    body.light .sim-tab.active {
+      background: rgba(161,98,7,0.08);
+      border-color: rgba(161,98,7,0.3);
+    }
+    
+    body.light .btn-cek-spec {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
     .container { max-width: 640px; margin: 0 auto; padding: 0 20px 40px; }
 
     /* ── HEADER ── */
@@ -192,11 +217,10 @@
     .section-icon svg { width: 18px; height: 18px; color: var(--text); transition: color 0.2s; }
 
     .section.open .section-icon {
-      background: rgba(240,255,0,0.08);
-      border-color: rgba(240,255,0,0.35);
+      background: var(--accent);
+      border-color: var(--accent);
     }
-
-    .section.open .section-icon svg { color: var(--accent); }
+    .section.open .section-icon svg { color: #000; }
 
     .section-title { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.05em; color: var(--text); }
     .section-sub { font-size: 12px; color: var(--accent); margin-top: 2px; }
@@ -487,6 +511,60 @@
       text-transform: uppercase;
       animation: pulseScale 1.5s ease-in-out infinite;
     }
+
+    /* ── SELF DIAGNOSIS ── */
+    .diag-q { margin-bottom: 18px; }
+    .diag-q-text { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 10px; line-height: 1.6; }
+    .diag-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .diag-opt {
+      padding: 7px 14px; border-radius: 20px;
+      background: var(--surface2); border: 1px solid var(--border);
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      color: var(--muted); cursor: pointer;
+      transition: all 0.15s; -webkit-tap-highlight-color: transparent;
+    }
+    .diag-opt:active { transform: scale(0.96); }
+    .diag-opt.selected {
+      background: rgba(240,255,0,0.08);
+      border-color: rgba(240,255,0,0.35);
+      color: var(--accent);
+    }
+    .diag-submit {
+      width: 100%; margin-top: 8px; padding: 12px;
+      background: var(--accent); border: none; border-radius: var(--radius);
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; color: #000; cursor: pointer;
+      transition: all 0.2s; opacity: 0.3; pointer-events: none;
+    }
+    .diag-submit.ready { opacity: 1; pointer-events: auto; }
+    .diag-submit.ready:active { transform: scale(0.97); }
+    .diag-result-box {
+      border-radius: 14px; padding: 18px; margin-bottom: 14px;
+      font-size: 12px; line-height: 1.8;
+    }
+    .diag-result-box.red { background: rgba(255,69,69,0.07); border: 1px solid rgba(255,69,69,0.25); }
+    .diag-result-box.yellow { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.25); }
+    .diag-result-box.green { background: rgba(73,173,244,0.07); border: 1px solid rgba(73,173,244,0.25); }
+    .diag-result-title { font-family: var(--mono); font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .diag-result-box.red .diag-result-title { color: var(--danger); }
+    .diag-result-box.yellow .diag-result-title { color: #f59e0b; }
+    .diag-result-box.green .diag-result-title { color: var(--success); }
+    .diag-reset {
+      width: 100%; padding: 10px;
+      background: transparent; border: 1px solid var(--border);
+      border-radius: var(--radius); font-family: var(--mono);
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .diag-reset:active { transform: scale(0.97); }
+    .btn-wa-diag {
+      display: block; width: 100%; margin-top: 12px; padding: 12px;
+      background: var(--wa); border: none; border-radius: var(--radius);
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; color: #fff; text-align: center;
+      text-decoration: none; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-wa-diag:active { transform: scale(0.97); }
     
   </style>
 </head>
@@ -1092,6 +1170,76 @@
     </div>
   </div>
 
+  <!-- ══ SELF DIAGNOSIS ══ -->
+<div class="cat-label">Cek Kondisi Layarmu</div>
+<div class="section" id="s_diag">
+  <div class="section-header" onclick="tog('s_diag')">
+    <div class="section-left">
+      <div class="section-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+      </div>
+      <div>
+        <div class="section-title">Self-Diagnosis Layar</div>
+        <div class="section-sub">Apakah layarmu perlu dikalibrasi?</div>
+      </div>
+    </div>
+    <div class="section-right">
+      <div class="chevron">▼</div>
+    </div>
+  </div>
+  <div class="section-body" id="body_s_diag">
+    <div id="diagQuestions">
+      <!-- Q1 -->
+      <div class="diag-q" id="dq1">
+        <div class="diag-q-text">1. Sudah berapa lama pakai layar ini?</div>
+        <div class="diag-options">
+          <button class="diag-opt" onclick="selectOpt(1, 0, this)">&lt; 1 tahun</button>
+          <button class="diag-opt" onclick="selectOpt(1, 1, this)">1–3 tahun</button>
+          <button class="diag-opt" onclick="selectOpt(1, 2, this)">&gt; 3 tahun</button>
+        </div>
+      </div>
+      <!-- Q2 -->
+      <div class="diag-q" id="dq2">
+        <div class="diag-q-text">2. Kapan terakhir kali kalibrasi?</div>
+        <div class="diag-options">
+          <button class="diag-opt" onclick="selectOpt(2, 0, this)">&lt; 6 bulan lalu</button>
+          <button class="diag-opt" onclick="selectOpt(2, 3, this)">Belum pernah</button>
+          <button class="diag-opt" onclick="selectOpt(2, 2, this)">&gt; 6 bulan lalu</button>
+        </div>
+      </div>
+      <!-- Q3 -->
+      <div class="diag-q" id="dq3">
+        <div class="diag-q-text">3. Konten yang diedit terlihat berbeda luminance & warnanya di perangkat lain?</div>
+        <div class="diag-options">
+          <button class="diag-opt" onclick="selectOpt(3, 0, this)">Tidak pernah</button>
+          <button class="diag-opt" onclick="selectOpt(3, 1, this)">Kadang</button>
+          <button class="diag-opt" onclick="selectOpt(3, 2, this)">Sering</button>
+        </div>
+      </div>
+      <!-- Q4 -->
+      <div class="diag-q" id="dq4">
+        <div class="diag-q-text">4. Warna putih di layar terlihat?</div>
+        <div class="diag-options">
+          <button class="diag-opt" onclick="selectOpt(4, 0, this)">Natural</button>
+          <button class="diag-opt" onclick="selectOpt(4, 2, this)">Kekuningan</button>
+          <button class="diag-opt" onclick="selectOpt(4, 2, this)">Kebiruan</button>
+        </div>
+      </div>
+
+      <button class="diag-submit" id="diagSubmit" onclick="showDiagResult()" disabled>Lihat Hasil</button>
+    </div>
+
+    <!-- Result -->
+    <div id="diagResult" style="display:none;">
+      <div id="diagResultBox"></div>
+      <button class="diag-reset" onclick="resetDiag()">Ulangi Diagnosis</button>
+    </div>
+  </div>
+</div>
+
   <!-- ══ KATEGORI 4 ══ -->
   <div class="cat-label">Mitos & Fakta</div>
 
@@ -1484,6 +1632,58 @@ if (simWrap) {
   simWrap.addEventListener('touchmove',  function(e){ if(simDragging){ simPos=getSimX(e,simWrap); updateSim(); } e.preventDefault(); },{passive:false});
   simWrap.addEventListener('touchend',   function(){ simDragging=false; });
   updateSim();
+}
+
+  // ── SELF DIAGNOSIS ──
+var diagScores = { 1: null, 2: null, 3: null, 4: null };
+
+function selectOpt(q, score, el) {
+  // Deselect semua opsi di pertanyaan yang sama
+  var opts = el.closest('.diag-options').querySelectorAll('.diag-opt');
+  opts.forEach(function(o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+  diagScores[q] = score;
+
+  // Cek apakah semua pertanyaan sudah dijawab
+  var allAnswered = Object.values(diagScores).every(function(v) { return v !== null; });
+  var btn = document.getElementById('diagSubmit');
+  if (allAnswered) btn.classList.add('ready');
+}
+
+function showDiagResult() {
+  var total = diagScores[1] + diagScores[2] + diagScores[3] + diagScores[4];
+  var html = '';
+
+  if (total >= 6) {
+    html = '<div class="diag-result-box red">' +
+      '<div class="diag-result-title">🔴 Layarmu Perlu Dikalibrasi Sekarang</div>' +
+      '<div>Berdasarkan jawabanmu, layar ini menunjukkan tanda-tanda degradasi warna yang signifikan. Warna yang kamu lihat kemungkinan sudah tidak akurat — hasil editing dan konten yang kamu produksi berisiko terlihat berbeda di perangkat lain.</div>' +
+      '</div>' +
+      '<a class="btn-wa-diag" href="https://wa.me/6282252445233?text=Halo%20Kalibrasi%20Bang!%20Saya%20baru%20cek%20diagnosis%20layar%20dan%20sepertinya%20perlu%20kalibrasi%20sekarang%20%F0%9F%98%8A" target="_blank">Chat WA — Booking Kalibrasi →</a>';
+  } else if (total >= 3) {
+    html = '<div class="diag-result-box yellow">' +
+      '<div class="diag-result-title">🟡 Layarmu Perlu Dipantau</div>' +
+      '<div>Kondisi layarmu masih dalam toleransi, namun ada beberapa indikator yang perlu diperhatikan. Disarankan untuk melakukan kalibrasi dalam <strong>1–2 bulan ke depan</strong> sebelum degradasi warna semakin terasa.</div>' +
+      '</div>';
+  } else {
+    html = '<div class="diag-result-box green">' +
+      '<div class="diag-result-title">🟢 Layarmu Masih Aman</div>' +
+      '<div>Kondisi layarmu saat ini masih baik. Jadwalkan kalibrasi berikutnya dalam <strong>3–6 bulan ke depan</strong> untuk memastikan akurasi warna tetap terjaga.</div>' +
+      '</div>';
+  }
+
+  document.getElementById('diagQuestions').style.display = 'none';
+  document.getElementById('diagResult').style.display = 'block';
+  document.getElementById('diagResultBox').innerHTML = html;
+}
+
+function resetDiag() {
+  diagScores = { 1: null, 2: null, 3: null, 4: null };
+  document.querySelectorAll('.diag-opt').forEach(function(o) { o.classList.remove('selected'); });
+  document.getElementById('diagSubmit').classList.remove('ready');
+  document.getElementById('diagQuestions').style.display = 'block';
+  document.getElementById('diagResult').style.display = 'none';
+  document.getElementById('diagResultBox').innerHTML = '';
 }
   
 </script>
