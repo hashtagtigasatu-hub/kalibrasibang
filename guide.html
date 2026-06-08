@@ -1261,15 +1261,26 @@
 function tog(id) {
   var sections = document.querySelectorAll(".section");
   sections.forEach(function(s) {
-    if (s.id !== id) s.classList.remove("open");
+    if (s.id !== id) {
+      // Stop TTS jika section yang ditutup sedang diputar
+      if (currentPlayId === 'body_' + s.id || currentPlayId === s.id) {
+        stopSpeech();
+      }
+      s.classList.remove("open");
+    }
   });
-  document.getElementById(id).classList.toggle("open");
-  if (document.getElementById(id).classList.contains("open")) {
+
+  var isNowOpen = document.getElementById(id).classList.toggle("open");
+
+  // Jika section ditutup, stop TTS
+  if (!isNowOpen && (currentPlayId === id || currentPlayId === 'body_' + id)) {
+    stopSpeech();
+  }
+
+  if (isNowOpen) {
     setTimeout(function() {
       document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "start" });
     }, 300);
-
-    // Trigger animasi simulator saat section simulator dibuka
     if (id === 's_sim') {
       setTimeout(autoSlideDemo, 600);
     }
@@ -1380,7 +1391,14 @@ function handleSearchKey(e) {
 function searchDisplay() {
   var query = document.getElementById("aiQuery").value.trim();
   if (!query) return;
-  window.open("https://www.google.com/search?q=" + encodeURIComponent(query + " site:displayspecifications.com"), "_blank");
+  var btn = document.querySelector(".ai-btn");
+  btn.style.opacity = "0.5";
+  btn.style.transform = "scale(0.93)";
+  setTimeout(function() {
+    btn.style.opacity = "";
+    btn.style.transform = "";
+    window.open("https://www.google.com/search?q=" + encodeURIComponent(query + " site:displayspecifications.com"), "_blank");
+  }, 200);
 }
 
   // ── SIMULATOR ──
