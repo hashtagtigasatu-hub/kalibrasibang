@@ -1267,7 +1267,7 @@ function tog(id) {
   if (document.getElementById(id).classList.contains("open")) {
     setTimeout(function() {
       document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
+    }, 300);
 
     // Trigger animasi simulator saat section simulator dibuka
     if (id === 's_sim') {
