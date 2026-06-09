@@ -97,7 +97,6 @@
 
     .container {
       max-width: 640px; margin: 0 auto; padding: 0 20px 40px; 
-      padding-top: 80px; /* sesuaikan dengan tinggi header aktual */
     }
 
     /* ── HEADER ── */
@@ -105,7 +104,7 @@
       position: sticky; top: 0; z-index: 100;
       background: var(--bg);
       padding: max(20px, env(safe-area-inset-top)) 20px 16px;
-      /* margin: 0 -20px 32px; */
+      margin: 0 -20px 32px;
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 12px;
       transition: background 0.3s, border-color 0.3s;
@@ -1695,6 +1694,31 @@ function showDiagResult() {
       '<div class="diag-result-title">🟢 Layarmu Masih Aman</div>' +
       '<div>Kondisi layarmu saat ini masih baik. Jadwalkan kalibrasi berikutnya dalam <strong>3 bulan ke depan</strong> untuk memastikan akurasi warna tetap terjaga.</div>' +
       '</div>';
+  }
+
+    var questions = document.getElementById('diagQuestions');
+    var result = document.getElementById('diagResult');
+  
+    // Set konten dulu sebelum animasi
+    document.getElementById('diagResultBox').innerHTML = html;
+  
+    // Fade out questions
+    questions.style.transition = 'opacity 0.3s ease';
+    questions.style.opacity = '0';
+  
+    setTimeout(function() {
+      questions.style.display = 'none';
+      result.style.display = 'block';
+      result.style.opacity = '0';
+      result.style.transform = 'translateY(-10px)';
+      result.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+  
+      // Trigger reflow agar transisi terbaca browser
+      result.offsetHeight;
+  
+      result.style.opacity = '1';
+      result.style.transform = 'translateY(0)';
+    }, 300);
   }
 
   document.getElementById('diagQuestions').style.display = 'none';
