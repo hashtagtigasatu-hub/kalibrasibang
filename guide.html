@@ -1725,8 +1725,21 @@ function resetDiag() {
   diagScores = { 1: null, 2: null, 3: null, 4: null };
   document.querySelectorAll('.diag-opt').forEach(function(o) { o.classList.remove('selected'); });
   document.getElementById('diagSubmit').classList.remove('ready');
-  document.getElementById('diagQuestions').style.display = 'block';
-  document.getElementById('diagResult').style.display = 'none';
+  document.getElementById('diagSubmit').setAttribute('disabled', true);
+
+  // Reset inline styles dari animasi
+  var result = document.getElementById('diagResult');
+  var questions = document.getElementById('diagQuestions');
+
+  result.style.display = 'none';
+  result.style.opacity = '';
+  result.style.transform = '';
+  result.style.transition = '';
+
+  questions.style.display = 'block';
+  questions.style.opacity = '1';
+  questions.style.transition = '';
+
   document.getElementById('diagResultBox').innerHTML = '';
 }
   
