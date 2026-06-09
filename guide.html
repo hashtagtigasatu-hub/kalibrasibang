@@ -25,7 +25,6 @@
       --sans:     'DM Sans', sans-serif;
     }
 
-    /* ── LIGHT MODE ── */
     body.light {
       --bg:      #f5f5f5;
       --surface: #ffffff;
@@ -44,61 +43,22 @@
       font-size: 16px;
       -webkit-font-smoothing: antialiased;
       transition: background 0.3s, color 0.3s;
-      overscroll-behavior-y: none;    
+      overscroll-behavior-y: none;
       -webkit-overflow-scrolling: touch;
     }
 
-    body.light .hl {
-      background: rgba(100, 100, 0, 0.06);
-      border-color: rgba(100, 100, 0, 0.2);
-    }
-    
-    body.light .hero-tag::after {
-      background: rgba(100, 100, 0, 0.2);
-    }
-    
-    body.light .section.open .section-icon {
-      background: rgba(100, 100, 0, 0.06);
-      border-color: rgba(100, 100, 0, 0.25);
-    }
-    
-    body.light .ai-search-icon {
-      background: rgba(100, 100, 0, 0.06);
-      border-color: rgba(100, 100, 0, 0.2);
-    }
-
-    body.light .logo-mark img {
-    filter: brightness(0) saturate(100%);
-    }
-
-    body.light .section.open .section-icon {
-      background: var(--accent);
-      border-color: var(--accent);
-    }
-    
-    body.light .section.open .section-icon svg {
-      color: #fff;
-    }
-    
-    body.light .diag-opt.selected {
-      background: rgba(100,100,0,0.08);
-      border-color: rgba(100,100,0,0.35);
-      color: var(--accent);
-    }
-    
-    body.light .sim-tab.active {
-      background: rgba(161,98,7,0.08);
-      border-color: rgba(161,98,7,0.3);
-    }
-    
-    body.light .btn-cek-spec {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+    body.light .hl { background: rgba(100,100,0,0.06); border-color: rgba(100,100,0,0.2); }
+    body.light .hero-tag::after { background: rgba(100,100,0,0.2); }
+    body.light .section.open .section-icon { background: var(--accent); border-color: var(--accent); }
+    body.light .section.open .section-icon svg { color: #fff; }
+    body.light .ai-search-icon { background: rgba(100,100,0,0.06); border-color: rgba(100,100,0,0.2); }
+    body.light .logo-mark img { filter: brightness(0) saturate(100%); }
+    body.light .diag-opt.selected { background: rgba(100,100,0,0.08); border-color: rgba(100,100,0,0.35); color: var(--accent); }
+    body.light .sim-tab.active { background: rgba(161,98,7,0.08); border-color: rgba(161,98,7,0.3); }
+    body.light .btn-cek-spec { border-color: var(--accent); color: var(--accent); }
 
     .container { max-width: 640px; margin: 0 auto; padding: 0 20px 40px; }
 
-    /* ── HEADER ── */
     .header {
       position: sticky; top: 0; z-index: 100;
       background: var(--bg);
@@ -111,11 +71,9 @@
 
     .logo-mark { width: 36px; height: 36px; background: transparent; border-radius: 8px; flex-shrink: 0; }
     .logo-mark img { width: 100%; height: 100%; object-fit: contain; border-radius: 8px; }
-
     .brand-name { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: var(--text); line-height: 1; }
     .brand-sub { font-size: 10px; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 3px; }
 
-    /* ── THEME TOGGLE ── */
     .btn-theme {
       margin-left: auto; flex-shrink: 0;
       width: 34px; height: 34px;
@@ -128,151 +86,55 @@
     .btn-theme svg { width: 16px; height: 16px; color: var(--muted); transition: color 0.2s; }
     .btn-theme:hover svg { color: var(--accent); }
 
-    /* ── HERO ── */
     .hero {
-      margin-bottom: 36px;
-      padding: 24px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      position: relative;
-      overflow: hidden;
-      transition: background 0.3s, border-color 0.3s;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--accent);
-    }
-
-    .hero-tag {
-      font-family: var(--mono); font-size: 10px; font-weight: 700;
-      letter-spacing: 0.25em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 14px;
-      display: flex; align-items: center; gap: 8px;
-    }
-
-    .hero-tag::after {
-      content: "";
-      flex: 1; height: 1px;
-      background: rgba(240,255,0,0.2);
-    }
-
-    .hero-title {
-      font-family: var(--mono); font-size: 22px; font-weight: 700;
-      line-height: 1.3; color: var(--text); margin-bottom: 12px;
-    }
-
-    .hero-title span { color: var(--accent); }
-
-    .hero-desc {
-      font-size: 12px; color: var(--text); line-height: 1.8;
-      padding-top: 12px; border-top: 1px solid var(--border);
-    }
-
-    .hero-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-
-    .hero-pill {
-      font-family: var(--mono); font-size: 10px; font-weight: 700;
-      padding: 4px 10px; border-radius: 20px;
-      border: 1px solid var(--border); color: var(--muted);
-      letter-spacing: 0.05em;
-    }
-
-    /* ── CATEGORY LABEL ── */
-    .cat-label {
-      font-family: var(--mono); font-size: 11px; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--muted); margin: 24px 0 8px; padding-left: 2px;
-    }
-
-    /* ── SECTION ── */
-    .section {
-      margin-bottom: 10px;
+      margin-bottom: 36px; padding: 24px;
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden;
-      scroll-margin-top: 80px;
+      border-radius: var(--radius); position: relative; overflow: hidden;
       transition: background 0.3s, border-color 0.3s;
     }
+    .hero::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); }
+    .hero-tag { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .hero-tag::after { content: ""; flex: 1; height: 1px; background: rgba(240,255,0,0.2); }
+    .hero-title { font-family: var(--mono); font-size: 22px; font-weight: 700; line-height: 1.3; color: var(--text); margin-bottom: 12px; }
+    .hero-title span { color: var(--accent); }
+    .hero-desc { font-size: 12px; color: var(--text); line-height: 1.8; padding-top: 12px; border-top: 1px solid var(--border); }
+    .hero-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .hero-pill { font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); color: var(--muted); letter-spacing: 0.05em; }
 
-    .section-header {
-      padding: 16px 18px; cursor: pointer;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      user-select: none; -webkit-user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
+    .cat-label { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin: 24px 0 8px; padding-left: 2px; }
 
+    .section { margin-bottom: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; scroll-margin-top: 80px; transition: background 0.3s, border-color 0.3s; }
+    .section-header { padding: 16px 18px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     .section-header:active { background: var(--surface2); }
     .section-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-
-    .section-icon {
-      width: 37px; height: 37px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 10px; display: flex; align-items: center;
-      justify-content: center; flex-shrink: 0;
-      transition: background 0.2s, border-color 0.2s;
-    }
-
+    .section-icon { width: 37px; height: 37px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s, border-color 0.2s; }
     .section-icon svg { width: 18px; height: 18px; color: var(--text); transition: color 0.2s; }
-
-    .section.open .section-icon {
-      background: var(--accent);
-      border-color: var(--accent);
-    }
+    .section.open .section-icon { background: var(--accent); border-color: var(--accent); }
     .section.open .section-icon svg { color: #000; }
-
     .section-title { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.05em; color: var(--text); }
     .section-sub { font-size: 12px; color: var(--accent); margin-top: 2px; }
-
     .section-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
-    /* ── PLAY BUTTON ── */
-    .btn-play {
-      width: 30px; height: 30px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all 0.15s; flex-shrink: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-
+    .btn-play { width: 30px; height: 30px; background: var(--surface2); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; flex-shrink: 0; -webkit-tap-highlight-color: transparent; }
     .btn-play:active { transform: scale(0.9); }
     .btn-play svg { width: 12px; height: 12px; color: var(--muted); transition: color 0.15s; }
     .btn-play.playing { background: rgba(240,255,0,0.1); border-color: var(--accent); }
     .btn-play.playing svg { color: var(--accent); }
 
-    /* ── CHEVRON — spring animation ── */
-    .chevron {
-      font-size: 12px; color: var(--text); flex-shrink: 0;
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+    .chevron { font-size: 12px; color: var(--text); flex-shrink: 0; transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
     .section.open .chevron { transform: rotate(180deg); }
     .section.open .section-header { border-bottom: 1px solid var(--border); }
 
-    /* ── SECTION BODY — fade-in ── */
     .section-body { display: none; padding: 18px; }
-    .section.open .section-body {
-      display: block;
-      animation: fadeInBody 0.4s ease-out forwards;
-    }
+    .section.open .section-body { display: block; animation: fadeInBody 0.4s ease-out forwards; }
+    @keyframes fadeInBody { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
 
-    @keyframes fadeInBody {
-      from { opacity: 0; transform: translateY(-12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── CONTENT ── */
     .desc { font-size: 12px; color: var(--text); line-height: 1.8; margin-bottom: 14px; }
     .desc:last-child { margin-bottom: 0; }
     .desc strong { color: var(--text); font-weight: 600; }
-
     .hr { height: 1px; background: var(--border); margin: 16px 0; }
-
     .label { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
 
-    /* ── TABLE ── */
     .tbl { width: 100%; border-collapse: collapse; margin-top: 8px; }
     .tbl th { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text); text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
     .tbl td { padding: 10px 10px; font-size: 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
@@ -280,20 +142,17 @@
     .tbl td:first-child { font-family: var(--mono); font-size: 12px; white-space: nowrap; }
     .tbl td.muted { color: var(--text); }
 
-    /* ── BADGE ── */
     .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-family: var(--mono); font-size: 12px; font-weight: 700; }
     .b-excellent { background: rgba(73,173,244,0.15); color: var(--success); }
     .b-good      { background: rgba(240,255,0,0.12); color: var(--accent); }
     .b-acceptable{ background: rgba(245,158,11,0.15); color: #f59e0b; }
     .b-limited   { background: rgba(255,69,69,0.15); color: var(--danger); }
 
-    /* ── VISUAL BAR ── */
     .bar-wrap { margin: 10px 0 6px; }
     .bar { display: flex; border-radius: 6px; overflow: hidden; height: 7px; }
     .bar-seg { flex: 1; }
     .bar-labels { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--text); margin-top: 4px; }
 
-    /* ── HIGHLIGHT ── */
     .hl { background: rgba(240,255,0,0.05); border: 1px solid rgba(240,255,0,0.15); border-radius: 12px; padding: 12px 14px; margin-top: 14px; font-size: 12px; color: var(--text); line-height: 1.8; }
     .hl strong { color: var(--accent); }
     .hl-blue { background: rgba(73,173,244,0.06); border: 1px solid rgba(73,173,244,0.2); border-radius: 12px; padding: 12px 14px; margin-top: 14px; font-size: 12px; color: var(--text); line-height: 1.8; }
@@ -301,7 +160,6 @@
     .hl-red { background: rgba(255,69,69,0.05); border: 1px solid rgba(255,69,69,0.2); border-radius: 12px; padding: 12px 14px; margin-top: 14px; font-size: 12px; color: var(--text); line-height: 1.8; }
     .hl-red strong { color: var(--danger); }
 
-    /* ── PANEL CARD ── */
     .panel-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
     .panel-card:last-child { margin-bottom: 0; }
     .panel-name { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
@@ -312,7 +170,6 @@
     .spec-chip.pro { border-color: rgba(73,173,244,0.3); color: var(--success); }
     .spec-chip.con { border-color: rgba(255,69,69,0.3); color: var(--danger); }
 
-    /* ── TIMELINE ── */
     .timeline { padding-left: 16px; position: relative; }
     .timeline::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 2px; background: var(--border); }
     .tl-item { position: relative; padding: 0 0 18px 18px; }
@@ -322,13 +179,11 @@
     .tl-label { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
     .tl-desc { font-size: 12px; color: var(--text); line-height: 1.7; }
 
-    /* ── INFO ROW ── */
     .info-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
     .info-row:last-child { border-bottom: none; }
     .info-label { color: var(--text); }
     .info-val { font-family: var(--mono); font-size: 12px; }
 
-    /* ── MYTH CARD ── */
     .myth-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
     .myth-card:last-child { margin-bottom: 0; }
     .myth-q { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 8px; padding-left: 20px; position: relative; }
@@ -336,217 +191,63 @@
     .myth-a { font-size: 12px; color: var(--text); line-height: 1.7; }
     .myth-a strong { color: var(--success); }
 
-    /* ── FOOTER ── */
     .footer { text-align: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); }
     .footer-brand { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 6px; }
     .footer-text { font-size: 12px; color: var(--muted); line-height: 1.7; }
-
     .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
 
-    /* ── FLOATING WA ── */
-    .btn-wa-float {
-      position: fixed; bottom: 24px; right: 20px; z-index: 99;
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 12px;
-      background: var(--wa); border-radius: 50px;
-      font-family: var(--mono); font-size: 12px; font-weight: 700;
-      letter-spacing: 0.08em; color: #fff; text-decoration: none;
-      box-shadow: 0 4px 20px rgba(24,186,85,0.35);
-      transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s;
-    }
+    .btn-wa-float { position: fixed; bottom: 24px; right: 20px; z-index: 99; display: inline-flex; align-items: center; gap: 8px; padding: 12px 12px; background: var(--wa); border-radius: 50px; font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #fff; text-decoration: none; box-shadow: 0 4px 20px rgba(24,186,85,0.35); transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s; }
+    .btn-wa-float:active { transform: scale(0.96); box-shadow: 0 2px 10px rgba(24,186,85,0.25); }
 
-    .btn-wa-float:active {
-      transform: scale(0.96);
-      box-shadow: 0 2px 10px rgba(24,186,85,0.25);
-    }
-
-    /* ── BACK TO TOP ── */
-    .btn-top {
-      position: fixed; bottom: 24px; left: 20px; z-index: 99;
-      width: 44px; height: 44px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s, transform 0.2s, background 0.2s;
-      -webkit-tap-highlight-color: transparent;
-    }
-
+    .btn-top { position: fixed; bottom: 24px; left: 20px; z-index: 99; width: 44px; height: 44px; background: var(--surface2); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.2s, background 0.2s; -webkit-tap-highlight-color: transparent; }
     .btn-top.visible { opacity: 1; pointer-events: auto; }
     .btn-top:active { transform: scale(0.92); }
     .btn-top svg { width: 18px; height: 18px; color: var(--muted); }
     .btn-top:hover svg { color: var(--accent); }
 
-    /* ── AI SEARCH ── */
-    .ai-search-wrap {
-      margin-top: 32px;
-      border-top: 1px solid var(--border);
-      padding-top: 28px;
-    }
-
+    .ai-search-wrap { margin-top: 32px; border-top: 1px solid var(--border); padding-top: 28px; }
     .ai-search-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-
-    .ai-search-icon {
-      width: 37px; height: 37px;
-      background: rgba(240,255,0,0.08);
-      border: 1px solid rgba(240,255,0,0.25);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-
+    .ai-search-icon { width: 37px; height: 37px; background: rgba(240,255,0,0.08); border: 1px solid rgba(240,255,0,0.25); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .ai-search-icon svg { width: 18px; height: 18px; color: var(--accent); }
-
     .ai-search-title { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.05em; color: var(--text); }
     .ai-search-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-    .ai-search-examples { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-
-    .ai-example-chip {
-      font-family: var(--mono); font-size: 10px;
-      padding: 5px 10px; border-radius: 20px;
-      border: 1px solid var(--border); color: var(--muted);
-      cursor: pointer; transition: all 0.15s;
-      -webkit-tap-highlight-color: transparent;
-      background: var(--surface);
-    }
-
-    .ai-example-chip:active,
-    .ai-example-chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(240,255,0,0.05); }
-
     .ai-input-row { display: flex; gap: 8px; align-items: flex-end; }
     .ai-input-wrap { flex: 1; position: relative; }
-
-    .ai-input {
-      width: 100%; padding: 13px 14px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); color: var(--text);
-      font-family: var(--sans); font-size: 16px; outline: none;
-      transition: border-color 0.2s;
-      resize: none; line-height: 1.5;
-    }
-
+    .ai-input { width: 100%; padding: 13px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-family: var(--sans); font-size: 16px; outline: none; transition: border-color 0.2s; resize: none; line-height: 1.5; }
     .ai-input::placeholder { color: var(--muted); }
     .ai-input:focus { border-color: var(--accent); }
-
-    .ai-btn {
-      width: 50px; height: 50px; flex-shrink: 0;
-      background: var(--accent); border: none; border-radius: var(--radius);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all 0.15s;
-    }
-
+    .ai-btn { width: 50px; height: 50px; flex-shrink: 0; background: var(--accent); border: none; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; }
     .ai-btn:active { transform: scale(0.95); }
     .ai-btn svg { width: 18px; height: 18px; color: #000; }
 
     .sim-tabs { display:flex; gap:6px; margin-bottom:14px; }
-    .sim-tab {
-      flex:1; padding:8px; border-radius:10px;
-      background:var(--surface2); border:1px solid var(--border);
-      font-family:var(--mono); font-size:11px; font-weight:700;
-      letter-spacing:0.08em; color:var(--muted); cursor:pointer;
-      transition:all 0.2s; -webkit-tap-highlight-color:transparent;
-    }
+    .sim-tab { flex:1; padding:8px; border-radius:10px; background:var(--surface2); border:1px solid var(--border); font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:0.08em; color:var(--muted); cursor:pointer; transition:all 0.2s; -webkit-tap-highlight-color:transparent; }
     .sim-tab.active { background:rgba(240,255,0,0.08); border-color:rgba(240,255,0,0.35); color:var(--accent); }
     body.light .sim-tab.active { background:rgba(161,98,7,0.08); border-color:rgba(161,98,7,0.3); }
-    
-    .sim-wrap {
-      position:relative; width:100%; overflow:hidden;
-      border-radius:12px; border:1px solid var(--border);
-      cursor:col-resize; user-select:none; -webkit-user-select:none;
-      touch-action:none; aspect-ratio:4/3; background:var(--surface2);
-    }
-    .sim-img {
-      position:absolute; top:0; left:0;
-      width:100%; height:100%;
-      object-fit:cover; display:block;
-      pointer-events:none;
-    }
-    /* AFTER image: clip menggunakan clip-path, bukan wrapper */
-    .sim-img.sim-after {
-      clip-path: inset(0 50% 0 0);
-      transition: none;
-    }
-    /* hapus .sim-after-clip sepenuhnya dari CSS */
-    .sim-divider {
-      position:absolute; top:0; left:50%;
-      transform:translateX(-50%);
-      width:1px; height:100%;
-      background:rgba(255,255,255,0.75);
-      box-shadow:0 0 8px rgba(0,0,0,0.4);
-      display:flex; align-items:center; justify-content:center;
-      pointer-events:none;
-    }
-    .sim-handle {
-      width:20px; height:20px; border-radius:50%;
-      background:#fff; box-shadow:0 2px 12px rgba(0,0,0,0.3);
-      display:flex; align-items:center; justify-content:center;
-      flex-shrink:0; color:#333;
-    }
-    .sim-label {
-      position:absolute; top:5px; z-index:10;
-      font-family:var(--mono); font-size:10px; font-weight:700;
-      letter-spacing:0.15em; padding:4px 10px; border-radius:20px;
-      pointer-events:none;
-    }
+    .sim-wrap { position:relative; width:100%; overflow:hidden; border-radius:12px; border:1px solid var(--border); cursor:col-resize; user-select:none; -webkit-user-select:none; touch-action:none; aspect-ratio:4/3; background:var(--surface2); }
+    .sim-img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; }
+    .sim-img.sim-after { clip-path: inset(0 50% 0 0); transition: none; }
+    .sim-divider { position:absolute; top:0; left:50%; transform:translateX(-50%); width:1px; height:100%; background:rgba(255,255,255,0.75); box-shadow:0 0 8px rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; pointer-events:none; }
+    .sim-handle { width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 2px 12px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#333; }
+    .sim-label { position:absolute; top:5px; z-index:10; font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.15em; padding:4px 10px; border-radius:20px; pointer-events:none; }
     .sim-label-before { right:5px; background:rgba(255,69,69,0.85); color:#fff; }
-    .sim-label-after  { left:5px;  background:rgba(73,173,244,0.85); color:#fff; }
+    .sim-label-after  { left:5px; background:rgba(73,173,244,0.85); color:#fff; }
     .sim-caption { margin-top:12px; font-size:11px; color:var(--muted); line-height:1.8; }
 
-    @keyframes pulseScale {
-      0%, 100% { transform: scale(1); }
-      50%       { transform: scale(1.05); }
-    }
-
-    .btn-cek-spec {
-      margin-bottom: 14px;
-      background: transparent;
-      border: 1px solid var(--accent);
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-      cursor: pointer;
-      text-transform: uppercase;
-      animation: pulseScale 1.5s ease-in-out infinite;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
+    @keyframes pulseScale { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    .btn-cek-spec { margin-bottom: 14px; background: transparent; border: 1px solid var(--accent); border-radius: 20px; padding: 6px 14px; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); cursor: pointer; text-transform: uppercase; animation: pulseScale 1.5s ease-in-out infinite; display: inline-flex; align-items: center; gap: 8px; }
 
     /* ── SELF DIAGNOSIS ── */
     .diag-q { margin-bottom: 18px; }
     .diag-q-text { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 10px; line-height: 1.6; }
     .diag-options { display: flex; flex-wrap: wrap; gap: 8px; }
-    .diag-opt {
-      padding: 7px 14px; border-radius: 20px;
-      background: var(--surface2); border: 1px solid var(--border);
-      font-family: var(--mono); font-size: 11px; font-weight: 700;
-      color: var(--muted); cursor: pointer;
-      transition: all 0.15s; -webkit-tap-highlight-color: transparent;
-    }
+    .diag-opt { padding: 7px 14px; border-radius: 20px; background: var(--surface2); border: 1px solid var(--border); font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
     .diag-opt:active { transform: scale(0.96); }
-    .diag-opt.selected {
-      background: rgba(240,255,0,0.08);
-      border-color: rgba(240,255,0,0.35);
-      color: var(--accent);
-    }
-    .diag-submit {
-      width: 100%; margin-top: 8px; padding: 12px;
-      background: var(--accent); border: none; border-radius: var(--radius);
-      font-family: var(--mono); font-size: 12px; font-weight: 700;
-      letter-spacing: 0.08em; color: #000; cursor: pointer;
-      transition: all 0.2s; opacity: 0.3; pointer-events: none;
-    }
+    .diag-opt.selected { background: rgba(240,255,0,0.08); border-color: rgba(240,255,0,0.35); color: var(--accent); }
+    .diag-submit { width: 100%; margin-top: 8px; padding: 12px; background: var(--accent); border: none; border-radius: var(--radius); font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #000; cursor: pointer; transition: all 0.2s; opacity: 0.3; pointer-events: none; }
     .diag-submit.ready { opacity: 1; pointer-events: auto; }
     .diag-submit.ready:active { transform: scale(0.97); }
-    .diag-result-box {
-      border-radius: 14px; padding: 18px; margin-bottom: 14px;
-      font-size: 12px; line-height: 1.8;
-    }
+    .diag-result-box { border-radius: 14px; padding: 18px; margin-bottom: 14px; font-size: 12px; line-height: 1.8; }
     .diag-result-box.red { background: rgba(255,69,69,0.07); border: 1px solid rgba(255,69,69,0.25); }
     .diag-result-box.yellow { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.25); }
     .diag-result-box.green { background: rgba(73,173,244,0.07); border: 1px solid rgba(73,173,244,0.25); }
@@ -554,60 +255,43 @@
     .diag-result-box.red .diag-result-title { color: var(--danger); }
     .diag-result-box.yellow .diag-result-title { color: #f59e0b; }
     .diag-result-box.green .diag-result-title { color: var(--success); }
-    .diag-reset {
-      width: 100%; padding: 10px;
-      margin-top: 10px;
-      background: transparent; border: 1px solid var(--border);
-      border-radius: var(--radius); font-family: var(--mono);
-      font-size: 11px; font-weight: 700; color: var(--muted);
-      cursor: pointer; transition: all 0.2s;
-    }
+    .diag-reset { width: 100%; padding: 10px; margin-top: 10px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius); font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); cursor: pointer; transition: all 0.2s; }
     .diag-reset:active { transform: scale(0.97); }
-    .btn-wa-diag {
-      display: block; width: 100%; margin-top: 12px; padding: 12px;
-      background: var(--wa); border: none; border-radius: var(--radius);
-      font-family: var(--mono); font-size: 12px; font-weight: 700;
-      letter-spacing: 0.08em; color: #fff; text-align: center;
-      text-decoration: none; cursor: pointer; transition: all 0.2s;
-    }
+    .btn-wa-diag { display: block; width: 100%; margin-top: 12px; padding: 12px; background: var(--wa); border: none; border-radius: var(--radius); font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #fff; text-align: center; text-decoration: none; cursor: pointer; transition: all 0.2s; }
     .btn-wa-diag:active { transform: scale(0.97); }
 
-    .dot-a1 {
-      position: relative;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      flex-shrink: 0;
-    }
-    .dot-a1::after {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: dotPulseA1 2s ease-out infinite;
-    }
-    @keyframes dotPulseA1 {
-      0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-      100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
-    }
-    
+    .dot-a1 { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .dot-a1::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: dotPulseA1 2s ease-out infinite; }
+    @keyframes dotPulseA1 { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; } 100% { transform: translate(-50%, -50%) scale(3); opacity: 0; } }
+
+    /* ── APPLE CALIBRATION FLOW ── */
+    .apple-flow { display: flex; flex-direction: column; gap: 0; margin: 4px 0; }
+    .apple-step { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .apple-step:last-child { border-bottom: none; }
+    .apple-step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #000; font-family: var(--mono); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .apple-step-content { flex: 1; }
+    .apple-step-title { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .apple-step-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+    .compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+    .compare-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+    .compare-card-title { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px; }
+    .compare-card.fine .compare-card-title { color: var(--success); }
+    .compare-card.full .compare-card-title { color: #f59e0b; }
+    .compare-item { font-size: 11px; color: var(--muted); line-height: 1.7; margin-bottom: 3px; }
+    .compare-item:last-child { margin-bottom: 0; }
   </style>
 </head>
 <body>
 
 <div class="container">
 
-  <!-- Header -->
   <div class="header">
     <div class="logo-mark"><img src="logokbweb.png" alt="Logo"></div>
     <div>
       <div class="brand-name">KALIBRASI BANG</div>
       <div class="brand-sub">Panduan Kalibrasi Layar</div>
     </div>
-    <!-- Theme Toggle -->
     <button class="btn-theme" id="btnTheme" onclick="toggleTheme()" title="Ganti tema">
       <svg id="iconTheme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"/>
@@ -616,41 +300,26 @@
     </button>
   </div>
 
-  <!-- Hero -->
   <div class="hero">
     <div class="hero-tag">Display Calibration Guide</div>
     <div class="hero-title">Memahami <span>Kalibrasi</span><br>Layarmu</div>
-    
-    <button class="btn-cek-spec"
-      onclick="document.getElementById('displaySearch').scrollIntoView({behavior:'smooth', block:'start'})">
+    <button class="btn-cek-spec" onclick="document.getElementById('displaySearch').scrollIntoView({behavior:'smooth', block:'start'})">
       <span class="dot-a1"></span>
       Cek Spesifikasi Layar ↓
     </button>
     <div class="hero-desc">Panduan lengkap tentang kalibrasi layar, mulai dari manfaat kesehatan, efisiensi daya, istilah teknis, perbedaan jenis panel, hingga mitos seputar kalibrasi layar.</div>
   </div>
 
-  <!-- ══ KATEGORI 1 ══ -->
   <div class="cat-label">Kenapa Perlu Kalibrasi?</div>
 
-  <!-- Kesehatan Mata -->
   <div class="section" id="s_mata">
     <div class="section-header" onclick="tog('s_mata')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">Kalibrasi & Kesehatan Mata</div>
-          <div class="section-sub">Apakah layar terkalibrasi lebih nyaman?</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div><div class="section-title">Kalibrasi & Kesehatan Mata</div><div class="section-sub">Apakah layar terkalibrasi lebih nyaman?</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s_mata" onclick="togglePlay(event, 's_mata')">
-          <svg id="playicon_s_mata" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s_mata" onclick="togglePlay(event, 's_mata')"><svg id="playicon_s_mata" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
@@ -669,24 +338,14 @@
     </div>
   </div>
 
-  <!-- Efisiensi Daya -->
   <div class="section" id="s_daya">
     <div class="section-header" onclick="tog('s_daya')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">Kalibrasi & Efisiensi Daya</div>
-          <div class="section-sub">Apakah bisa menghemat listrik?</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div><div class="section-title">Kalibrasi & Efisiensi Daya</div><div class="section-sub">Apakah bisa menghemat listrik?</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s_daya" onclick="togglePlay(event, 's_daya')">
-          <svg id="playicon_s_daya" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s_daya" onclick="togglePlay(event, 's_daya')"><svg id="playicon_s_daya" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
@@ -703,26 +362,14 @@
     </div>
   </div>
 
-  <!-- Produktivitas -->
   <div class="section" id="s_prod">
     <div class="section-header" onclick="tog('s_prod')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <line x1="12" y1="12" x2="15" y2="14"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">Kalibrasi & Produktivitas</div>
-          <div class="section-sub">Dampak pada pekerjaan kreatif</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="15" y2="14"/></svg></div>
+        <div><div class="section-title">Kalibrasi & Produktivitas</div><div class="section-sub">Dampak pada pekerjaan kreatif</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s_prod" onclick="togglePlay(event, 's_prod')">
-          <svg id="playicon_s_prod" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s_prod" onclick="togglePlay(event, 's_prod')"><svg id="playicon_s_prod" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
@@ -738,75 +385,49 @@
     </div>
   </div>
 
-  <!-- SIMULATOR KALIBRASI -->
-<div class="cat-label">Simulator Kalibrasi</div>
-<div class="section open" id="s_sim">
-  <div class="section-header" onclick="tog('s_sim')">
-    <div class="section-left">
-      <div class="section-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/>
-        </svg>
+  <div class="cat-label">Simulator Kalibrasi</div>
+  <div class="section open" id="s_sim">
+    <div class="section-header" onclick="tog('s_sim')">
+      <div class="section-left">
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/></svg></div>
+        <div><div class="section-title">Sebelum & Sesudah Kalibrasi</div><div class="section-sub">Geser untuk melihat perbedaannya</div></div>
       </div>
-      <div>
-        <div class="section-title">Sebelum & Sesudah Kalibrasi</div>
-        <div class="section-sub">Geser untuk melihat perbedaannya</div>
+      <div class="section-right"><div class="dot-a1"></div><div class="chevron">▼</div></div>
+    </div>
+    <div class="section-body" id="body_s_sim" style="padding:16px;">
+      <div class="sim-tabs">
+        <button class="sim-tab active" onclick="switchScene(0)">Portrait</button>
+        <button class="sim-tab" onclick="switchScene(1)">Color Checker</button>
       </div>
-    </div>
-    <div class="section-right">
-      <div class="dot-a1"></div>
-      <div class="chevron">▼</div>
-    </div>
-  </div>
-  <div class="section-body" id="body_s_sim" style="padding:16px;">
-    <div class="sim-tabs">
-      <button class="sim-tab active" onclick="switchScene(0)">Portrait</button>
-      <button class="sim-tab" onclick="switchScene(1)">Color Checker</button>
-    </div>
-   <div class="sim-wrap" id="simWrap">
-      <div class="sim-label sim-label-before">BEFORE</div>
-      <div class="sim-label sim-label-after">AFTER</div>
-      <img class="sim-img sim-before" id="simBefore" src="Prillbefore.jpg" alt="Before" draggable="false">
-      <img class="sim-img sim-after"  id="simAfter"  src="Prillafter.jpg"  alt="After"  draggable="false">
-      <div class="sim-divider" id="simDivider">
-        <div class="sim-handle">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="15 18 9 12 15 6"/></svg>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="9 18 15 12 9 6"/></svg>
+      <div class="sim-wrap" id="simWrap">
+        <div class="sim-label sim-label-before">BEFORE</div>
+        <div class="sim-label sim-label-after">AFTER</div>
+        <img class="sim-img sim-before" id="simBefore" src="Prillbefore.jpg" alt="Before" draggable="false">
+        <img class="sim-img sim-after"  id="simAfter"  src="Prillafter.jpg"  alt="After"  draggable="false">
+        <div class="sim-divider" id="simDivider">
+          <div class="sim-handle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="15 18 9 12 15 6"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="sim-caption" id="simCaption">
-      <span style="color:var(--danger)">● Before</span> &nbsp;Layar belum terkalibrasi — skin tone kekuningan, shadow kehilangan detail
-      &nbsp;&nbsp;
-      <span style="color:var(--success)">● After</span> &nbsp;Setelah kalibrasi — warna natural, white point D65 tercapai
+      <div class="sim-caption" id="simCaption">
+        <span style="color:var(--danger)">● Before</span> &nbsp;Layar belum terkalibrasi — skin tone kekuningan, shadow kehilangan detail &nbsp;&nbsp;
+        <span style="color:var(--success)">● After</span> &nbsp;Setelah kalibrasi — warna natural, white point D65 tercapai
+      </div>
     </div>
   </div>
-</div>
 
-  <!-- ══ KATEGORI 2 ══ -->
   <div class="cat-label">Memahami Laporan Kalibrasi</div>
 
-  <!-- Delta-E -->
   <div class="section" id="s1">
     <div class="section-header" onclick="tog('s1')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 20h20L12 2z"/>
-            <line x1="12" y1="10" x2="12" y2="14"/>
-            <line x1="12" y1="17" x2="12" y2="17.5" stroke-width="2.5"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">Delta-E (ΔE)</div>
-          <div class="section-sub">Akurasi reproduksi warna</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 20h20L12 2z"/><line x1="12" y1="10" x2="12" y2="14"/><line x1="12" y1="17" x2="12" y2="17.5" stroke-width="2.5"/></svg></div>
+        <div><div class="section-title">Delta-E (ΔE)</div><div class="section-sub">Akurasi reproduksi warna</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s1" onclick="togglePlay(event, 's1')">
-          <svg id="playicon_s1" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s1" onclick="togglePlay(event, 's1')"><svg id="playicon_s1" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
@@ -814,12 +435,7 @@
       <div class="desc">Delta-E adalah satuan yang mengukur <strong>seberapa jauh perbedaan warna</strong> antara yang seharusnya ditampilkan dengan yang benar-benar tampil di layar. Semakin kecil nilainya, semakin akurat warna yang dihasilkan.</div>
       <div class="label">Skala Interpretasi</div>
       <div class="bar-wrap">
-        <div class="bar">
-          <div class="bar-seg" style="background:var(--success)"></div>
-          <div class="bar-seg" style="background:var(--accent)"></div>
-          <div class="bar-seg" style="background:#f59e0b"></div>
-          <div class="bar-seg" style="background:var(--danger)"></div>
-        </div>
+        <div class="bar"><div class="bar-seg" style="background:var(--success)"></div><div class="bar-seg" style="background:var(--accent)"></div><div class="bar-seg" style="background:#f59e0b"></div><div class="bar-seg" style="background:var(--danger)"></div></div>
         <div class="bar-labels"><span>0</span><span>1.0</span><span>2.0</span><span>3.0</span><span>>3</span></div>
       </div>
       <table class="tbl" style="margin-top:12px;">
@@ -835,32 +451,14 @@
     </div>
   </div>
 
-  <!-- White Point -->
   <div class="section" id="s2">
     <div class="section-header" onclick="tog('s2')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"/>
-            <line x1="12" y1="1" x2="12" y2="3"/>
-            <line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/>
-            <line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">White Point (D65)</div>
-          <div class="section-sub">Titik referensi warna putih</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></div>
+        <div><div class="section-title">White Point (D65)</div><div class="section-sub">Titik referensi warna putih</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s2" onclick="togglePlay(event, 's2')">
-          <svg id="playicon_s2" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s2" onclick="togglePlay(event, 's2')"><svg id="playicon_s2" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
@@ -884,26 +482,14 @@
     </div>
   </div>
 
-  <!-- Gamma -->
   <div class="section" id="s3">
     <div class="section-header" onclick="tog('s3')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c1.5 0 2.9-.3 4.2-.9"/>
-            <path d="M12 8v4l3 3"/>
-            <path d="M18 14c0 3.3-2.7 6-6 6"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">Gamma</div>
-          <div class="section-sub">Kurva kecerahan dan kontras</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c1.5 0 2.9-.3 4.2-.9"/><path d="M12 8v4l3 3"/><path d="M18 14c0 3.3-2.7 6-6 6"/></svg></div>
+        <div><div class="section-title">Gamma</div><div class="section-sub">Kurva kecerahan dan kontras</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s3" onclick="togglePlay(event, 's3')">
-          <svg id="playicon_s3" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s3" onclick="togglePlay(event, 's3')"><svg id="playicon_s3" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
@@ -922,25 +508,14 @@
     </div>
   </div>
 
-  <!-- Luminance -->
   <div class="section" id="s4">
     <div class="section-header" onclick="tog('s4')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4"/>
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">Luminance</div>
-          <div class="section-sub">Kecerahan layar (cd/m²)</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></div>
+        <div><div class="section-title">Luminance</div><div class="section-sub">Kecerahan layar (cd/m²)</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s4" onclick="togglePlay(event, 's4')">
-          <svg id="playicon_s4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s4" onclick="togglePlay(event, 's4')"><svg id="playicon_s4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
@@ -960,24 +535,14 @@
     </div>
   </div>
 
-  <!-- Calibration Grade -->
   <div class="section" id="s5">
     <div class="section-header" onclick="tog('s5')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">Calibration Grade</div>
-          <div class="section-sub">Hasil keseluruhan kalibrasi</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div><div class="section-title">Calibration Grade</div><div class="section-sub">Hasil keseluruhan kalibrasi</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s5" onclick="togglePlay(event, 's5')">
-          <svg id="playicon_s5" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s5" onclick="togglePlay(event, 's5')"><svg id="playicon_s5" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
@@ -992,27 +557,14 @@
     </div>
   </div>
 
-  <!-- ICC Profile -->
   <div class="section" id="s6">
     <div class="section-header" onclick="tog('s6')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="9" y1="13" x2="15" y2="13"/>
-            <line x1="9" y1="17" x2="12" y2="17"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">ICC Profile</div>
-          <div class="section-sub">File koreksi warna sistem</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg></div>
+        <div><div class="section-title">ICC Profile</div><div class="section-sub">File koreksi warna sistem</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s6" onclick="togglePlay(event, 's6')">
-          <svg id="playicon_s6" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s6" onclick="togglePlay(event, 's6')"><svg id="playicon_s6" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
@@ -1025,126 +577,40 @@
     </div>
   </div>
 
-  <!-- ══ KATEGORI 3 ══ -->
   <div class="cat-label">Mengenal Layarmu</div>
 
-  <!-- Jenis Panel -->
   <div class="section" id="s7">
     <div class="section-header" onclick="tog('s7')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2"/>
-            <line x1="8" y1="21" x2="16" y2="21"/>
-            <line x1="12" y1="17" x2="12" y2="21"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">Jenis Panel Layar</div>
-          <div class="section-sub">IPS, TN, VA, OLED, Mini-LED</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div><div class="section-title">Jenis Panel Layar</div><div class="section-sub">IPS, TN, VA, OLED, Mini-LED</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s7" onclick="togglePlay(event, 's7')">
-          <svg id="playicon_s7" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s7" onclick="togglePlay(event, 's7')"><svg id="playicon_s7" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
     <div class="section-body" id="body_s7">
       <div class="desc">Jenis panel mempengaruhi <strong>kemampuan maksimal kalibrasi</strong> yang bisa dicapai. Memahami panel layarmu membantu menentukan ekspektasi hasil yang realistis.</div>
       <div class="hr"></div>
-      <div class="panel-card">
-        <div class="panel-name">IPS (In-Plane Switching)</div>
-        <span class="panel-tag">LED Backlit</span>
-        <div class="panel-desc">Panel paling umum untuk profesional kreatif. Warna akurat, sudut pandang lebar, dan respons warna konsisten. Pilihan utama untuk kalibrasi warna.</div>
-        <div class="panel-specs">
-          <span class="spec-chip pro">✓ Akurasi warna tinggi</span>
-          <span class="spec-chip pro">✓ Sudut pandang lebar</span>
-          <span class="spec-chip con">✗ Kontras terbatas</span>
-          <span class="spec-chip con">✗ Hitam kurang pekat</span>
-        </div>
-      </div>
-      <div class="panel-card">
-        <div class="panel-name">TN (Twisted Nematic)</div>
-        <span class="panel-tag">LED Backlit</span>
-        <div class="panel-desc">Panel gaming dengan refresh rate tinggi dan respons cepat. Akurasi warna dan sudut pandang lebih terbatas. Kurang ideal untuk color-critical work.</div>
-        <div class="panel-specs">
-          <span class="spec-chip pro">✓ Refresh rate tinggi</span>
-          <span class="spec-chip pro">✓ Respons cepat</span>
-          <span class="spec-chip con">✗ Akurasi warna rendah</span>
-          <span class="spec-chip con">✗ Sudut pandang sempit</span>
-        </div>
-      </div>
-      <div class="panel-card">
-        <div class="panel-name">VA (Vertical Alignment)</div>
-        <span class="panel-tag">LED Backlit</span>
-        <div class="panel-desc">Kontras ratio terbaik di antara panel LED. Hitam lebih pekat dari IPS, namun bisa ada ghosting di area gelap. Cocok untuk hiburan dan HDR content.</div>
-        <div class="panel-specs">
-          <span class="spec-chip pro">✓ Kontras tinggi</span>
-          <span class="spec-chip pro">✓ Hitam pekat</span>
-          <span class="spec-chip con">✗ Ghosting di shadow</span>
-          <span class="spec-chip con">✗ Warna kurang konsisten</span>
-        </div>
-      </div>
-      <div class="panel-card">
-        <div class="panel-name">Mini-LED</div>
-        <span class="panel-tag">Local Dimming Backlit</span>
-        <div class="panel-desc">Menggunakan ribuan LED kecil dengan local dimming — bisa mematikan area gelap secara independen. Kontras jauh lebih baik dari IPS biasa, akurasi warna tetap tinggi.</div>
-        <div class="panel-specs">
-          <span class="spec-chip pro">✓ Kontras sangat tinggi</span>
-          <span class="spec-chip pro">✓ HDR superior</span>
-          <span class="spec-chip con">✗ Blooming di edge</span>
-          <span class="spec-chip con">✗ Harga lebih mahal</span>
-        </div>
-      </div>
-      <div class="panel-card">
-        <div class="panel-name">OLED (Organic LED)</div>
-        <span class="panel-tag">Self-Emissive</span>
-        <div class="panel-desc">Setiap piksel memancarkan cahayanya sendiri — tidak butuh backlight. Hitam sempurna, kontras tak terbatas, respons piksel sangat cepat. Rentan burn-in pada konten statis.</div>
-        <div class="panel-specs">
-          <span class="spec-chip pro">✓ Hitam sempurna</span>
-          <span class="spec-chip pro">✓ Kontras tak terbatas</span>
-          <span class="spec-chip con">✗ Risiko burn-in</span>
-          <span class="spec-chip con">✗ Peak brightness terbatas</span>
-        </div>
-      </div>
-      <div class="panel-card">
-        <div class="panel-name">QD-OLED (Quantum Dot OLED)</div>
-        <span class="panel-tag">Self-Emissive + Quantum Dot</span>
-        <div class="panel-desc">Kombinasi OLED dengan Quantum Dot — gamut warna sangat luas (DCI-P3 mendekati 100%) dengan keunggulan OLED. Teknologi terdepan untuk layar profesional.</div>
-        <div class="panel-specs">
-          <span class="spec-chip pro">✓ Gamut sangat luas</span>
-          <span class="spec-chip pro">✓ Hitam sempurna</span>
-          <span class="spec-chip con">✗ Risiko burn-in</span>
-          <span class="spec-chip con">✗ Harga premium</span>
-        </div>
-      </div>
+      <div class="panel-card"><div class="panel-name">IPS (In-Plane Switching)</div><span class="panel-tag">LED Backlit</span><div class="panel-desc">Panel paling umum untuk profesional kreatif. Warna akurat, sudut pandang lebar, dan respons warna konsisten. Pilihan utama untuk kalibrasi warna.</div><div class="panel-specs"><span class="spec-chip pro">✓ Akurasi warna tinggi</span><span class="spec-chip pro">✓ Sudut pandang lebar</span><span class="spec-chip con">✗ Kontras terbatas</span><span class="spec-chip con">✗ Hitam kurang pekat</span></div></div>
+      <div class="panel-card"><div class="panel-name">TN (Twisted Nematic)</div><span class="panel-tag">LED Backlit</span><div class="panel-desc">Panel gaming dengan refresh rate tinggi dan respons cepat. Akurasi warna dan sudut pandang lebih terbatas. Kurang ideal untuk color-critical work.</div><div class="panel-specs"><span class="spec-chip pro">✓ Refresh rate tinggi</span><span class="spec-chip pro">✓ Respons cepat</span><span class="spec-chip con">✗ Akurasi warna rendah</span><span class="spec-chip con">✗ Sudut pandang sempit</span></div></div>
+      <div class="panel-card"><div class="panel-name">VA (Vertical Alignment)</div><span class="panel-tag">LED Backlit</span><div class="panel-desc">Kontras ratio terbaik di antara panel LED. Hitam lebih pekat dari IPS, namun bisa ada ghosting di area gelap. Cocok untuk hiburan dan HDR content.</div><div class="panel-specs"><span class="spec-chip pro">✓ Kontras tinggi</span><span class="spec-chip pro">✓ Hitam pekat</span><span class="spec-chip con">✗ Ghosting di shadow</span><span class="spec-chip con">✗ Warna kurang konsisten</span></div></div>
+      <div class="panel-card"><div class="panel-name">Mini-LED</div><span class="panel-tag">Local Dimming Backlit</span><div class="panel-desc">Menggunakan ribuan LED kecil dengan local dimming — bisa mematikan area gelap secara independen. Kontras jauh lebih baik dari IPS biasa, akurasi warna tetap tinggi.</div><div class="panel-specs"><span class="spec-chip pro">✓ Kontras sangat tinggi</span><span class="spec-chip pro">✓ HDR superior</span><span class="spec-chip con">✗ Blooming di edge</span><span class="spec-chip con">✗ Harga lebih mahal</span></div></div>
+      <div class="panel-card"><div class="panel-name">OLED (Organic LED)</div><span class="panel-tag">Self-Emissive</span><div class="panel-desc">Setiap piksel memancarkan cahayanya sendiri — tidak butuh backlight. Hitam sempurna, kontras tak terbatas, respons piksel sangat cepat. Rentan burn-in pada konten statis.</div><div class="panel-specs"><span class="spec-chip pro">✓ Hitam sempurna</span><span class="spec-chip pro">✓ Kontras tak terbatas</span><span class="spec-chip con">✗ Risiko burn-in</span><span class="spec-chip con">✗ Peak brightness terbatas</span></div></div>
+      <div class="panel-card"><div class="panel-name">QD-OLED (Quantum Dot OLED)</div><span class="panel-tag">Self-Emissive + Quantum Dot</span><div class="panel-desc">Kombinasi OLED dengan Quantum Dot — gamut warna sangat luas (DCI-P3 mendekati 100%) dengan keunggulan OLED. Teknologi terdepan untuk layar profesional.</div><div class="panel-specs"><span class="spec-chip pro">✓ Gamut sangat luas</span><span class="spec-chip pro">✓ Hitam sempurna</span><span class="spec-chip con">✗ Risiko burn-in</span><span class="spec-chip con">✗ Harga premium</span></div></div>
       <div class="hl-blue"><strong>Catatan kalibrasi:</strong> Semua panel di atas bisa dikalibrasi. IPS dan QD-OLED memberikan hasil terbaik. TN memiliki keterbatasan akurasi warna yang tidak bisa sepenuhnya dikoreksi.</div>
     </div>
   </div>
 
-  <!-- Color Space -->
   <div class="section" id="s8">
     <div class="section-header" onclick="tog('s8')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <circle cx="8" cy="10" r="3"/>
-            <circle cx="16" cy="10" r="3"/>
-            <circle cx="12" cy="16" r="3"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">Color Space</div>
-          <div class="section-sub">sRGB, Adobe RGB, DCI-P3</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="8" cy="10" r="3"/><circle cx="16" cy="10" r="3"/><circle cx="12" cy="16" r="3"/></svg></div>
+        <div><div class="section-title">Color Space</div><div class="section-sub">sRGB, Adobe RGB, DCI-P3</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s8" onclick="togglePlay(event, 's8')">
-          <svg id="playicon_s8" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s8" onclick="togglePlay(event, 's8')"><svg id="playicon_s8" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
@@ -1163,27 +629,14 @@
     </div>
   </div>
 
-  <!-- Umur Layar -->
   <div class="section" id="s_umur">
     <div class="section-header" onclick="tog('s_umur')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="7" width="20" height="14" rx="2"/>
-            <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
-            <line x1="12" y1="12" x2="12" y2="16"/>
-            <line x1="10" y1="14" x2="14" y2="14"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">Umur Layar & Burn-in</div>
-          <div class="section-sub">Cara memperpanjang usia layar</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+        <div><div class="section-title">Umur Layar & Burn-in</div><div class="section-sub">Cara memperpanjang usia layar</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s_umur" onclick="togglePlay(event, 's_umur')">
-          <svg id="playicon_s_umur" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s_umur" onclick="togglePlay(event, 's_umur')"><svg id="playicon_s_umur" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
@@ -1200,146 +653,191 @@
     </div>
   </div>
 
-  <!-- ══ SELF DIAGNOSIS ══ -->
-<div class="cat-label">Cek Kondisi Layarmu</div>
-<div class="section" id="s_diag">
-  <div class="section-header" onclick="tog('s_diag')">
-    <div class="section-left">
-      <div class="section-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 11l3 3L22 4"/>
-          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
-        </svg>
-      </div>
-      <div>
-        <div class="section-title">Self-Diagnosis Layar</div>
-        <div class="section-sub">Apakah layarmu perlu dikalibrasi?</div>
-      </div>
-    </div>
-    <div class="section-right">
-      <div class="dot-a1"></div>
-      <div class="chevron">▼</div>
-    </div>
-  </div>
-  <div class="section-body" id="body_s_diag">
-    <div id="diagQuestions">
-      <!-- Q1 -->
-      <div class="diag-q" id="dq1">
-        <div class="diag-q-text">1. Sudah berapa lama pakai layar ini?</div>
-        <div class="diag-options">
-          <button class="diag-opt" onclick="selectOpt(1, 0, this)">&lt; 1 tahun</button>
-          <button class="diag-opt" onclick="selectOpt(1, 1, this)">1–3 tahun</button>
-          <button class="diag-opt" onclick="selectOpt(1, 2, this)">&gt; 3 tahun</button>
-        </div>
-      </div>
-      <!-- Q2 -->
-      <div class="diag-q" id="dq2">
-        <div class="diag-q-text">2. Kapan terakhir kali kalibrasi?</div>
-        <div class="diag-options">
-          <button class="diag-opt" onclick="selectOpt(2, 0, this)">&lt; 6 bulan lalu</button>
-          <button class="diag-opt" onclick="selectOpt(2, 3, this)">Belum pernah</button>
-          <button class="diag-opt" onclick="selectOpt(2, 2, this)">&gt; 6 bulan lalu</button>
-        </div>
-      </div>
-      <!-- Q3 -->
-      <div class="diag-q" id="dq3">
-        <div class="diag-q-text">3. Konten yang diedit terlihat berbeda luminance & warnanya di perangkat lain?</div>
-        <div class="diag-options">
-          <button class="diag-opt" onclick="selectOpt(3, 0, this)">Tidak pernah</button>
-          <button class="diag-opt" onclick="selectOpt(3, 1, this)">Kadang</button>
-          <button class="diag-opt" onclick="selectOpt(3, 2, this)">Sering</button>
-        </div>
-      </div>
-      <!-- Q4 -->
-      <div class="diag-q" id="dq4">
-        <div class="diag-q-text">4. Warna putih di layar terlihat?</div>
-        <div class="diag-options">
-          <button class="diag-opt" onclick="selectOpt(4, 0, this)">Natural</button>
-          <button class="diag-opt" onclick="selectOpt(4, 2, this)">Kekuningan</button>
-          <button class="diag-opt" onclick="selectOpt(4, 2, this)">Kebiruan</button>
-        </div>
-      </div>
+  <!-- ══ APPLE PRO DISPLAY ══ -->
+  <div class="cat-label">Kalibrasi Apple Pro Display</div>
 
-      <button class="diag-submit" id="diagSubmit" onclick="showDiagResult()" disabled>Lihat Hasil</button>
-    </div>
-
-    <!-- Result -->
-    <div id="diagResult" style="display:none;">
-      <div id="diagResultBox"></div>
-      <button class="diag-reset" onclick="resetDiag()">Ulangi Diagnosis</button>
-    </div>
-  </div>
-</div>
-
-  <!-- ══ KATEGORI 4 ══ -->
-  <div class="cat-label">Mitos & Fakta</div>
-
-  <!-- Mitos -->
-  <div class="section" id="s_mitos">
-    <div class="section-header" onclick="tog('s_mitos')">
+  <div class="section" id="s_apple">
+    <div class="section-header" onclick="tog('s_apple')">
       <div class="section-left">
         <div class="section-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <line x1="12" y1="16" x2="12.01" y2="16"/>
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+            <path d="M9 9c0-1.7 1.3-3 3-3s3 1.3 3 3c0 2-3 5-3 5s-3-3-3-5z"/>
           </svg>
         </div>
         <div>
-          <div class="section-title">Mitos Seputar Kalibrasi</div>
-          <div class="section-sub">Yang sering salah dipahami</div>
+          <div class="section-title">MacBook Pro 14"/16" & XDR Display</div>
+          <div class="section-sub">Sistem kalibrasi hardware-level Apple</div>
         </div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s_mitos" onclick="togglePlay(event, 's_mitos')">
-          <svg id="playicon_s_mitos" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <div class="btn-play" id="play_s_apple" onclick="togglePlay(event, 's_apple')"><svg id="playicon_s_apple" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="chevron">▼</div>
+      </div>
+    </div>
+    <div class="section-body" id="body_s_apple">
+      <div class="desc">Apple Pro Display XDR dan MacBook Pro dengan panel Liquid Retina XDR memiliki <strong>sistem kalibrasi hardware-level</strong> yang berbeda dari monitor konvensional. Data kalibrasi disimpan langsung di hardware layar — bukan di sistem operasi — sehingga akurasi warna tetap terbawa bahkan jika monitor dipindahkan ke Mac lain.</div>
+
+      <div class="hr"></div>
+      <div class="label">Dua Jenis Kalibrasi Apple</div>
+
+      <div class="compare-row">
+        <div class="compare-card fine">
+          <div class="compare-card-title">FINE-TUNE</div>
+          <div class="compare-item">Mengoreksi white point & luminance</div>
+          <div class="compare-item">Durasi: beberapa menit</div>
+          <div class="compare-item">Frekuensi: rutin / setelah Full Cal</div>
+          <div class="compare-item">Alat: Display Pro HL atau Plus HL</div>
+          <div class="compare-item">Tidak menghapus preset lain</div>
         </div>
+        <div class="compare-card full">
+          <div class="compare-card-title">FULL CALIBRATION</div>
+          <div class="compare-item">Kalibrasi ulang karakteristik dasar panel</div>
+          <div class="compare-item">Durasi: 40–45 menit</div>
+          <div class="compare-item">Frekuensi: setiap 3–12 bulan</div>
+          <div class="compare-item">Alat: wajib Display Plus HL</div>
+          <div class="compare-item">Menghapus seluruh Fine-Tune sebelumnya</div>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+      <div class="label">Urutan Kalibrasi yang Direkomendasikan</div>
+
+      <div class="apple-flow">
+        <div class="apple-step">
+          <div class="apple-step-num">1</div>
+          <div class="apple-step-content">
+            <div class="apple-step-title">Buat Custom Reference Preset</div>
+            <div class="apple-step-desc">Tentukan target warna yang diinginkan — white point, luminance, dan color space — sebagai baseline preset referensi.</div>
+          </div>
+        </div>
+        <div class="apple-step">
+          <div class="apple-step-num">2</div>
+          <div class="apple-step-content">
+            <div class="apple-step-title">Fine-Tune Calibration</div>
+            <div class="apple-step-desc">Koreksi white point dan luminance menggunakan Calibrite Profiler (Measure K) dengan colorimeter. Cepat dan presisi.</div>
+          </div>
+        </div>
+        <div class="apple-step">
+          <div class="apple-step-num">3</div>
+          <div class="apple-step-content">
+            <div class="apple-step-title">Full Calibration (berkala)</div>
+            <div class="apple-step-desc">Jalankan "Calibrate Display" melalui Display Settings macOS. Panel warm-up 30 menit pada brightness maksimum, lalu pengukuran 113 patch warna. Dilakukan setiap 3–12 bulan atau saat Fine-Tune tidak lagi mencukupi.</div>
+          </div>
+        </div>
+        <div class="apple-step">
+          <div class="apple-step-num">4</div>
+          <div class="apple-step-content">
+            <div class="apple-step-title">Fine-Tune ulang setelah Full Calibration</div>
+            <div class="apple-step-desc">Full Calibration menghapus semua Fine-Tune sebelumnya. Lakukan Fine-Tune kembali pada preset yang digunakan untuk mengembalikan akurasi white point dan luminance.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+      <div class="label">Kapan Fine-Tune Dilakukan?</div>
+      <div class="desc">• Saat pertama kali membuat preset referensi baru<br>• Setelah setiap Full Calibration selesai<br>• Saat pengukuran menunjukkan white point atau luminance mulai bergeser dari target</div>
+
+      <div class="hl-blue"><strong>Keunggulan sistem Apple:</strong> Data kalibrasi tersimpan di hardware layar — jika monitor dipindahkan ke Mac lain, kalibrasi tetap ikut terbawa tanpa perlu instalasi ulang ICC Profile.</div>
+      <div class="hl-red" style="margin-top:10px;"><strong>Penting:</strong> Full Calibration akan menghapus seluruh hasil Fine-Tune yang sebelumnya tersimpan. Pastikan selalu lakukan Fine-Tune kembali setelah Full Calibration selesai.</div>
+    </div>
+  </div>
+
+  <!-- ══ SELF DIAGNOSIS (DIPERBAIKI) ══ -->
+  <div class="cat-label">Cek Kondisi Layarmu</div>
+  <div class="section" id="s_diag">
+    <div class="section-header" onclick="tog('s_diag')">
+      <div class="section-left">
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <div><div class="section-title">Self-Diagnosis Layar</div><div class="section-sub">Apakah layarmu perlu dikalibrasi?</div></div>
+      </div>
+      <div class="section-right"><div class="dot-a1"></div><div class="chevron">▼</div></div>
+    </div>
+    <div class="section-body" id="body_s_diag">
+      <div id="diagQuestions">
+
+        <!-- Q1 -->
+        <div class="diag-q">
+          <div class="diag-q-text">1. Kapan terakhir kali layar ini dikalibrasi?</div>
+          <div class="diag-options">
+            <button class="diag-opt" onclick="selectOpt(1, 'a', this)">Kurang dari 3 bulan lalu</button>
+            <button class="diag-opt" onclick="selectOpt(1, 'b', this)">3–6 bulan lalu</button>
+            <button class="diag-opt" onclick="selectOpt(1, 'c', this)">Lebih dari 6 bulan / belum pernah</button>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="diag-q">
+          <div class="diag-q-text">2. Bagaimana tampilan warna putih di layarmu?</div>
+          <div class="diag-options">
+            <button class="diag-opt" onclick="selectOpt(2, 'a', this)">Terlihat natural / netral</button>
+            <button class="diag-opt" onclick="selectOpt(2, 'b', this)">Sedikit kekuningan atau kebiruan</button>
+            <button class="diag-opt" onclick="selectOpt(2, 'c', this)">Jelas kekuningan atau kebiruan</button>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="diag-q">
+          <div class="diag-q-text">3. Apakah foto atau video yang kamu edit terlihat berbeda saat dibuka di perangkat lain?</div>
+          <div class="diag-options">
+            <button class="diag-opt" onclick="selectOpt(3, 'a', this)">Tidak, terlihat konsisten</button>
+            <button class="diag-opt" onclick="selectOpt(3, 'b', this)">Kadang ada perbedaan kecil</button>
+            <button class="diag-opt" onclick="selectOpt(3, 'c', this)">Sering berbeda, warna atau exposure tidak sama</button>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="diag-q">
+          <div class="diag-q-text">4. Untuk apa kamu menggunakan layar ini?</div>
+          <div class="diag-options">
+            <button class="diag-opt" onclick="selectOpt(4, 'a', this)">Browsing & hiburan umum</button>
+            <button class="diag-opt" onclick="selectOpt(4, 'b', this)">Desain, foto, atau video editing</button>
+            <button class="diag-opt" onclick="selectOpt(4, 'c', this)">Pekerjaan kreatif profesional / color-critical</button>
+          </div>
+        </div>
+
+        <button class="diag-submit" id="diagSubmit" onclick="showDiagResult()" disabled>Lihat Hasil</button>
+      </div>
+
+      <div id="diagResult" style="display:none;">
+        <div id="diagResultBox"></div>
+        <button class="diag-reset" onclick="resetDiag()">Ulangi Diagnosis</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat-label">Mitos & Fakta</div>
+
+  <div class="section" id="s_mitos">
+    <div class="section-header" onclick="tog('s_mitos')">
+      <div class="section-left">
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div><div class="section-title">Mitos Seputar Kalibrasi</div><div class="section-sub">Yang sering salah dipahami</div></div>
+      </div>
+      <div class="section-right">
+        <div class="btn-play" id="play_s_mitos" onclick="togglePlay(event, 's_mitos')"><svg id="playicon_s_mitos" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
     <div class="section-body" id="body_s_mitos">
-      <div class="myth-card">
-        <div class="myth-q">Layar mahal tidak perlu dikalibrasi</div>
-        <div class="myth-a"><strong>Salah.</strong> Bahkan layar flagship dari merek ternama memiliki toleransi produksi — setiap unit berbeda. Kalibrasi memastikan layarmu benar-benar sesuai standar, bukan hanya "mungkin sudah bagus dari pabrik".</div>
-      </div>
-      <div class="myth-card">
-        <div class="myth-q">Night Mode / Blue Light Filter sudah cukup</div>
-        <div class="myth-a"><strong>Tidak sama.</strong> Night Mode hanya menggeser warna ke arah kuning untuk mengurangi blue light — tapi ini mengorbankan akurasi warna dan tidak mengkoreksi gamma atau luminance. Kalibrasi mengurangi blue light berlebihan dengan cara yang lebih akurat tanpa mendistorsi warna.</div>
-      </div>
-      <div class="myth-card">
-        <div class="myth-q">Kalibrasi hanya untuk fotografer profesional</div>
-        <div class="myth-a"><strong>Tidak benar.</strong> Siapapun yang menghabiskan banyak waktu di depan layar bisa merasakan manfaatnya — mata lebih nyaman, warna lebih natural, dan produktivitas meningkat. Kalibrasi juga relevan untuk gamer yang ingin visual game lebih akurat.</div>
-      </div>
-      <div class="myth-card">
-        <div class="myth-q">Kalibrasi cukup sekali seumur hidup</div>
-        <div class="myth-a"><strong>Tidak.</strong> Layar terus berubah seiring waktu akibat degradasi backlight dan panel. Kalibrasi ulang setiap 3–6 bulan memastikan akurasi warna tetap terjaga sesuai kondisi layar yang terus berubah.</div>
-      </div>
-      <div class="myth-card">
-        <div class="myth-q">Layar yang sudah dikalibrasi warnanya pasti bagus di semua aplikasi</div>
-        <div class="myth-a"><strong>Perlu catatan.</strong> ICC Profile hanya aktif di aplikasi yang mendukung color management seperti Photoshop, Lightroom, DaVinci Resolve, Adobe Premiere dan browser modern. Aplikasi yang tidak mendukung color management akan tetap menampilkan warna tanpa koreksi.</div>
-      </div>
+      <div class="myth-card"><div class="myth-q">Layar mahal tidak perlu dikalibrasi</div><div class="myth-a"><strong>Salah.</strong> Bahkan layar flagship dari merek ternama memiliki toleransi produksi — setiap unit berbeda. Kalibrasi memastikan layarmu benar-benar sesuai standar, bukan hanya "mungkin sudah bagus dari pabrik".</div></div>
+      <div class="myth-card"><div class="myth-q">Night Mode / Blue Light Filter sudah cukup</div><div class="myth-a"><strong>Tidak sama.</strong> Night Mode hanya menggeser warna ke arah kuning untuk mengurangi blue light — tapi ini mengorbankan akurasi warna dan tidak mengkoreksi gamma atau luminance. Kalibrasi mengurangi blue light berlebihan dengan cara yang lebih akurat tanpa mendistorsi warna.</div></div>
+      <div class="myth-card"><div class="myth-q">Kalibrasi hanya untuk fotografer profesional</div><div class="myth-a"><strong>Tidak benar.</strong> Siapapun yang menghabiskan banyak waktu di depan layar bisa merasakan manfaatnya — mata lebih nyaman, warna lebih natural, dan produktivitas meningkat. Kalibrasi juga relevan untuk gamer yang ingin visual game lebih akurat.</div></div>
+      <div class="myth-card"><div class="myth-q">Kalibrasi cukup sekali seumur hidup</div><div class="myth-a"><strong>Tidak.</strong> Layar terus berubah seiring waktu akibat degradasi backlight dan panel. Kalibrasi ulang setiap 3–6 bulan memastikan akurasi warna tetap terjaga sesuai kondisi layar yang terus berubah.</div></div>
+      <div class="myth-card"><div class="myth-q">Layar yang sudah dikalibrasi warnanya pasti bagus di semua aplikasi</div><div class="myth-a"><strong>Perlu catatan.</strong> ICC Profile hanya aktif di aplikasi yang mendukung color management seperti Photoshop, Lightroom, DaVinci Resolve, Adobe Premiere dan browser modern. Aplikasi yang tidak mendukung color management akan tetap menampilkan warna tanpa koreksi.</div></div>
     </div>
   </div>
 
-  <!-- Re-kalibrasi -->
   <div class="section" id="s9">
     <div class="section-header" onclick="tog('s9')">
       <div class="section-left">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="23 4 23 10 17 10"/>
-            <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
-          </svg>
-        </div>
-        <div>
-          <div class="section-title">Jadwal Re-Kalibrasi</div>
-          <div class="section-sub">Kapan perlu kalibrasi ulang?</div>
-        </div>
+        <div class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></div>
+        <div><div class="section-title">Jadwal Re-Kalibrasi</div><div class="section-sub">Kapan perlu kalibrasi ulang?</div></div>
       </div>
       <div class="section-right">
-        <div class="btn-play" id="play_s9" onclick="togglePlay(event, 's9')">
-          <svg id="playicon_s9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+        <div class="btn-play" id="play_s9" onclick="togglePlay(event, 's9')"><svg id="playicon_s9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="chevron">▼</div>
       </div>
     </div>
@@ -1347,21 +845,9 @@
       <div class="desc">Layar mengalami <strong>degradasi alami seiring waktu</strong> — backlight melemah, panel bergeser perlahan. Kalibrasi ulang berkala memastikan akurasi warna tetap terjaga.</div>
       <div class="hr"></div>
       <div class="timeline">
-        <div class="tl-item active">
-          <div class="tl-dot"></div>
-          <div class="tl-label">3 Bulan — Rekomendasi Utama</div>
-          <div class="tl-desc">Ideal untuk fotografer, videografer, desainer, colorist dan content creator profesional yang mengandalkan akurasi warna untuk pekerjaan sehari-hari.</div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot"></div>
-          <div class="tl-label">6 Bulan</div>
-          <div class="tl-desc">Cocok untuk pengguna semi-profesional atau yang bekerja di lingkungan dengan pencahayaan stabil.</div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot"></div>
-          <div class="tl-label">12 Bulan — Maksimum</div>
-          <div class="tl-desc">Minimum untuk pengguna umum. Lebih dari 12 bulan, akurasi warna sudah tidak bisa diandalkan.</div>
-        </div>
+        <div class="tl-item active"><div class="tl-dot"></div><div class="tl-label">3 Bulan — Rekomendasi Utama</div><div class="tl-desc">Ideal untuk fotografer, videografer, desainer, colorist dan content creator profesional yang mengandalkan akurasi warna untuk pekerjaan sehari-hari.</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-label">6 Bulan</div><div class="tl-desc">Cocok untuk pengguna semi-profesional atau yang bekerja di lingkungan dengan pencahayaan stabil.</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-label">12 Bulan — Maksimum</div><div class="tl-desc">Minimum untuk pengguna umum. Lebih dari 12 bulan, akurasi warna sudah tidak bisa diandalkan.</div></div>
       </div>
       <div class="hl" style="margin-top:16px;"><strong>Tanda perlu kalibrasi ulang:</strong> Foto yang diedit terlihat berbeda di perangkat lain, warna terasa lebih kuning atau biru dari biasanya, atau sudah lebih dari 6 bulan sejak kalibrasi terakhir.</div>
     </div>
@@ -1370,40 +856,20 @@
   <!-- AI-Search -->
   <div class="ai-search-wrap" id="displaySearch">
     <div class="ai-search-header">
-      <div class="ai-search-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-      </div>
-      <div>
-        <div class="ai-search-title">Cek Spesifikasi Layar</div>
-        <div class="ai-search-sub">Cari spesifikasi lengkap layarmu di database display</div>
-      </div>
+      <div class="ai-search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <div><div class="ai-search-title">Cek Spesifikasi Layar</div><div class="ai-search-sub">Cari spesifikasi lengkap layarmu di database display</div></div>
     </div>
-
     <div class="ai-input-row">
       <div class="ai-input-wrap">
-        <input type="text" class="ai-input"
-          id="aiQuery"
-          placeholder="Contoh: Dell U2723D"
-          onkeydown="handleSearchKey(event)"
-          style="min-height:unset; height:50px; resize:none;">
+        <input type="text" class="ai-input" id="aiQuery" placeholder="Contoh: Dell U2723D" onkeydown="handleSearchKey(event)" style="min-height:unset; height:50px; resize:none;">
       </div>
       <button class="ai-btn" onclick="searchDisplay()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>
     </div>
-
-    <div class="hl" style="margin-top:12px;">
-      Hasil pencarian akan dibuka di tab baru dari <strong>displayspecifications.com</strong> — database spesifikasi layar terlengkap, mencakup jenis panel, gamut warna, white point, dan ratusan parameter lainnya.
-    </div>
+    <div class="hl" style="margin-top:12px;">Hasil pencarian akan dibuka di tab baru dari <strong>displayspecifications.com</strong> — database spesifikasi layar terlengkap, mencakup jenis panel, gamut warna, white point, dan ratusan parameter lainnya.</div>
   </div>
 
-  <!-- Footer -->
   <div class="footer">
     <div class="footer-brand">KALIBRASI BANG</div>
     <div class="footer-text">Layar Rasa Mahal<br>BORNEO COLOR LAB • Banjarmasin</div>
@@ -1411,123 +877,85 @@
 
 </div>
 
-<!-- Floating WA Button -->
 <a href="https://wa.me/6282252445233?text=Halo%20Kalibrasi%20Bang!%20Boleh%20tanya-tanya%20soal%20kalibrasi%20layar%20dulu%3F%20%F0%9F%98%8A" class="btn-wa-float">
-  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.49 3.57 1.4 5.12L2 22l5.12-1.51c1.49.82 3.17 1.26 4.92 1.26 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0012.04 2z"/>
-  </svg>
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.49 3.57 1.4 5.12L2 22l5.12-1.51c1.49.82 3.17 1.26 4.92 1.26 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0012.04 2z"/></svg>
   Chat WA
 </a>
 
-<!-- Back to Top -->
 <button class="btn-top" id="btnTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="18 15 12 9 6 15"/>
-  </svg>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
 <script>
-// ── ACCORDION SOLO EXPAND ──
+// ── ACCORDION ──
 function tog(id) {
   var sections = document.querySelectorAll(".section");
   sections.forEach(function(s) {
     if (s.id !== id) {
-      // Stop TTS jika section yang ditutup sedang diputar
-      if (currentPlayId === 'body_' + s.id || currentPlayId === s.id) {
-        stopSpeech();
-      }
+      if (currentPlayId === s.id) stopSpeech();
       s.classList.remove("open");
     }
   });
-
   var isNowOpen = document.getElementById(id).classList.toggle("open");
-
-  // Jika section ditutup, stop TTS
-  if (!isNowOpen && (currentPlayId === id || currentPlayId === 'body_' + id)) {
-    stopSpeech();
-  }
-
+  if (!isNowOpen && currentPlayId === id) stopSpeech();
   if (isNowOpen) {
     setTimeout(function() {
       document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "start" });
     }, 300);
-    if (id === 's_sim') {
-      setTimeout(autoSlideDemo, 600);
-    }
+    if (id === 's_sim') setTimeout(autoSlideDemo, 600);
   }
 }
 
 // ── BACK TO TOP ──
 var btnTop = document.getElementById("btnTop");
 window.addEventListener("scroll", function() {
-  if (window.scrollY > 300) {
-    btnTop.classList.add("visible");
-  } else {
-    btnTop.classList.remove("visible");
-  }
+  btnTop.classList.toggle("visible", window.scrollY > 300);
 });
 
-// ── DARK / LIGHT MODE ──
+// ── THEME ──
 var isLight = false;
 var SVG_SUN  = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
 var SVG_MOON = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
-
 function toggleTheme() {
   isLight = !isLight;
   document.body.classList.toggle("light", isLight);
   document.getElementById("iconTheme").innerHTML = isLight ? SVG_MOON : SVG_SUN;
 }
 
-// ── TEXT TO SPEECH ──
+// ── TTS ──
 var currentUtterance = null;
 var currentPlayId    = null;
-
 var ICON_PLAY = '<path d="M8 5v14l11-7z"/>';
 var ICON_STOP = '<rect x="6" y="6" width="12" height="12" rx="1"/>';
 
 function getBodyText(id) {
   var body = document.getElementById("body_" + id);
-  if (!body) return "";
-  return body.innerText || body.textContent || "";
+  return body ? (body.innerText || body.textContent || "") : "";
 }
 
 function togglePlay(event, id) {
   event.stopPropagation();
   if (!document.getElementById(id).classList.contains("open")) {
-    tog(id);
-    setTimeout(function() { startSpeech(id); }, 350);
-    return;
+    tog(id); setTimeout(function() { startSpeech(id); }, 350); return;
   }
-  if (currentPlayId === id && currentUtterance) {
-    stopSpeech(); return;
-  }
-  stopSpeech();
-  startSpeech(id);
+  if (currentPlayId === id && currentUtterance) { stopSpeech(); return; }
+  stopSpeech(); startSpeech(id);
 }
 
 function startSpeech(id) {
-  if (!window.speechSynthesis) {
-    alert("Browser kamu tidak mendukung fitur Text-to-Speech.");
-    return;
-  }
+  if (!window.speechSynthesis) { alert("Browser kamu tidak mendukung Text-to-Speech."); return; }
   var text = getBodyText(id);
   if (!text.trim()) return;
-
-  var utter   = new SpeechSynthesisUtterance(text);
-  utter.lang  = "id-ID";
-  utter.rate  = 0.9;
-  utter.pitch = 0.85;
-
+  var utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "id-ID"; utter.rate = 0.9; utter.pitch = 0.85;
   var voices = window.speechSynthesis.getVoices();
   var picked = voices.find(function(v) { return v.lang.startsWith("id") && /male|pria|laki/i.test(v.name); })
             || voices.find(function(v) { return v.lang.startsWith("id"); })
             || voices.find(function(v) { return /male|david|mark|daniel/i.test(v.name); });
   if (picked) utter.voice = picked;
-
   utter.onstart = function() { currentPlayId = id; currentUtterance = utter; setPlayState(id, true); };
   utter.onend   = function() { currentPlayId = null; currentUtterance = null; setPlayState(id, false); };
   utter.onerror = function() { currentPlayId = null; currentUtterance = null; setPlayState(id, false); };
-
   window.speechSynthesis.speak(utter);
 }
 
@@ -1548,42 +976,24 @@ function setPlayState(id, playing) {
 window.addEventListener("beforeunload", stopSpeech);
 document.addEventListener("visibilitychange", function() { if (document.hidden) stopSpeech(); });
 
-// ── DISPLAY SEARCH ──
-function setQuery(text) {
-  document.getElementById("aiQuery").value = text;
-  document.getElementById("aiQuery").focus();
-}
-
-function handleSearchKey(e) {
-  if (e.key === "Enter") searchDisplay();
-}
-
+// ── SEARCH ──
+function handleSearchKey(e) { if (e.key === "Enter") searchDisplay(); }
 function searchDisplay() {
   var query = document.getElementById("aiQuery").value.trim();
   if (!query) return;
   var btn = document.querySelector(".ai-btn");
-  btn.style.opacity = "0.5";
-  btn.style.transform = "scale(0.93)";
+  btn.style.opacity = "0.5"; btn.style.transform = "scale(0.93)";
   setTimeout(function() {
-    btn.style.opacity = "";
-    btn.style.transform = "";
+    btn.style.opacity = ""; btn.style.transform = "";
     window.open("https://www.google.com/search?q=" + encodeURIComponent(query + " site:displayspecifications.com"), "_blank");
   }, 200);
 }
 
-  // ── SIMULATOR ──
-var simPos = 0.5;
-var simDragging = false;
-var simAnimating = false;
+// ── SIMULATOR ──
+var simPos = 0.5, simDragging = false, simAnimating = false;
 var scenes = [
-  {
-    before: 'Prillbefore.jpg', after: 'Prillafter.jpg',
-    caption: '<span style="color:var(--danger)">● Before</span> &nbsp;Layar belum terkalibrasi — skin tone kekuningan, shadow kehilangan detail&nbsp;&nbsp;<span style="color:var(--success)">● After</span> &nbsp;Setelah kalibrasi — warna natural, white point D65 tercapai'
-  },
-  {
-    before: 'Digital_ColorChecker_Before.jpg', after: 'Digital_ColorChecker_After.jpg',
-    caption: '<span style="color:var(--danger)">● Before</span> &nbsp;Color checker sebelum kalibrasi — saturasi tidak konsisten, putih kebiruan&nbsp;&nbsp;<span style="color:var(--success)">● After</span> &nbsp;Setelah kalibrasi — setiap patch akurat, gray scale netral'
-  }
+  { before: 'Prillbefore.jpg', after: 'Prillafter.jpg', caption: '<span style="color:var(--danger)">● Before</span> &nbsp;Layar belum terkalibrasi — skin tone kekuningan, shadow kehilangan detail&nbsp;&nbsp;<span style="color:var(--success)">● After</span> &nbsp;Setelah kalibrasi — warna natural, white point D65 tercapai' },
+  { before: 'Digital_ColorChecker_Before.jpg', after: 'Digital_ColorChecker_After.jpg', caption: '<span style="color:var(--danger)">● Before</span> &nbsp;Color checker sebelum kalibrasi — saturasi tidak konsisten, putih kebiruan&nbsp;&nbsp;<span style="color:var(--success)">● After</span> &nbsp;Setelah kalibrasi — setiap patch akurat, gray scale netral' }
 ];
 function switchScene(idx) {
   document.querySelectorAll('.sim-tab').forEach(function(t,i){ t.classList.toggle('active', i===idx); });
@@ -1595,50 +1005,26 @@ function switchScene(idx) {
 function updateSim() {
   var pct = (simPos * 100).toFixed(2);
   document.getElementById('simAfter').style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
-  document.getElementById('simDivider').style.left   = pct + '%';
+  document.getElementById('simDivider').style.left = pct + '%';
 }
-
-  // Auto-animate simulator saat pertama dibuka
 function autoSlideDemo() {
-  var duration = 1200;
-  var start = null;
-  var from = 0.5;
-  var to = 0.82;
-  var returning = false;
+  var duration = 1200, start = null, from = 0.5, to = 0.82, returning = false;
   simAnimating = true;
-
   function step(ts) {
-    if (!simAnimating) return; // stop jika flag dimatikan
+    if (!simAnimating) return;
     if (!start) start = ts;
     var elapsed = ts - start;
     var progress = Math.min(elapsed / duration, 1);
-    var ease = progress < 0.5
-      ? 2 * progress * progress
-      : -1 + (4 - 2 * progress) * progress;
-
-    if (!returning) {
-      simPos = from + (to - from) * ease;
-    } else {
-      simPos = to + (from - to) * ease;
-    }
+    var ease = progress < 0.5 ? 2*progress*progress : -1+(4-2*progress)*progress;
+    simPos = !returning ? from + (to-from)*ease : to + (from-to)*ease;
     updateSim();
-
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    } else if (!returning) {
-      returning = true;
-      start = null;
-      setTimeout(function() { requestAnimationFrame(step); }, 400);
-    } else {
-      simAnimating = false; // selesai normal
-    }
+    if (progress < 1) { requestAnimationFrame(step); }
+    else if (!returning) { returning = true; start = null; setTimeout(function() { requestAnimationFrame(step); }, 400); }
+    else { simAnimating = false; }
   }
   requestAnimationFrame(step);
 }
-  // Jalankan sekali saat halaman load, dengan delay kecil
 setTimeout(autoSlideDemo, 800);
-
-  
 function getSimX(e, wrap) {
   var rect = wrap.getBoundingClientRect();
   var clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -1656,42 +1042,57 @@ if (simWrap) {
   updateSim();
 }
 
-  // ── SELF DIAGNOSIS ──
-var diagScores = { 1: null, 2: null, 3: null, 4: null };
+// ── SELF DIAGNOSIS (DIPERBAIKI) ──
+var diagAnswers = { 1: null, 2: null, 3: null, 4: null };
 
-function selectOpt(q, score, el) {
-  var opts = el.closest('.diag-options').querySelectorAll('.diag-opt');
-  opts.forEach(function(o) { o.classList.remove('selected'); });
+function selectOpt(q, val, el) {
+  el.closest('.diag-options').querySelectorAll('.diag-opt').forEach(function(o) { o.classList.remove('selected'); });
   el.classList.add('selected');
-  diagScores[q] = score;
-
-  var allAnswered = Object.values(diagScores).every(function(v) { return v !== null; });
+  diagAnswers[q] = val;
+  var allAnswered = Object.values(diagAnswers).every(function(v) { return v !== null; });
   var btn = document.getElementById('diagSubmit');
-  if (allAnswered) {
-    btn.classList.add('ready');
-    btn.removeAttribute('disabled'); // tambah ini
-  }
+  if (allAnswered) { btn.classList.add('ready'); btn.removeAttribute('disabled'); }
 }
 
 function showDiagResult() {
-  var total = diagScores[1] + diagScores[2] + diagScores[3] + diagScores[4];
+  var q1 = diagAnswers[1]; // a=<3bln, b=3-6bln, c=>6bln/blm pernah
+  var q2 = diagAnswers[2]; // a=natural, b=sedikit, c=jelas
+  var q3 = diagAnswers[3]; // a=konsisten, b=kadang, c=sering
+  var q4 = diagAnswers[4]; // a=umum, b=desain/foto, c=profesional
+
   var html = '';
 
-  if (total >= 6) {
+  // Perlu Sekarang: sudah lama tidak kalibrasi DAN ada gejala nyata
+  var sudahLama   = (q1 === 'c');
+  var adaGejala   = (q2 === 'c' || q3 === 'c');
+  var semiGejala  = (q2 === 'b' || q3 === 'b');
+  var profesional = (q4 === 'c');
+  var desainer    = (q4 === 'b');
+  var baru3bln    = (q1 === 'a');
+
+  if (sudahLama && adaGejala) {
     html = '<div class="diag-result-box red">' +
-      '<div class="diag-result-title">🔴 Layarmu Perlu Dikalibrasi Sekarang</div>' +
-      '<div>Berdasarkan jawabanmu, layar ini menunjukkan tanda-tanda degradasi warna yang signifikan. Warna yang kamu lihat kemungkinan sudah tidak akurat — hasil editing dan konten yang kamu produksi berisiko terlihat berbeda di perangkat lain.</div>' +
+      '<div class="diag-result-title">Layarmu Perlu Dikalibrasi Sekarang</div>' +
+      '<div>Layar sudah lama tidak dikalibrasi dan menunjukkan gejala nyata — warna putih bergeser dan/atau konten terlihat berbeda di perangkat lain. Akurasi warna saat ini kemungkinan sudah tidak bisa diandalkan untuk pekerjaan kreatif.</div>' +
       '</div>' +
       '<a class="btn-wa-diag" href="https://wa.me/6282252445233?text=Halo%20Kalibrasi%20Bang!%20Saya%20baru%20cek%20diagnosis%20layar%20dan%20sepertinya%20perlu%20kalibrasi%20sekarang%20%F0%9F%98%8A" target="_blank">Chat WA ▸ Booking Kalibrasi</a>';
-  } else if (total >= 3) {
+  } else if (sudahLama || (semiGejala && (profesional || desainer))) {
     html = '<div class="diag-result-box yellow">' +
-      '<div class="diag-result-title">🟡 Layarmu Perlu Dipantau</div>' +
-      '<div>Kondisi layarmu masih dalam toleransi, namun ada beberapa indikator yang perlu diperhatikan. Disarankan untuk melakukan kalibrasi dalam <strong>1–2 bulan ke depan</strong> sebelum degradasi warna semakin terasa.</div>' +
+      '<div class="diag-result-title">Waktunya Jadwalkan Kalibrasi</div>' +
+      '<div>Berdasarkan jawabanmu, layarmu sudah memasuki rentang waktu yang disarankan untuk kalibrasi ulang' +
+      (profesional ? ' — terutama karena kamu menggunakannya untuk pekerjaan color-critical' : desainer ? ' — terutama karena kamu menggunakannya untuk desain atau editing' : '') +
+      '. Disarankan kalibrasi dalam <strong>1–2 bulan ke depan</strong>.</div>' +
+      '</div>';
+  } else if (baru3bln && !adaGejala && !semiGejala) {
+    html = '<div class="diag-result-box green">' +
+      '<div class="diag-result-title">Layarmu Masih Aman</div>' +
+      '<div>Kalibrasi terakhir masih dalam rentang 3 bulan dan tidak ada gejala yang terlihat. Jadwalkan kalibrasi berikutnya dalam <strong>1–2 bulan ke depan</strong> untuk menjaga konsistensi' +
+      (profesional ? ' — penting untuk pekerjaan profesionalmu' : '') + '.</div>' +
       '</div>';
   } else {
-    html = '<div class="diag-result-box green">' +
-      '<div class="diag-result-title">🟢 Layarmu Masih Aman</div>' +
-      '<div>Kondisi layarmu saat ini masih baik. Jadwalkan kalibrasi berikutnya dalam <strong>3 bulan ke depan</strong> untuk memastikan akurasi warna tetap terjaga.</div>' +
+    html = '<div class="diag-result-box yellow">' +
+      '<div class="diag-result-title">Perlu Dipantau</div>' +
+      '<div>Kondisi layarmu masih dalam toleransi, namun ada beberapa indikator yang perlu diperhatikan. Disarankan kalibrasi dalam <strong>1–3 bulan ke depan</strong> sebelum ada penurunan yang lebih terasa.</div>' +
       '</div>';
   }
 
@@ -1701,14 +1102,14 @@ function showDiagResult() {
 }
 
 function resetDiag() {
-  diagScores = { 1: null, 2: null, 3: null, 4: null };
+  diagAnswers = { 1: null, 2: null, 3: null, 4: null };
   document.querySelectorAll('.diag-opt').forEach(function(o) { o.classList.remove('selected'); });
   document.getElementById('diagSubmit').classList.remove('ready');
+  document.getElementById('diagSubmit').setAttribute('disabled', '');
   document.getElementById('diagQuestions').style.display = 'block';
   document.getElementById('diagResult').style.display = 'none';
   document.getElementById('diagResultBox').innerHTML = '';
 }
-  
 </script>
 
 </body>
