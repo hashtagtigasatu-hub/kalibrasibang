@@ -95,14 +95,17 @@
       color: var(--accent);
     }
 
-    .container { max-width: 640px; margin: 0 auto; padding: 0 20px 40px; }
+    .container {
+      max-width: 640px; margin: 0 auto; padding: 0 20px 40px; 
+      padding-top: 80px; /* sesuaikan dengan tinggi header aktual */
+    }
 
     /* ── HEADER ── */
     .header {
       position: sticky; top: 0; z-index: 100;
       background: var(--bg);
       padding: max(20px, env(safe-area-inset-top)) 20px 16px;
-      margin: 0 -20px 32px;
+      /* margin: 0 -20px 32px; */
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 12px;
       transition: background 0.3s, border-color 0.3s;
