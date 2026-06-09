@@ -1721,11 +1721,6 @@ function showDiagResult() {
     }, 300);
   }
 
-  document.getElementById('diagQuestions').style.display = 'none';
-  document.getElementById('diagResult').style.display = 'block';
-  document.getElementById('diagResultBox').innerHTML = html;
-}
-
 function resetDiag() {
   diagScores = { 1: null, 2: null, 3: null, 4: null };
   document.querySelectorAll('.diag-opt').forEach(function(o) { o.classList.remove('selected'); });
