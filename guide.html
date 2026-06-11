@@ -594,6 +594,21 @@
       0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
       100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
     }
+
+    /* ── SMOOTH EXPAND/COLLAPSE ── */
+    .section-body {
+      display: grid !important;
+      grid-template-rows: 0fr;
+      padding: 0;
+      transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .section-body-inner {
+      overflow: hidden;
+      padding: 18px;
+    }
+    .section.open .section-body {
+      grid-template-rows: 1fr;
+    }
     
   </style>
 </head>
@@ -1742,6 +1757,16 @@ function resetDiag() {
 
   document.getElementById('diagResultBox').innerHTML = '';
 }
+
+  // ── WRAP SECTION BODY INNER ──
+document.querySelectorAll('.section-body').forEach(function(body) {
+  var inner = document.createElement('div');
+  inner.className = 'section-body-inner';
+  while (body.firstChild) {
+    inner.appendChild(body.firstChild);
+  }
+  body.appendChild(inner);
+});
   
 </script>
 
