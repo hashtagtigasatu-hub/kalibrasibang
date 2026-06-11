@@ -254,10 +254,6 @@
 
     /* ── SECTION BODY — fade-in ── */
     .section-body { display: none; padding: 18px; }
-    .section.open .section-body {
-      display: block;
-      animation: fadeInBody 0.4s ease-out forwards;
-    }
 
     @keyframes fadeInBody {
       from { opacity: 0; transform: translateY(-12px); }
@@ -608,6 +604,17 @@
     }
     .section.open .section-body {
       grid-template-rows: 1fr;
+    }
+
+    .section:not(.open) .section-body {
+      grid-template-rows: 0fr;
+    }
+    .section.open .section-body {
+      grid-template-rows: 1fr;
+    }
+
+    .section {
+      scroll-margin-top: 80px;
     }
     
   </style>
@@ -1466,7 +1473,7 @@ function tog(id) {
   if (isNowOpen) {
     setTimeout(function() {
       document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 300);
+    }, 380);
     if (id === 's_sim') {
       setTimeout(autoSlideDemo, 600);
     }
